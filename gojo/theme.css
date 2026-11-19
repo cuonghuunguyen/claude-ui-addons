@@ -117,6 +117,10 @@
   :root[data-theme="addon:gojo:gojo"] body::before { opacity: .55; background-position: 38% center; }
 }
 
+/* Font: Bangers (OFL, bundled) for headings and labels, manga title look; body text keeps the app font */
+@font-face { font-family: "Gojo Display"; src: url("fonts/Bangers.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+:root[data-theme="addon:gojo:gojo"] :is(h1, h2, h3, [data-testid="session-project"], [data-testid="focus-page"] h1, [data-testid="focus-page"] h2) { font-family: "Gojo Display", var(--font-sans, system-ui), sans-serif; font-weight: 400; letter-spacing: .05em; }
+
 /* Focus page background: Unlimited Void picture under a dark veil so text stays readable */
 :root[data-theme="addon:gojo:gojo"] [data-testid="focus-page"] { background: linear-gradient(rgba(2, 4, 10, .78), rgba(2, 4, 10, .88)), url("images/void.jpg") center / cover no-repeat !important; }
 :root[data-theme="addon:gojo:gojo"] [data-testid="focus-page"] > * { background-color: transparent !important; }
@@ -154,7 +158,7 @@
   :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]::after,
   :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]::before { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; --gojo-bf: 1; opacity: calc(min(var(--gojo-bf), 1 - var(--gojo-bf)) * 2); transition: --gojo-bf .9s linear(0, 0.5 7%, 0.5 12%, 0.56 16%, 0.5 21%, 0.62 30%, 0.78 50%, 0.9 75%, 1); }
   :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]::after { z-index: 40; inset: auto 0 0 0; height: 56px; background: url("images/lightning.svg") center / cover no-repeat; -webkit-mask-image: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent); mask-image: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent); }
-  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]::before { z-index: 41; content: "BLACK FLASH"; inset: auto 0 12px 0; height: 32px; display: flex; align-items: center; justify-content: center; font: 900 22px/1 var(--font-sans, system-ui); letter-spacing: .06em; white-space: nowrap; color: #fff; text-shadow: 0 0 10px #ff1744, 2px 2px 0 #ff1744, -2px -2px 0 #000; transform: rotate(-3deg); }
+  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]::before { z-index: 41; content: "BLACK FLASH"; inset: auto 0 12px 0; height: 32px; display: flex; align-items: center; justify-content: center; font: 400 26px/1 "Gojo Display", var(--font-sans, system-ui); letter-spacing: .06em; white-space: nowrap; color: #fff; text-shadow: 0 0 10px #ff1744, 2px 2px 0 #ff1744, -2px -2px 0 #000; transform: rotate(-3deg); }
   :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]:has([data-testid="thinking"])::after,
   :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]:has([data-testid="thinking"])::before { --gojo-bf: 0; transition: none; }
 }

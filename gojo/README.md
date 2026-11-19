@@ -12,7 +12,7 @@ Theme for claude-ui. Fan-made, personal use. Characters and artwork belong to th
 - Options: Drifting stars, Domain Expansion on Focus, Cursed energy smoke, Black Flash. All motion is off under reduced motion.
 - Capabilities: none.
 
-Font: `fonts/Bangers.ttf` (Bangers, SIL OFL) for headings and labels.
+Fonts: `fonts/Bangers.ttf` (Bangers, SIL OFL) for headings and labels; `fonts/BeVietnamPro-*.ttf` (Be Vietnam Pro, SIL OFL, Vietnamese support) for body text.
 
 Images in `images/`: `bg-dark.jpg`, `bg-light.jpg` (user-provided pictures), `void.jpg` (Unlimited Void picture), `eye.gif` (eye clip converted from video), `bg-*.svg`, `done.svg`, `lightning.svg`, `crackle.svg`, `smoke.svg` (original).
 

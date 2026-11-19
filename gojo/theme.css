@@ -122,9 +122,9 @@
   :root[data-theme="addon:gojo:gojo"][data-opt-domain="on"] [data-testid="focus-page"] { position: relative; }
   :root[data-theme="addon:gojo:gojo"][data-opt-domain="on"] [data-testid="focus-page"]::after,
   :root[data-theme="addon:gojo:gojo"][data-opt-domain="on"] [data-testid="focus-page"]::before { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; }
-  :root[data-theme="addon:gojo:gojo"][data-opt-domain="on"] [data-testid="focus-page"]::after { z-index: 30; background: radial-gradient(circle at 50% 50%, transparent 0 10%, rgba(0, 0, 0, .7) 75%), url("images/void.jpg") center / cover no-repeat, #02040a; animation: gojo-domain 1.2s ease-out both; }
+  :root[data-theme="addon:gojo:gojo"][data-opt-domain="on"] [data-testid="focus-page"]::after { z-index: 30; background: radial-gradient(circle at 50% 50%, transparent 0 10%, rgba(0, 0, 0, .4) 75%), url("images/void.jpg") center / cover no-repeat; animation: gojo-domain 1.2s ease-out both; }
   :root[data-theme="addon:gojo:gojo"][data-opt-domain="on"] [data-testid="focus-page"]::before { z-index: 31; inset: auto; top: 50%; left: 50%; translate: -50% -50%; width: min(320px, 80%); aspect-ratio: 280 / 162; border-radius: 0; background: url("images/eye.gif") center / cover no-repeat; -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 72%); mask-image: radial-gradient(ellipse at center, #000 40%, transparent 72%); animation: gojo-eye 1.2s ease-in-out both; }
-  @keyframes gojo-domain { 0% { opacity: 1; transform: scale(1.3); } 55% { opacity: 1; transform: scale(1); } 99% { opacity: 0; transform: scale(1); visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
+  @keyframes gojo-domain { 0% { opacity: .55; transform: scale(1.3); } 55% { opacity: .5; transform: scale(1); } 99% { opacity: 0; transform: scale(1); visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
   @keyframes gojo-eye { 0%, 8% { opacity: 0; transform: scale(.6); } 24% { opacity: 1; transform: scale(1); } 58% { opacity: 1; transform: scale(1.12); } 78% { opacity: 0; transform: scale(3); } 100% { opacity: 0; visibility: hidden; } }
 }
 

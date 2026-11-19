@@ -142,7 +142,7 @@
 :root[data-theme="addon:gojo:gojo"] [data-testid="user-message"] > .is-user > div { position: relative; border-radius: 20px 20px 3px 20px; border: 2px solid var(--ink); background: linear-gradient(135deg, color-mix(in srgb, #ff3b4e 30%, var(--card)), color-mix(in srgb, #9c1030 26%, var(--card))); box-shadow: inset 5px 0 0 #ff3b4e, 4px 4px 0 var(--manga-shadow); }
 :root[data-theme="addon:gojo:gojo"] [data-testid="user-message"] > .is-user > div::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: repeating-linear-gradient(115deg, transparent 0 8px, color-mix(in srgb, var(--ink) 14%, transparent) 8px 9px); -webkit-mask-image: linear-gradient(270deg, #000, transparent 42%); mask-image: linear-gradient(270deg, #000, transparent 42%); }
 /* agent text: quiet blue bubble (thin border, edge bar), mirrored tail; loud styles are kept for the user bubble, prompt box and permission panel */
-:root[data-theme="addon:gojo:gojo"] [data-testid="assistant-text"] { border-radius: 20px 20px 20px 3px; border: 1px solid color-mix(in srgb, #2fb4ff 45%, transparent); padding: 12px 18px; background: color-mix(in srgb, #2fb4ff 9%, var(--card)); box-shadow: inset -3px 0 0 color-mix(in srgb, #2fb4ff 70%, transparent); }
+:root[data-theme="addon:gojo:gojo"] [data-testid="assistant-text"] { border-radius: 20px 20px 20px 3px; border: 1px solid color-mix(in srgb, #2fb4ff 45%, transparent); padding: 12px 18px; background: color-mix(in srgb, #2fb4ff 10%, color-mix(in srgb, var(--card) 62%, transparent)); box-shadow: inset -3px 0 0 color-mix(in srgb, #2fb4ff 70%, transparent); }
 :root[data-theme="addon:gojo:gojo"] [data-testid="tab"][aria-selected="true"], :root[data-theme="addon:gojo:gojo"] [data-testid="tab"][data-active] { box-shadow: 0 0 0 1.5px var(--ink), 2px 2px 0 var(--manga-shadow); }
 :root[data-theme="addon:gojo:gojo"] [aria-current="page"] { box-shadow: inset 4px 0 0 var(--ink); }
 :root[data-theme="addon:gojo:gojo"] [data-slot="tooltip-content"] { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); border-radius: 2px; }
@@ -182,7 +182,8 @@
 
 /* light: deeper link colour over the art */
 :root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="assistant-text"] a { color: color-mix(in srgb, var(--primary) 78%, #000); }
-:root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="work-area"], :root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="session-area"] { background: color-mix(in srgb, var(--card) 58%, transparent); }
+:root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="work-area"], :root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="session-area"] { background: color-mix(in srgb, var(--card) 14%, transparent); }
+:root[data-theme="addon:gojo:gojo"]:not(.dark) :is([data-testid="tool-card"], [data-testid="permission-panel"]) { background: color-mix(in srgb, var(--card) 62%, transparent); }
 
 /* ---- registered progress for the Black Flash release ---- */
 @property --gojo-bf { syntax: "<number>"; inherits: false; initial-value: 1; }

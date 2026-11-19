@@ -155,7 +155,7 @@
 :root[data-theme="addon:gojo:gojo"].dark body::before { background-image: url("images/bg-dark.jpg"); opacity: .8; }
 @media (width < 48rem) {
   :root[data-theme="addon:gojo:gojo"] body::before { opacity: .55; background-position: 38% center; }
-  /* light: the picture is bright, so keep it strong; center the glasses (both lenses) in the narrow portrait window */
+  /* light: bright picture, keep it strong; center the glasses in the narrow portrait window */
   :root[data-theme="addon:gojo:gojo"]:not(.dark) body::before { opacity: .9; background-position: 49% center; }
 }
 

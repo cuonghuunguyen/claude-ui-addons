@@ -117,6 +117,10 @@
   :root[data-theme="addon:gojo:gojo"] body::before { opacity: .55; background-position: 38% center; }
 }
 
+/* Focus page background: Unlimited Void picture under a dark veil so text stays readable */
+:root[data-theme="addon:gojo:gojo"] [data-testid="focus-page"] { background: linear-gradient(rgba(2, 4, 10, .5), rgba(2, 4, 10, .62)), url("images/void.jpg") center / cover no-repeat !important; }
+:root[data-theme="addon:gojo:gojo"] [data-testid="focus-page"] > * { background-color: transparent !important; }
+
 /* Domain Expansion: opening the Focus page plays the eye, then Unlimited Void, then fades to the page (each mount plays once) */
 @media (prefers-reduced-motion: no-preference) {
   :root[data-theme="addon:gojo:gojo"][data-opt-domain="on"] [data-testid="focus-page"] { position: relative; }

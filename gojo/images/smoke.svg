@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360" viewBox="0 0 360 360"><defs>
+<filter id="f" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency=".006 .012" numOctaves="5" seed="4" stitchTiles="stitch" result="n1"/>
+<feColorMatrix in="n1" type="matrix" values="0 0 0 0 1  0 0 0 0 .3  0 0 0 0 .12  0 0 0 2.2 -1.1" result="fire"/>
+<feTurbulence type="fractalNoise" baseFrequency=".005 .009" numOctaves="5" seed="9" stitchTiles="stitch" result="n2"/>
+<feColorMatrix in="n2" type="matrix" values="0 0 0 0 .42  0 0 0 0 .22  0 0 0 0 .78  0 0 0 1.9 -.62" result="violet"/>
+<feTurbulence type="fractalNoise" baseFrequency=".014 .01" numOctaves="3" seed="17" stitchTiles="stitch" result="n3"/>
+<feColorMatrix in="n3" type="matrix" values="0 0 0 0 .1  0 0 0 0 .55  0 0 0 0 .8  0 0 0 1.5 -.62" result="cyan"/>
+<feMerge result="m"><feMergeNode in="violet"/><feMergeNode in="cyan"/><feMergeNode in="fire"/></feMerge><feGaussianBlur in="m" stdDeviation="2.2"/></filter></defs>
+<rect width="360" height="360" filter="url(#f)"/></svg>

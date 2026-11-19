@@ -1,0 +1,73 @@
+{
+  "name": "gojo",
+  "version": "1.0.0",
+  "description": "Gojo: manga style, art background, Six Eyes intro, Unlimited Void on opening Focus, cursed energy smoke on frames, Black Flash charge and release. No capabilities.",
+  "capabilities": [],
+  "themes": [
+    {
+      "id": "gojo",
+      "name": "Gojo",
+      "light": {
+        "bg": "#eaf1fa",
+        "card": "#fbfdff",
+        "side": "#d6e2f3",
+        "fg": "#0e1a33",
+        "muted": "#3e5076",
+        "border": "#c9d7ea",
+        "primary": "#1663d0",
+        "pfg": "#ffffff",
+        "kw": "#5c1fbf",
+        "str": "#056b55",
+        "fn": "#0a59c0",
+        "type": "#005f84",
+        "num": "#b0124a",
+        "cmt": "#4f5d7c",
+        "varc": "#a52d58",
+        "err": "#c0102e",
+        "warn": "#7a4700",
+        "ok": "#055a2e",
+        "info": "#1556c6"
+      },
+      "dark": {
+        "bg": "#060913",
+        "card": "#0b1020",
+        "side": "#172038",
+        "fg": "#e8f1ff",
+        "muted": "#a5b6d8",
+        "border": "#1e2a48",
+        "primary": "#5ab8ff",
+        "pfg": "#03101f",
+        "kw": "#bf9bff",
+        "str": "#7fe3c6",
+        "fn": "#6cc6ff",
+        "type": "#8fdcff",
+        "num": "#ff9bb5",
+        "cmt": "#8f9fc4",
+        "varc": "#ffb6c8",
+        "err": "#ff7385",
+        "warn": "#ffd47e",
+        "ok": "#72e5a8",
+        "info": "#86b6ff"
+      },
+      "options": [
+        {
+          "id": "stars",
+          "label": "Drifting stars"
+        },
+        {
+          "id": "domain",
+          "label": "Domain Expansion on Focus"
+        },
+        {
+          "id": "smoke",
+          "label": "Cursed energy smoke"
+        },
+        {
+          "id": "flash",
+          "label": "Black Flash"
+        }
+      ]
+    }
+  ],
+  "css": "theme.css"
+}

@@ -88,6 +88,16 @@
     66.7%, 83.3% { content: "Hollow Purple charging…"; }
     83.4%, 100% { content: "Black Flash incoming…"; }
   }
+  /* Vietnamese labels follow <html lang="vi"> (set by Settings > Appearance > Language) */
+  :root[data-theme="addon:gojo:gojo"]:lang(vi) [data-testid="thinking"] > *::after { content: "Thiên thượng thiên hạ…"; animation-name: gojo-words-vi, gojo-type, gojo-glitch; }
+  @keyframes gojo-words-vi {
+    0%, 16.6% { content: "Thiên thượng thiên hạ…"; }
+    16.7%, 33.3% { content: "Duy ngã độc tôn."; }
+    33.4%, 49.9% { content: "Chú thuật: Vô Hạ Hạn…"; }
+    50%, 66.6% { content: "Chín sợi dây, ánh sáng phân cực…"; }
+    66.7%, 83.3% { content: "Hư Thức: Tím đang tụ lực…"; }
+    83.4%, 100% { content: "Hắc Thiểm sắp giáng…"; }
+  }
   @keyframes gojo-type { 0% { clip-path: inset(0 100% 0 0); } 40%, 100% { clip-path: inset(0 0 0 0); } }
   @keyframes gojo-glitch { 0%, 100% { text-shadow: 1px 1px 0 #000; } 44% { text-shadow: -2px 0 #00e5ff, 2px 0 #ff1744; } 48% { text-shadow: 2px 0 #00e5ff, -2px 0 #ff1744; } 52% { text-shadow: 1px 1px 0 #000; } }
   /* stars drift: one transformed layer, opacity only on the second */
@@ -121,6 +131,8 @@
   :root[data-theme="addon:gojo:gojo"] aside[data-testid="sidebar"] :is(a, button, [role="button"], [role="treeitem"]), :root[data-theme="addon:gojo:gojo"] [data-testid="tab"], :root[data-theme="addon:gojo:gojo"] :is([role="menuitem"], [role="option"]) { transition: background-color .12s, box-shadow .12s, transform .12s; }
   :root[data-theme="addon:gojo:gojo"] aside[data-testid="sidebar"] :is(a, button, [role="button"], [role="treeitem"]):hover, :root[data-theme="addon:gojo:gojo"] :is([role="menuitem"], [role="option"])[data-highlighted] { transform: translateX(2px); }
 }
+/* tool cards without the hidden open button (28px + 4px gap) reserve the same room, so status icons line up across cards */
+:root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] > button { padding-right: 32px; }
 /* other boxes: manga panel shape (two sharp corners, two round), colored edge bar */
 :root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] { border-radius: 4px 14px 4px 14px; box-shadow: 0 0 0 1.5px var(--ink), inset 4px 0 0 var(--primary), 3px 3px 0 var(--manga-shadow); }
 :root[data-theme="addon:gojo:gojo"] [data-testid="permission-panel"] { border-radius: 6px 20px 6px 20px; box-shadow: 0 0 0 2px var(--ink), inset 0 5px 0 #ff5a1e, 4px 4px 0 var(--manga-shadow); }

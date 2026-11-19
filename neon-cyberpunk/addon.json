@@ -1,0 +1,62 @@
+{
+  "name": "neon-cyberpunk",
+  "version": "1.0.0",
+  "description": "Cyberpunk HUD theme: neon palette, rain, glitch, cut-corner glass panels, an original night / dawn city. No capabilities.",
+  "capabilities": [],
+  "themes": [
+    {
+      "id": "neon",
+      "name": "Neon Cyberpunk",
+      "light": {
+        "bg": "#eef4fb",
+        "card": "#f8fbff",
+        "side": "#dde8f5",
+        "fg": "#0a1a2f",
+        "muted": "#3b5373",
+        "border": "#b9cde4",
+        "primary": "#006577",
+        "pfg": "#ffffff",
+        "kw": "#9c0d5c",
+        "str": "#3d6600",
+        "fn": "#0058b0",
+        "type": "#7a5800",
+        "num": "#6a2fc0",
+        "cmt": "#52668a",
+        "varc": "#a3420b",
+        "err": "#c2183f",
+        "warn": "#6a4600",
+        "ok": "#225a00",
+        "info": "#0058b0"
+      },
+      "dark": {
+        "bg": "#05070d",
+        "card": "#0a0f1c",
+        "side": "#0e1526",
+        "fg": "#e4f6ff",
+        "muted": "#8fa9c8",
+        "border": "#1c2a44",
+        "primary": "#00e5ff",
+        "pfg": "#05070d",
+        "kw": "#ff6ebc",
+        "str": "#b6ff5c",
+        "fn": "#5cc8ff",
+        "type": "#ffe34d",
+        "num": "#c38bff",
+        "cmt": "#98aed1",
+        "varc": "#ff9e64",
+        "err": "#ff7898",
+        "warn": "#ffe34d",
+        "ok": "#a8ff3e",
+        "info": "#5cc8ff"
+      },
+      "options": [
+        {
+          "id": "rain",
+          "label": "Rain",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "css": "theme.css"
+}

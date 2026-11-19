@@ -6,7 +6,8 @@ Addons for [claude-ui](https://github.com/cuonghuunguyen/claude-code-ui). An add
 
 | Folder | Type | Capabilities | Description |
 | --- | --- | --- | --- |
-| [`chainsaw-man-reze`](chainsaw-man-reze) | Theme | none | Chainsaw Man Reze: art background, palettes, dancing loader, bomb animations. Images embedded in `theme.css`. |
+| [`chainsaw-man-reze`](chainsaw-man-reze) | Theme | none | Chainsaw Man Reze: art background, palettes, dancing loader, bomb animations. Images in `images/`. |
+| [`neon-cyberpunk`](neon-cyberpunk) | Theme | none | Neon Cyberpunk: HUD glass panels, rain, glitch, animated prompt border, original night and dawn city (SVG in `images/`). |
 
 ## Install
 

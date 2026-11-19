@@ -1,0 +1,853 @@
+/*
+ * Neon theme decoration (colours: themes.ts): a cyberpunk HUD. Scoped to :root[data-theme="addon:neon-cyberpunk:neon"] (addon neon-cyberpunk, theme neon).
+ * Background: an original night (dark) / dawn (light) city drawn as SVG data URIs (generated, see the `--nx-*` scene block below), rain layers,
+ * fog and scanlines on fixed pseudo-elements (pointer-events: none). Panels: frosted glass with cut top-right / bottom-left corners
+ * (one 225deg gradient cuts both), thin cyan edges and bright corner brackets; small controls cut with clip-path.
+ * Every animation is inside prefers-reduced-motion: no-preference and moves transform / opacity only (rain: transform).
+ */
+:root[data-theme="addon:neon-cyberpunk:neon"] {
+    --nx-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --nx-cyan: #00e5ff;
+    --nx-pink: #ff3ea5;
+    --nx-amber: #ffb02e;
+    --nx-edge: #00e5ff4d;
+    --nx-edge-hi: #00e5ffa6;
+    --nx-hi: #00e5ff;
+    --nx-glow: #00e5ff;
+    --nx-solid: var(--popover);
+    --nx-tint: #00e5ff14;
+    --nx-tint-hi: #00e5ff29;
+    --nx-shadow: 0 0 0 1px #00e5ff1f, 0 0 22px -6px #00e5ff59, 0 18px 40px -12px #000000b3;
+    caret-color: var(--primary);
+    accent-color: var(--primary);
+}
+html:root[data-theme="addon:neon-cyberpunk:neon"].dark {
+    --border: #00e5ff2e;
+    --input: #00e5ff33;
+    --accent: #00e5ff17;
+    --overlay: #02040bc7;
+    --ring-progress: #00e5ff;
+    --elevation-raised: 0 8px 24px -10px #000000cc;
+    --elevation-floating: 0 0 28px -4px #00e5ff4d, 0 0 60px -20px #ff3ea559, 0 24px 60px -12px #000000e6;
+}
+html:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) {
+    --nx-cyan: #006577;
+    --nx-pink: #c2187a;
+    --nx-amber: #b86a00;
+    --nx-edge: #007a8f4d;
+    --nx-edge-hi: #007a8f99;
+    --nx-hi: #00a6c2;
+    --nx-glow: #00a6c2;
+    --nx-tint: #007a8f12;
+    --nx-tint-hi: #007a8f24;
+    --nx-shadow: 0 0 0 1px #007a8f1f, 0 10px 26px -10px #007a8f59, 0 2px 6px #0a1a2f14;
+    --border: #007a8f33;
+    --input: #007a8f3d;
+    --accent: #007a8f14;
+    --overlay: #0a1a2f66;
+    --ring-progress: #007a8f;
+    --elevation-raised: 0 6px 18px -8px #007a8f40;
+    --elevation-floating: 0 14px 36px -10px #007a8f66, 0 0 40px -16px #c2187a40, 0 2px 6px #0a1a2f1f;
+}
+
+/*
+ * Replaceable layers (zero specificity, so any addon rule wins): --neon-art (the city, a `background` value), --neon-flicker (sign
+ * flicker layer), --neon-veil (darkens / lightens the art under the panels), --neon-glass (panel fill). Example (addon CSS):
+ *   html[data-theme="addon:neon-cyberpunk:neon"].dark { --neon-art: url(...) center / cover no-repeat; --neon-flicker: none; }
+ * A layer of its own below the art: html::before / html::after with z-index: -6 and --neon-art: none.
+ */
+:where(:root[data-theme="addon:neon-cyberpunk:neon"].dark) {
+    --neon-art: url("images/night-city.svg") center bottom / cover no-repeat, url("images/night-signs.svg") center bottom / cover no-repeat, url("images/night-sky.svg") center bottom / cover no-repeat;
+    --neon-flicker: url("images/night-flicker.svg") center bottom / cover no-repeat;
+    --neon-veil:
+        linear-gradient(to top, #ff3ea529, transparent 10%),
+        linear-gradient(to top, #00e5ff1f, transparent 22%),
+        radial-gradient(120% 80% at 50% 35%, transparent 40%, #05070d80 100%);
+    --neon-glass: color-mix(in srgb, var(--card) 78%, transparent);
+}
+:where(:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark)) {
+    --neon-art: url("images/day-city.svg") center bottom / cover no-repeat, url("images/day-signs.svg") center bottom / cover no-repeat, url("images/day-sky.svg") center bottom / cover no-repeat;
+    --neon-flicker: url("images/day-flicker.svg") center bottom / cover no-repeat;
+    --neon-veil:
+        linear-gradient(to top, #c2187a1f, transparent 10%),
+        linear-gradient(to top, #007a8f1a, transparent 22%),
+        radial-gradient(120% 80% at 50% 35%, transparent 45%, #eef4fb66 100%);
+    --neon-glass: color-mix(in srgb, var(--card) 86%, transparent);
+}
+
+/* ---------- Background scene: fixed layers behind the app (pointer-events: none). ---------- */
+:root[data-theme="addon:neon-cyberpunk:neon"] body { background: var(--background); }
+/* The app root paints no colour: the scene shows through the gaps. */
+:root[data-theme="addon:neon-cyberpunk:neon"] div:has(> header[data-testid="titlebar"]) { background: transparent; }
+:root[data-theme="addon:neon-cyberpunk:neon"] body::before,
+:root[data-theme="addon:neon-cyberpunk:neon"] #root::before,
+:root[data-theme="addon:neon-cyberpunk:neon"] #root::after,
+:root[data-theme="addon:neon-cyberpunk:neon"] div:has(> header[data-testid="titlebar"])::before,
+:root[data-theme="addon:neon-cyberpunk:neon"] div:has(> header[data-testid="titlebar"])::after,
+:root[data-theme="addon:neon-cyberpunk:neon"] body::after {
+    content: "";
+    position: fixed;
+    pointer-events: none;
+}
+/* Sky, far skyline, central tower, fog (static) + city (mid / near skyline, signs). Slightly oversized for the drift. */
+:root[data-theme="addon:neon-cyberpunk:neon"] body::before {
+    inset: -2% -3%;
+    z-index: -5;
+    background: var(--neon-art);
+}
+/* Sign flicker group (opacity only). */
+:root[data-theme="addon:neon-cyberpunk:neon"] #root::before {
+    inset: -2% -3%;
+    z-index: -4;
+    background: var(--neon-flicker);
+    opacity: .9;
+}
+/* Veil: darkens the scene under the panels (readability), fog band and wet-street shimmer at the bottom. */
+:root[data-theme="addon:neon-cyberpunk:neon"] #root::after {
+    inset: 0;
+    z-index: -3;
+    background: var(--neon-veil);
+}
+/* Rain: far and mid layers under the panels, tilted 12deg; each layer one tile taller than the viewport and moved by one tile. */
+:root[data-theme="addon:neon-cyberpunk:neon"] div:has(> header[data-testid="titlebar"])::before,
+:root[data-theme="addon:neon-cyberpunk:neon"] div:has(> header[data-testid="titlebar"])::after,
+:root[data-theme="addon:neon-cyberpunk:neon"] body::after {
+    top: -60%;
+    left: -40%;
+    width: 180%;
+    height: 220%;
+    transform: rotate(12deg);
+    will-change: transform;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] div:has(> header[data-testid="titlebar"])::before { z-index: -2; background: url("images/rain2.svg") 0 0 / 200px 300px; opacity: .6; }
+:root[data-theme="addon:neon-cyberpunk:neon"] div:has(> header[data-testid="titlebar"])::after { z-index: -2; background: url("images/rain1.svg") 0 0 / 260px 400px; opacity: .85; }
+/* Near rain over the panels and the sidebar (z 40): sparse, faint, below every popup (z 50). */
+:root[data-theme="addon:neon-cyberpunk:neon"] body::after { z-index: 45; background: url("images/rain3.svg") 0 0 / 360px 600px; opacity: .4; }
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::before { opacity: .35; }
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::after { opacity: .4; }
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) body::after { opacity: .16; }
+/* Scanlines over the work area. The sidebar is positioned only from md on: below md it is the fixed drawer (position: relative would put it back in the row). */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="work-area"] { position: relative; }
+@media (width >= 48rem) { :root[data-theme="addon:neon-cyberpunk:neon"] aside[data-testid="sidebar"] { position: relative; } }
+/* Phone and narrow tablet: no backdrop blur on the full-screen panels and the drawer (GPU cost), a denser glass instead; far rain layer off (2 rain layers). */
+@media (width < 48rem) {
+    :where(:root[data-theme="addon:neon-cyberpunk:neon"]) { --neon-glass: color-mix(in srgb, var(--card) 90%, transparent); }
+    :root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="work-area"] .rounded-2xl.border.bg-card, aside[data-testid="sidebar"], [data-testid="tab"], [data-testid="focus-tab"]) { backdrop-filter: none; -webkit-backdrop-filter: none; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] div:has(> header[data-testid="titlebar"])::before { display: none; }
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="work-area"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(to bottom, transparent 0 2px, #00e5ff 2px 3px);
+    opacity: .028;
+    pointer-events: none;
+    z-index: 1;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) [data-testid="work-area"]::after { background: repeating-linear-gradient(to bottom, transparent 0 2px, #0a1a2f 2px 3px); opacity: .025; }
+
+/* ---------- Glass panels with cut corners (top-right, bottom-left) and corner brackets (top-left, bottom-right). ---------- */
+:root[data-theme="addon:neon-cyberpunk:neon"] :where([data-testid="work-area"] .rounded-2xl.border.bg-card, aside[data-testid="sidebar"], .shadow-floating.border, [data-testid="prompt-box"], [data-testid="permission-panel"], [data-testid="question-panel"], [data-testid="user-message"] > .is-user > div) {
+    --nx-k: 14px;
+    --nx-bl: 16px;
+    --nx-d: calc(var(--nx-k) * .7071);
+    --nx-fill: var(--neon-glass);
+    --nx-line: var(--nx-edge);
+    border-radius: 0;
+    /* Edge: the border ring only (border-image), cut at the two corners; the diagonals are two small background layers. */
+    border-image: linear-gradient(225deg, transparent var(--nx-d), var(--nx-line) calc(var(--nx-d) + .5px), var(--nx-line) calc(100% - var(--nx-d) - .5px), transparent calc(100% - var(--nx-d))) 1;
+    background:
+        linear-gradient(var(--nx-hi) 0 0) top left / var(--nx-bl) 2px no-repeat border-box,
+        linear-gradient(var(--nx-hi) 0 0) top left / 2px var(--nx-bl) no-repeat border-box,
+        linear-gradient(var(--nx-hi) 0 0) bottom right / var(--nx-bl) 2px no-repeat border-box,
+        linear-gradient(var(--nx-hi) 0 0) bottom right / 2px var(--nx-bl) no-repeat border-box,
+        linear-gradient(225deg, transparent calc(var(--nx-d) - .3px), var(--nx-line) calc(var(--nx-d) - .3px) calc(var(--nx-d) + 1.2px), transparent calc(var(--nx-d) + 1.2px)) top right / calc(var(--nx-k) + 2px) calc(var(--nx-k) + 2px) no-repeat border-box,
+        linear-gradient(45deg, transparent calc(var(--nx-d) - .3px), var(--nx-line) calc(var(--nx-d) - .3px) calc(var(--nx-d) + 1.2px), transparent calc(var(--nx-d) + 1.2px)) bottom left / calc(var(--nx-k) + 2px) calc(var(--nx-k) + 2px) no-repeat border-box,
+        linear-gradient(225deg, transparent var(--nx-d), var(--nx-fill) calc(var(--nx-d) + .5px), var(--nx-fill) calc(100% - var(--nx-d) - .5px), transparent calc(100% - var(--nx-d))) padding-box;
+}
+/* Work-area panels and the sidebar: frosted glass over the city. */
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="work-area"] .rounded-2xl.border.bg-card, aside[data-testid="sidebar"]) {
+    backdrop-filter: blur(8px) saturate(1.3);
+    -webkit-backdrop-filter: blur(8px) saturate(1.3);
+    box-shadow: inset 0 0 40px -18px #00e5ff40;
+    /* Cut like the edge, so the blur and the inner glow do not show in the two cut triangles (an outer shadow would be cut away: none). */
+    clip-path: polygon(0 0, calc(100% - var(--nx-k)) 0, 100% var(--nx-k), 100% 100%, var(--nx-k) 100%, 0 calc(100% - var(--nx-k)));
+}
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) :is([data-testid="work-area"] .rounded-2xl.border.bg-card, aside[data-testid="sidebar"]) {
+    box-shadow: inset 0 1px 0 #ffffffb3, inset 0 0 40px -20px #007a8f33;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="work-area"] .rounded-2xl.border.bg-card:not(.absolute, .fixed) { position: relative; }
+/* Sidebar: a border of its own (padding 12px = 11px + 1px border, so nothing moves). */
+:root[data-theme="addon:neon-cyberpunk:neon"] aside[data-testid="sidebar"] { border: 1px solid transparent; padding: 11px; --nx-k: 18px; }
+/* A panel with a running session: edge turns magenta. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="work-area"] .rounded-2xl.border.bg-card:has([data-testid="thinking"], [data-testid="tool-card"][data-status="running"]) { --nx-line: color-mix(in srgb, var(--nx-pink) 55%, transparent); }
+/* Popups, menus, dialogs, palette: opaque. */
+:root[data-theme="addon:neon-cyberpunk:neon"] .shadow-floating.border { --nx-fill: var(--nx-solid); --nx-k: 16px; --nx-line: var(--nx-edge-hi); }
+:root[data-theme="addon:neon-cyberpunk:neon"] .shadow-floating.border.w-\(--anchor-width\),
+:root[data-theme="addon:neon-cyberpunk:neon"] .shadow-floating.border.min-w-40 { --nx-k: 10px; --nx-bl: 10px; }
+/* Floating cards without a border (toasts, hover cards, guide, drawers): square corners, cyan ring, glow, brackets. */
+:root[data-theme="addon:neon-cyberpunk:neon"] .shadow-floating:not(.border, aside) {
+    border-radius: 0;
+    --tw-ring-color: var(--nx-edge-hi);
+    background-image: linear-gradient(var(--nx-hi) 0 0), linear-gradient(var(--nx-hi) 0 0), linear-gradient(var(--nx-hi) 0 0), linear-gradient(var(--nx-hi) 0 0), linear-gradient(90deg, var(--nx-tint-hi), transparent 40%);
+    background-size: 12px 2px, 2px 12px, 12px 2px, 2px 12px, 100% 100%;
+    background-position: top left, top left, bottom right, bottom right, 0 0;
+    background-repeat: no-repeat;
+}
+/* Prompt box. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="prompt-box"] { --nx-k: 12px; --nx-bl: 14px; --nx-fill: color-mix(in srgb, var(--card) 92%, transparent); transition: box-shadow .25s ease; box-shadow: 0 0 18px -10px #00e5ff40; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="prompt-box"]:focus-within { --nx-line: var(--nx-edge-hi); box-shadow: 0 0 22px -6px var(--nx-glow), 0 0 50px -20px var(--nx-pink); }
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) [data-testid="prompt-box"] { box-shadow: 0 6px 18px -10px #007a8f4d; }
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) [data-testid="prompt-box"]:focus-within { box-shadow: 0 10px 26px -10px #007a8f80, 0 0 0 1px #007a8f1f; }
+/* Rotating conic border, cut like the box. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="prompt-box"]::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    background: conic-gradient(from var(--neon-a), var(--nx-cyan), var(--nx-pink), transparent 40%, var(--nx-amber) 60%, var(--nx-cyan));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    opacity: 0;
+    transition: opacity .25s ease;
+    pointer-events: none;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="prompt-box"]:focus-within::before { opacity: 1; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="prompt-box"] textarea { font-family: inherit; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="prompt-box"] textarea::placeholder { color: var(--muted-foreground); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="markdown-toolbar"] { box-shadow: inset 0 -1px 0 var(--border); padding-bottom: 0; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="prompt-toolbar"] { background: linear-gradient(90deg, var(--nx-tint), transparent 60%); }
+/* Permission / question panels: magenta alert edge, transparent footer. */
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="permission-panel"], [data-testid="question-panel"]) { --nx-k: 14px; --nx-line: color-mix(in srgb, var(--nx-pink) 70%, transparent); --nx-hi: var(--nx-pink); --nx-fill: color-mix(in srgb, var(--card) 94%, var(--nx-pink)); box-shadow: 0 0 26px -8px color-mix(in srgb, var(--nx-pink) 60%, transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="permission-panel"], [data-testid="question-panel"]) > div:last-child { background: color-mix(in srgb, var(--nx-pink) 7%, transparent); border-top-color: color-mix(in srgb, var(--nx-pink) 35%, transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="permission-panel"], [data-testid="question-panel"]) pre { background: color-mix(in srgb, var(--background) 70%, transparent); border-left: 2px solid var(--nx-pink); border-radius: 0; }
+/* User bubble: holo card. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="user-message"] > .is-user > div { --nx-k: 10px; --nx-bl: 10px; --nx-fill: color-mix(in srgb, var(--card) 86%, var(--nx-cyan)); --nx-line: var(--nx-edge-hi); box-shadow: 0 0 18px -6px #00e5ff66; }
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) [data-testid="user-message"] > .is-user > div { --nx-fill: color-mix(in srgb, var(--card) 92%, var(--nx-cyan)); box-shadow: 0 6px 16px -8px #007a8f59; }
+
+/* ---------- Clip-cut small controls (top-right / bottom-left): tabs, rows, inputs, buttons. ---------- */
+:root[data-theme="addon:neon-cyberpunk:neon"] :where([data-testid="tab"], [data-testid="focus-tab"], [data-testid="session-item"], [data-testid="focus-row-sidebar"], [data-testid="open-settings"], [data-testid="focus-row"], [data-testid="session-search"], [data-testid="commit-message"], label:has(> [data-testid="palette-input"]), [data-slot="button"].bg-primary, [data-testid="send"], [data-slot="select-trigger"], :is([data-pane-tab], [role="tab"][data-testid^="pane-"]), [data-slot="badge"], [data-slot="tooltip-content"], div:has(> [data-testid="terminal-tab"])) {
+    --nx-k: 7px;
+    --nx-ce: var(--nx-edge);
+    --nx-dg: linear-gradient(to top right, transparent calc(50% - .8px), var(--nx-ce) calc(50% - .8px) calc(50% + .8px), transparent calc(50% + .8px));
+    clip-path: polygon(0 0, calc(100% - var(--nx-k)) 0, 100% var(--nx-k), 100% 100%, var(--nx-k) 100%, 0 calc(100% - var(--nx-k)));
+    border-radius: 0;
+}
+/* Tabs: glass chips with an edge; separators hidden. */
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="tab"], [data-testid="focus-tab"]) {
+    background-color: color-mix(in srgb, var(--card) 62%, transparent);
+    background-image: var(--nx-dg), var(--nx-dg);
+    background-size: var(--nx-k) var(--nx-k);
+    background-position: top right, bottom left;
+    background-repeat: no-repeat;
+    box-shadow: inset 0 0 0 1px var(--nx-ce);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: box-shadow .2s ease, background-color .2s ease;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tab"]::before { display: none; }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="tab"], [data-testid="focus-tab"]):hover { --nx-ce: var(--nx-edge-hi); background-color: color-mix(in srgb, var(--card) 70%, var(--nx-cyan) 10%); box-shadow: inset 0 0 0 1px var(--nx-ce), inset 0 0 14px -6px var(--nx-glow); }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="tab"][data-active], [data-testid="focus-tab"]:has([aria-selected="true"])) {
+    --nx-ce: var(--nx-hi);
+    background-color: color-mix(in srgb, var(--card) 70%, var(--nx-cyan) 16%);
+    background-image: var(--nx-dg), var(--nx-dg), linear-gradient(var(--nx-hi) 0 0), linear-gradient(to bottom, transparent, color-mix(in srgb, var(--nx-cyan) 22%, transparent));
+    background-size: var(--nx-k) var(--nx-k), var(--nx-k) var(--nx-k), 100% 2px, 100% 100%;
+    background-position: top right, bottom left, bottom, 0 0;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nx-hi) 70%, transparent), inset 0 -10px 16px -10px var(--nx-glow), inset 0 0 18px -8px var(--nx-glow);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) :is([data-testid="tab"][data-active], [data-testid="focus-tab"]:has([aria-selected="true"])) { background-color: color-mix(in srgb, var(--card) 86%, var(--nx-cyan) 14%); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tab"][data-state="running"] { --nx-ce: color-mix(in srgb, var(--nx-pink) 60%, transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) [data-testid="titlebar"] { --nx-tb: 72%; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="titlebar"] {
+    background: linear-gradient(90deg, transparent, var(--nx-edge-hi) 20%, color-mix(in srgb, var(--nx-pink) 60%, transparent) 60%, transparent) bottom / 100% 1px no-repeat, color-mix(in srgb, var(--background) var(--nx-tb, 45%), transparent);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+/* Icon buttons (titlebar, sidebar, panes). */
+:root[data-theme="addon:neon-cyberpunk:neon"] button.size-7.grid,
+:root[data-theme="addon:neon-cyberpunk:neon"] button.size-6.grid { border-radius: 2px; transition: color .15s ease, box-shadow .15s ease, background-color .15s ease; }
+:root[data-theme="addon:neon-cyberpunk:neon"] button.grid:is(.size-7, .size-6):not(:disabled):hover,
+:root[data-theme="addon:neon-cyberpunk:neon"] button.grid:is(.size-7, .size-6)[aria-pressed="true"],
+:root[data-theme="addon:neon-cyberpunk:neon"] button.grid:is(.size-7, .size-6)[aria-expanded="true"] {
+    color: var(--primary);
+    background-color: var(--nx-tint);
+    box-shadow: inset 0 0 0 1px var(--nx-edge), 0 0 12px -4px var(--nx-glow);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] :is(button.grid:is(.size-7, .size-6), [data-slot="button"]:not(.bg-primary)):not(:disabled):hover svg { filter: drop-shadow(0 0 4px color-mix(in srgb, var(--nx-glow) 70%, transparent)); }
+
+/* Sidebar rows. */
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="session-item"], [data-testid="focus-row-sidebar"], [data-testid="open-settings"], [data-testid="focus-row"]) {
+    --nx-k: 8px;
+    --nx-ce: transparent;
+    position: relative;
+    background-image: var(--nx-dg), var(--nx-dg);
+    background-size: var(--nx-k) var(--nx-k);
+    background-position: top right, bottom left;
+    background-repeat: no-repeat;
+    transition: box-shadow .2s ease, background-color .2s ease;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="session-item"], [data-testid="focus-row-sidebar"], [data-testid="open-settings"], [data-testid="focus-row"]):hover {
+    --nx-ce: var(--nx-edge);
+    background-color: var(--nx-tint);
+    box-shadow: inset 0 0 0 1px var(--nx-edge);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="session-item"][aria-current="page"], [data-testid="focus-row"][aria-current="true"]) {
+    --nx-ce: var(--nx-hi);
+    background-color: transparent;
+    background-image: var(--nx-dg), var(--nx-dg), linear-gradient(90deg, color-mix(in srgb, var(--nx-cyan) 14%, transparent), color-mix(in srgb, var(--nx-cyan) 4%, transparent) 70%, transparent);
+    background-size: var(--nx-k) var(--nx-k), var(--nx-k) var(--nx-k), 100% 100%;
+    background-position: top right, bottom left, 0 0;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nx-hi) 60%, transparent), inset 0 0 18px -8px var(--nx-glow);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="session-item"][aria-current="page"], [data-testid="focus-row"][aria-current="true"])::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    background: var(--nx-hi);
+    box-shadow: 0 0 8px var(--nx-glow), 0 0 2px var(--nx-glow);
+    pointer-events: none;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"].dark [data-testid="session-item"][data-state="running"] > span.truncate,
+:root[data-theme="addon:neon-cyberpunk:neon"].dark [data-testid="session-item"][data-state="needs_input"] > span.truncate { text-shadow: 0 0 10px color-mix(in srgb, var(--nx-pink) 55%, transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="group-toggle"] { border-radius: 0; background: linear-gradient(90deg, var(--nx-edge), transparent 80%) bottom / 100% 1px no-repeat; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="group-toggle"] > span:first-child { border-radius: 0; box-shadow: 0 0 0 1px var(--nx-edge-hi), 0 0 8px -2px var(--nx-glow); }
+/* Inputs: cut corners, cyan edge, glow on focus. */
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="session-search"], [data-testid="commit-message"], label:has(> [data-testid="palette-input"])) {
+    --nx-ce: var(--nx-edge);
+    background-color: color-mix(in srgb, var(--background) 55%, transparent);
+    background-image: var(--nx-dg), var(--nx-dg);
+    background-size: var(--nx-k) var(--nx-k);
+    background-position: top right, bottom left;
+    background-repeat: no-repeat;
+    box-shadow: inset 0 0 0 1px var(--nx-ce);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="session-search"], [data-testid="commit-message"], label:has(> [data-testid="palette-input"])):is(:focus, :focus-within) { --nx-ce: var(--nx-hi); box-shadow: inset 0 0 0 1px var(--nx-hi), inset 0 0 14px -6px var(--nx-glow); }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is(input:not([type="checkbox"], [type="radio"], [type="range"]), textarea, select):focus-visible { outline-color: var(--nx-hi); }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is(input:not([type]), input[type="text"], input[type="search"], input[type="number"], input[type="url"], input[type="password"], textarea).border { border-radius: 0; border-color: var(--nx-edge); background-color: color-mix(in srgb, var(--background) 45%, transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is(input:not([type]), input[type="text"], input[type="search"], input[type="number"], input[type="url"], input[type="password"], textarea).border:focus { border-color: var(--nx-hi); box-shadow: 0 0 0 1px var(--nx-edge), 0 0 12px -4px var(--nx-glow); }
+
+/* Buttons. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="button"] { border-radius: 2px; letter-spacing: .02em; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="button"].border-border,
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="button"].dark\:border-input { border-color: var(--nx-edge); background-color: color-mix(in srgb, var(--nx-cyan) 6%, transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="button"].border-border:not(:disabled):hover,
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="button"].dark\:border-input:not(:disabled):hover { border-color: var(--nx-hi); background-color: var(--nx-tint-hi); box-shadow: 0 0 14px -4px var(--nx-glow); }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-slot="button"].bg-primary, [data-testid="send"]) {
+    --nx-k: 6px;
+    --nx-ce: transparent;
+    background-clip: border-box;
+    background-color: var(--primary);
+    background-image: linear-gradient(to bottom, #ffffff40, transparent 55%), linear-gradient(90deg, transparent, #ffffff33 50%, transparent);
+    background-size: 100% 100%, 40% 100%;
+    background-position: 0 0, -60% 0;
+    background-repeat: no-repeat;
+    color: var(--primary-foreground);
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1px #ffffff40, inset 0 -6px 12px -6px #00000059;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-slot="button"].bg-primary, [data-testid="send"]):not(:disabled):hover { background-color: color-mix(in srgb, var(--primary) 85%, #ffffff); }
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) :is([data-slot="button"].bg-primary, [data-testid="send"]):not(:disabled):hover { background-color: color-mix(in srgb, var(--primary) 88%, #000000); }
+/* Glow around the cut send / primary buttons: drop-shadow on the wrapper (clip-path would clip a box-shadow). */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="prompt-toolbar"] > div:last-child,
+:root[data-theme="addon:neon-cyberpunk:neon"] :has(> [data-slot="button"].bg-primary) { filter: drop-shadow(0 0 6px color-mix(in srgb, var(--nx-glow) 55%, transparent)); }
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) [data-testid="prompt-toolbar"] > div:last-child,
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) :has(> [data-slot="button"].bg-primary) { filter: drop-shadow(0 3px 5px color-mix(in srgb, var(--nx-glow) 40%, transparent)); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="button"].bg-destructive\/10 { border-color: color-mix(in srgb, var(--destructive) 40%, transparent); }
+/* Selects: mode / model / diff mode. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="select-trigger"] {
+    --nx-k: 6px;
+    --nx-ce: var(--nx-edge);
+    border-color: transparent;
+    background-color: color-mix(in srgb, var(--nx-cyan) 5%, transparent);
+    background-image: var(--nx-dg), var(--nx-dg);
+    background-size: var(--nx-k) var(--nx-k);
+    background-position: top right, bottom left;
+    background-repeat: no-repeat;
+    box-shadow: inset 0 0 0 1px var(--nx-ce);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="select-trigger"]:hover,
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="select-trigger"][aria-expanded="true"] { --nx-ce: var(--nx-hi); background-color: var(--nx-tint-hi); box-shadow: inset 0 0 0 1px var(--nx-hi), inset 0 0 12px -6px var(--nx-glow); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="select-trigger"] svg { color: var(--primary); }
+/* Pane tabs (session / changes / files / graph / terminal / addon panes): HUD labels. */
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-pane-tab], [role="tab"][data-testid^="pane-"]) {
+    --nx-k: 6px;
+    --nx-ce: transparent;
+    font-family: var(--nx-mono);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    font-size: 11px;
+    background-image: var(--nx-dg), var(--nx-dg);
+    background-size: var(--nx-k) var(--nx-k);
+    background-position: top right, bottom left;
+    background-repeat: no-repeat;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-pane-tab], [role="tab"][data-testid^="pane-"])[aria-selected="true"] {
+    --nx-ce: var(--nx-hi);
+    color: var(--primary);
+    background-color: var(--nx-tint);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nx-hi) 60%, transparent), inset 0 -2px 0 var(--nx-hi);
+    text-shadow: 0 0 8px color-mix(in srgb, var(--nx-glow) 60%, transparent);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [role="tablist"][aria-label] > button[role="tab"]:not([data-testid]) { border-radius: 0; }
+
+/* ---------- HUD labels: uppercase mono, letter-spaced. ---------- */
+:root[data-theme="addon:neon-cyberpunk:neon"] :is(aside[data-testid="sidebar"] h2, [data-testid="day-header"], [data-testid="connection-status"], [data-testid="status-bar"], section[data-testid^="settings-"] > h3, [data-slot="select-label"], [data-testid="focus-subtitle"], [data-testid="commit-count"], [data-testid="file-position"], [data-testid="palette-meta"], [role="group"] > [role="presentation"], [id^="settings-category-"]) {
+    font-family: var(--nx-mono);
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: 10.5px;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] aside[data-testid="sidebar"] h2 { color: var(--primary); text-shadow: 0 0 8px color-mix(in srgb, var(--nx-glow) 55%, transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] aside[data-testid="sidebar"] h2::before,
+:root[data-theme="addon:neon-cyberpunk:neon"] section[data-testid^="settings-"] > h3::before { content: "// "; color: var(--nx-pink); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="day-header"] { color: var(--muted-foreground); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="day-header"]::after { content: ""; flex: 1; height: 1px; margin-left: 8px; background: linear-gradient(90deg, var(--nx-edge), transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] section[data-testid^="settings-"] > h3 { color: var(--primary); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="session-header"] { background: linear-gradient(90deg, var(--nx-tint-hi), transparent 50%); border-bottom-color: var(--nx-edge); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="session-header"] > span:last-child { font-family: var(--nx-mono); font-size: 11px; letter-spacing: .06em; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="session-project"] { font-family: var(--nx-mono); text-transform: uppercase; letter-spacing: .12em; font-size: 12px; color: var(--primary); }
+:root[data-theme="addon:neon-cyberpunk:neon"].dark :is([data-testid="session-project"], .shadow-floating h2, [data-testid="focus-title"], h1) {
+    text-shadow: -1px 0 color-mix(in srgb, var(--nx-pink) 65%, transparent), 1px 0 color-mix(in srgb, var(--nx-cyan) 65%, transparent), 0 0 12px color-mix(in srgb, var(--nx-cyan) 45%, transparent);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] .shadow-floating h2 { font-family: var(--nx-mono); text-transform: uppercase; letter-spacing: .16em; font-size: 13px; color: var(--primary); }
+:root[data-theme="addon:neon-cyberpunk:neon"] .shadow-floating > div:first-child:has(> h2) { background: linear-gradient(90deg, var(--nx-tint-hi), transparent 60%); box-shadow: inset 0 -1px 0 var(--nx-edge); }
+/* Connection status: pulsing dot. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="connection-status"] > span[aria-hidden] { border-radius: 0; transform: rotate(45deg) scale(.85); box-shadow: 0 0 6px var(--success); }
+
+/* ---------- Timeline. ---------- */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="assistant-text"] { position: relative; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="assistant-text"]::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 2px;
+    bottom: 2px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--nx-pink), var(--nx-cyan));
+    box-shadow: 0 0 8px color-mix(in srgb, var(--nx-pink) 50%, transparent);
+    pointer-events: none;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="assistant-text"] strong,
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="assistant-text"] [data-streamdown="strong"] { color: var(--primary); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="assistant-text"] a { color: var(--primary); text-shadow: 0 0 8px color-mix(in srgb, var(--nx-glow) 40%, transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] .timeline :is(h1, h2, h3, h4) { font-family: var(--nx-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--primary); }
+:root[data-theme="addon:neon-cyberpunk:neon"] .timeline :is(code, button.font-mono).bg-muted,
+:root[data-theme="addon:neon-cyberpunk:neon"] .timeline :not(pre) > code { border-radius: 0; background: var(--nx-tint); box-shadow: inset 0 0 0 1px var(--nx-edge); color: var(--primary); }
+:root[data-theme="addon:neon-cyberpunk:neon"] .timeline blockquote { border-left: 2px solid var(--nx-pink); background: linear-gradient(90deg, color-mix(in srgb, var(--nx-pink) 8%, transparent), transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] .timeline :is(table) { border-color: var(--nx-edge); }
+:root[data-theme="addon:neon-cyberpunk:neon"] .timeline th { font-family: var(--nx-mono); text-transform: uppercase; letter-spacing: .1em; font-size: 11px; color: var(--primary); background: var(--nx-tint); }
+:root[data-theme="addon:neon-cyberpunk:neon"] .timeline hr { border-color: var(--nx-edge); }
+/* Code blocks (streamdown). */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] {
+    border-radius: 0;
+    border-color: var(--nx-edge);
+    background-color: color-mix(in srgb, var(--card) 96%, var(--background));
+    background-image: linear-gradient(var(--nx-hi) 0 0), linear-gradient(var(--nx-hi) 0 0), linear-gradient(var(--nx-hi) 0 0), linear-gradient(var(--nx-hi) 0 0);
+    background-size: 12px 2px, 2px 12px, 12px 2px, 2px 12px;
+    background-position: top left, top left, bottom right, bottom right;
+    background-repeat: no-repeat;
+    box-shadow: inset 0 0 30px -18px #00e5ff59;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] > div:first-child { font-family: var(--nx-mono); text-transform: uppercase; letter-spacing: .12em; font-size: 10.5px; color: var(--nx-cyan); background: var(--nx-tint); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] :is(pre, [data-streamdown="code-block-body"]) { background: transparent; }
+/* Code blocks: streamdown writes GitHub light / dark hexes inline (--sdm-c light, --shiki-dark dark); each GitHub colour (light hex) is mapped to the theme's syntax token, so every token keeps the theme's 4.5:1. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style] { --sdm-c: var(--foreground) !important; --shiki-dark: var(--foreground) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style*="#d73a49" i] { --sdm-c: var(--syntax-keyword) !important; --shiki-dark: var(--syntax-keyword) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style*="#6f42c1" i] { --sdm-c: var(--syntax-function) !important; --shiki-dark: var(--syntax-function) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style*="#005cc5" i] { --sdm-c: var(--syntax-number) !important; --shiki-dark: var(--syntax-number) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style*="#032f62" i] { --sdm-c: var(--syntax-string) !important; --shiki-dark: var(--syntax-string) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style*="#6a737d" i] { --sdm-c: var(--syntax-comment) !important; --shiki-dark: var(--syntax-comment) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style*="#22863a" i] { --sdm-c: var(--syntax-type) !important; --shiki-dark: var(--syntax-type) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style*="#e36209" i] { --sdm-c: var(--syntax-variable) !important; --shiki-dark: var(--syntax-variable) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style*="#b31d28" i] { --sdm-c: var(--destructive) !important; --shiki-dark: var(--destructive) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style*="#cb2431" i] { --sdm-c: var(--destructive) !important; --shiki-dark: var(--destructive) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style*="#28a745" i] { --sdm-c: var(--success) !important; --shiki-dark: var(--success) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style*="#586069" i] { --sdm-c: var(--muted-foreground) !important; --shiki-dark: var(--muted-foreground) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] code span[style*="#735c0f" i] { --sdm-c: var(--warning) !important; --shiki-dark: var(--warning) !important; }
+/* Tool rows: left accent line; tool name as a HUD tag. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"] { position: relative; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"]::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 6px;
+    height: 20px;
+    width: 2px;
+    background: var(--nx-hi);
+    box-shadow: 0 0 6px var(--nx-glow);
+    opacity: .75;
+    pointer-events: none;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"][data-status="running"]::before { background: var(--nx-pink); box-shadow: 0 0 8px var(--nx-pink); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"][data-status="error"]::before { background: var(--destructive); box-shadow: 0 0 8px var(--destructive); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"] [data-slot="collapsible-trigger"] { border-radius: 0; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"] [data-slot="collapsible-trigger"]:hover { background: linear-gradient(90deg, var(--nx-tint-hi), transparent 80%); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"] [data-slot="collapsible-trigger"] > span.font-medium:first-child {
+    font-family: var(--nx-mono);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-size: 11px;
+    color: var(--primary);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"] [data-state="output-available"] { color: var(--success); filter: drop-shadow(0 0 4px color-mix(in srgb, var(--success) 60%, transparent)); }
+/* Thinking. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="thinking"] { position: relative; width: fit-content; padding-right: 14px; background: linear-gradient(90deg, color-mix(in srgb, var(--nx-pink) 12%, transparent), transparent 40%); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="thinking"]::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 2px;
+    bottom: 2px;
+    width: 2px;
+    background: var(--nx-pink);
+    box-shadow: 0 0 8px var(--nx-pink);
+    pointer-events: none;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="thinking"] > span { font-family: var(--nx-mono); text-transform: uppercase; letter-spacing: .14em; font-size: 11px; }
+/* ---------- Loading indicator: Chrome HUD target. ---------- */
+/* Every spinner (lucide loader / any spinning svg): amber corner brackets that breathe and turn (2.8 s) around a pulsing core ring and dot (SMIL inside the
+   image: an svg has no ::before). Icon sizes (12-22 px): no dashed outer ring, strokes thickened so the glyph reads. The svg keeps its box (no layout shift),
+   its own glyph is hidden. The spinner over the send button (absolute) gets the brackets only. Light: darker amber / green (3:1). Reduced motion: still. */
+:root[data-theme="addon:neon-cyberpunk:neon"].dark {
+    --nx-target: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23ffb800' stroke-width='14' stroke-linecap='square'%3E%3Cg transform='translate(100 100)'%3E%3Cg%3E%3CanimateTransform attributeName='transform' type='rotate' values='0;6;-4;0' keyTimes='0;.4;.75;1' calcMode='spline' keySplines='.42 0 .58 1;.42 0 .58 1;.42 0 .58 1' dur='2.8s' repeatCount='indefinite'/%3E%3Cg%3E%3CanimateTransform attributeName='transform' type='scale' values='1.08;.92;1.02;1.08' keyTimes='0;.4;.75;1' calcMode='spline' keySplines='.42 0 .58 1;.42 0 .58 1;.42 0 .58 1' dur='2.8s' repeatCount='indefinite'/%3E%3Cpath transform='translate(-100 -100)' d='M32 62L32 32L62 32M138 32L168 32L168 62M168 138L168 168L138 168M62 168L32 168L32 138'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(100 100)'%3E%3Cg%3E%3CanimateTransform attributeName='transform' type='scale' values='.88;1.14;.88' keyTimes='0;.5;1' calcMode='spline' keySplines='.42 0 .58 1;.42 0 .58 1' dur='2.8s' repeatCount='indefinite'/%3E%3Ccircle r='24' fill='none' stroke='%23ffb800' stroke-width='10'/%3E%3Ccircle r='9' fill='%23ffb800'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    --nx-target-still: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23ffb800' stroke-width='14' stroke-linecap='square'%3E%3Cg transform='translate(100 100)'%3E%3Cpath transform='translate(-100 -100)' d='M32 62L32 32L62 32M138 32L168 32L168 62M168 138L168 168L138 168M62 168L32 168L32 138'/%3E%3C/g%3E%3C/g%3E%3Ccircle cx='100' cy='100' r='24' fill='none' stroke='%23ffb800' stroke-width='10'/%3E%3Ccircle cx='100' cy='100' r='9' fill='%23ffb800'/%3E%3C/svg%3E");
+    --nx-target-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23ffb800' stroke-width='14' stroke-linecap='square'%3E%3Cg transform='translate(100 100)'%3E%3Cg%3E%3CanimateTransform attributeName='transform' type='rotate' values='0;6;-4;0' keyTimes='0;.4;.75;1' calcMode='spline' keySplines='.42 0 .58 1;.42 0 .58 1;.42 0 .58 1' dur='2.8s' repeatCount='indefinite'/%3E%3Cg%3E%3CanimateTransform attributeName='transform' type='scale' values='1.08;.92;1.02;1.08' keyTimes='0;.4;.75;1' calcMode='spline' keySplines='.42 0 .58 1;.42 0 .58 1;.42 0 .58 1' dur='2.8s' repeatCount='indefinite'/%3E%3Cpath transform='translate(-100 -100)' d='M32 62L32 32L62 32M138 32L168 32L168 62M168 138L168 168L138 168M62 168L32 168L32 138'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    --nx-target-frame-still: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23ffb800' stroke-width='14' stroke-linecap='square'%3E%3Cg transform='translate(100 100)'%3E%3Cpath transform='translate(-100 -100)' d='M32 62L32 32L62 32M138 32L168 32L168 62M168 138L168 168L138 168M62 168L32 168L32 138'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    --nx-target-done: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M32 62L32 32L62 32M138 32L168 32L168 62M168 138L168 168L138 168M62 168L32 168L32 138' transform='translate(100 100) scale(.76) translate(-100 -100)' fill='none' stroke='%2300ff88' stroke-width='14' stroke-linecap='square'/%3E%3Cpolygon points='100,58 142,100 100,142 58,100' fill='%2300ff88' fill-opacity='.14' stroke='%2300ff88' stroke-width='9' stroke-linejoin='round'/%3E%3Cpath d='M82 101L95 114L120 89' fill='none' stroke='%2300ff88' stroke-width='13' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --nx-load: #ffb800;
+    --nx-done: #00ff88;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) {
+    --nx-target: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%239a6200' stroke-width='14' stroke-linecap='square'%3E%3Cg transform='translate(100 100)'%3E%3Cg%3E%3CanimateTransform attributeName='transform' type='rotate' values='0;6;-4;0' keyTimes='0;.4;.75;1' calcMode='spline' keySplines='.42 0 .58 1;.42 0 .58 1;.42 0 .58 1' dur='2.8s' repeatCount='indefinite'/%3E%3Cg%3E%3CanimateTransform attributeName='transform' type='scale' values='1.08;.92;1.02;1.08' keyTimes='0;.4;.75;1' calcMode='spline' keySplines='.42 0 .58 1;.42 0 .58 1;.42 0 .58 1' dur='2.8s' repeatCount='indefinite'/%3E%3Cpath transform='translate(-100 -100)' d='M32 62L32 32L62 32M138 32L168 32L168 62M168 138L168 168L138 168M62 168L32 168L32 138'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(100 100)'%3E%3Cg%3E%3CanimateTransform attributeName='transform' type='scale' values='.88;1.14;.88' keyTimes='0;.5;1' calcMode='spline' keySplines='.42 0 .58 1;.42 0 .58 1' dur='2.8s' repeatCount='indefinite'/%3E%3Ccircle r='24' fill='none' stroke='%239a6200' stroke-width='10'/%3E%3Ccircle r='9' fill='%239a6200'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    --nx-target-still: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%239a6200' stroke-width='14' stroke-linecap='square'%3E%3Cg transform='translate(100 100)'%3E%3Cpath transform='translate(-100 -100)' d='M32 62L32 32L62 32M138 32L168 32L168 62M168 138L168 168L138 168M62 168L32 168L32 138'/%3E%3C/g%3E%3C/g%3E%3Ccircle cx='100' cy='100' r='24' fill='none' stroke='%239a6200' stroke-width='10'/%3E%3Ccircle cx='100' cy='100' r='9' fill='%239a6200'/%3E%3C/svg%3E");
+    --nx-target-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%239a6200' stroke-width='14' stroke-linecap='square'%3E%3Cg transform='translate(100 100)'%3E%3Cg%3E%3CanimateTransform attributeName='transform' type='rotate' values='0;6;-4;0' keyTimes='0;.4;.75;1' calcMode='spline' keySplines='.42 0 .58 1;.42 0 .58 1;.42 0 .58 1' dur='2.8s' repeatCount='indefinite'/%3E%3Cg%3E%3CanimateTransform attributeName='transform' type='scale' values='1.08;.92;1.02;1.08' keyTimes='0;.4;.75;1' calcMode='spline' keySplines='.42 0 .58 1;.42 0 .58 1;.42 0 .58 1' dur='2.8s' repeatCount='indefinite'/%3E%3Cpath transform='translate(-100 -100)' d='M32 62L32 32L62 32M138 32L168 32L168 62M168 138L168 168L138 168M62 168L32 168L32 138'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    --nx-target-frame-still: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%239a6200' stroke-width='14' stroke-linecap='square'%3E%3Cg transform='translate(100 100)'%3E%3Cpath transform='translate(-100 -100)' d='M32 62L32 32L62 32M138 32L168 32L168 62M168 138L168 168L138 168M62 168L32 168L32 138'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    --nx-target-done: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M32 62L32 32L62 32M138 32L168 32L168 62M168 138L168 168L138 168M62 168L32 168L32 138' transform='translate(100 100) scale(.76) translate(-100 -100)' fill='none' stroke='%23007a45' stroke-width='14' stroke-linecap='square'/%3E%3Cpolygon points='100,58 142,100 100,142 58,100' fill='%23007a45' fill-opacity='.14' stroke='%23007a45' stroke-width='9' stroke-linejoin='round'/%3E%3Cpath d='M82 101L95 114L120 89' fill='none' stroke='%23007a45' stroke-width='13' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --nx-load: #7a4d00;
+    --nx-done: #007a45;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] svg:is([class*="animate-spin"], .lucide-loader-circle) { animation: none !important; background: var(--nx-target) center / contain no-repeat; }
+:root[data-theme="addon:neon-cyberpunk:neon"].dark svg:is([class*="animate-spin"], .lucide-loader-circle) { filter: drop-shadow(0 0 2px rgb(255 184 0 / .45)); }
+:root[data-theme="addon:neon-cyberpunk:neon"] svg:is([class*="animate-spin"], .lucide-loader-circle) > * { display: none; }
+:root[data-theme="addon:neon-cyberpunk:neon"] svg:is([class*="animate-spin"], .lucide-loader-circle).absolute { background-image: var(--nx-target-frame); }
+/* Done (a tool row's spinner turns into its check): green brackets at rest around a diamond with the check; it pops in once with a shockwave ring. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"] span[data-state="output-available"] { position: relative; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"] span[data-state="output-available"] > svg.lucide-check { background: var(--nx-target-done) center / contain no-repeat; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"] span[data-state="output-available"] > svg.lucide-check > * { display: none; }
+/* Thinking chip: the target before the label; the label rotates through HUD phrases (CSS content; the element keeps its own text), amber, mono, bold. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="thinking"] { padding-left: 24px; background: var(--nx-target) 5px center / 15px 15px no-repeat, linear-gradient(90deg, color-mix(in srgb, var(--nx-pink) 12%, transparent), transparent 40%); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="thinking"] > span { --color-muted-foreground: var(--nx-load); --muted-foreground: var(--nx-load); font-size: 0 !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="thinking"] > span::after { content: "SYNCING NEURAL CORTEX..."; font-family: var(--nx-mono); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+@media (prefers-reduced-motion: no-preference) {
+    @keyframes nx-words {
+        0%, 9.99% { content: "SYNCING NEURAL CORTEX..."; }
+        10%, 19.990000000000002% { content: "CALIBRATING LOGIC BLADES // STANDBY..."; }
+        20%, 29.990000000000002% { content: "DECRYPTING CLAUDE-CORE MATRIX..."; }
+        30%, 39.99% { content: "BYPASSING ICE FIREWALL... ACCESSING LLM"; }
+        40%, 49.99% { content: "OPTICAL SCANNING PROMPT... PROCESSING"; }
+        50%, 59.99% { content: "OVERCLOCKING TOKEN ENGINE..."; }
+        60%, 69.99% { content: "SYNTHESIZING RESPONSE SEQUENCE..."; }
+        70%, 79.99% { content: "COOLING QUANTUM CORES... GENERATING"; }
+        80%, 89.99% { content: "PIERCING THE BLACKWALL... SUMMONING AI"; }
+        90%, 99.99% { content: "TARGET LOCKED // COMPILING OUTPUT..."; }
+    }
+    @keyframes nx-done-pop { from { transform: scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
+    @keyframes nx-shock { from { transform: scale(.35); opacity: .95; } to { transform: scale(1.42); opacity: 0; } }
+    :root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="thinking"] > span::after { animation: nx-words 30s steps(1, end) infinite; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"] span[data-state="output-available"] > svg.lucide-check { animation: nx-done-pop .45s cubic-bezier(.175, .885, .32, 1.275) both; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tool-card"] span[data-state="output-available"]::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 16px;
+        height: 16px;
+        border: 1.5px solid var(--nx-done);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: nx-shock .95s ease-out both;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    :root[data-theme="addon:neon-cyberpunk:neon"] svg:is([class*="animate-spin"], .lucide-loader-circle) { background-image: var(--nx-target-still); }
+    :root[data-theme="addon:neon-cyberpunk:neon"] svg:is([class*="animate-spin"], .lucide-loader-circle).absolute { background-image: var(--nx-target-frame-still); }
+    :root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="thinking"] { background-image: var(--nx-target-still), linear-gradient(90deg, color-mix(in srgb, var(--nx-pink) 12%, transparent), transparent 40%); }
+}
+
+/* Jump-to-latest chip, day chip. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="scroll-to-bottom"] { border-radius: 0; color: var(--primary); --tw-ring-color: var(--nx-edge-hi); box-shadow: 0 0 0 1px var(--nx-edge-hi), 0 0 12px -2px var(--nx-glow); }
+
+/* ---------- Popups: items, overlay, tooltips, toasts, kbd, badges. ---------- */
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], [role="option"], [data-slot="select-item"]) { border-radius: 0; }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], [role="option"], [data-slot="select-item"]):is([data-highlighted], [aria-selected="true"]) {
+    background: linear-gradient(90deg, color-mix(in srgb, var(--nx-cyan) 22%, transparent), color-mix(in srgb, var(--nx-cyan) 4%, transparent));
+    box-shadow: inset 2px 0 0 var(--nx-hi), inset 0 0 0 1px color-mix(in srgb, var(--nx-hi) 30%, transparent);
+    color: var(--foreground);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="commit-row"][aria-selected="true"],
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tree-entry"][aria-selected="true"],
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="changed-file"][aria-selected="true"],
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="changed-file"]:is([aria-current="true"], [aria-current="page"]) {
+    background: linear-gradient(90deg, color-mix(in srgb, var(--nx-cyan) 20%, transparent), transparent);
+    box-shadow: inset 2px 0 0 var(--nx-hi);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="tree-entry"], [data-testid="commit-row"], [data-testid="changed-file"]):hover { background: linear-gradient(90deg, var(--nx-tint-hi), transparent 85%); }
+:root[data-theme="addon:neon-cyberpunk:neon"] .bg-overlay {
+    background-color: var(--overlay);
+    background-image: linear-gradient(var(--nx-tint) 1px, transparent 1px), linear-gradient(90deg, var(--nx-tint) 1px, transparent 1px);
+    background-size: 28px 28px;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+/* Tooltip: a cut HUD chip (edge drawn inside, the cut diagonals as background), glow as a drop-shadow on its positioner (the clip-path would cut a box-shadow). */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="tooltip-content"] {
+    --nx-ce: var(--nx-edge-hi);
+    background-color: var(--popover);
+    background-image: var(--nx-dg), var(--nx-dg), linear-gradient(90deg, var(--nx-tint-hi), transparent 70%);
+    background-size: var(--nx-k) var(--nx-k), var(--nx-k) var(--nx-k), 100% 100%;
+    background-position: top right, bottom left, 0 0;
+    background-repeat: no-repeat;
+    color: var(--popover-foreground);
+    font-family: var(--nx-mono);
+    font-size: 11px;
+    letter-spacing: .04em;
+    box-shadow: inset 0 0 0 1px var(--nx-edge-hi), inset 2px 0 0 var(--nx-hi);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] :has(> [data-slot="tooltip-content"]) { filter: drop-shadow(0 0 6px color-mix(in srgb, var(--nx-glow) 45%, transparent)); }
+/* The arrow sits outside the cut box: hidden. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="tooltip-content"] > [class*="rotate-45"] { display: none; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="toast-region"] > * { box-shadow: inset 3px 0 0 var(--nx-hi), var(--elevation-floating); }
+:root[data-theme="addon:neon-cyberpunk:neon"] kbd {
+    border-radius: 0;
+    font-family: var(--nx-mono);
+    border-color: var(--nx-edge-hi);
+    background-color: var(--nx-tint);
+    color: var(--foreground);
+    box-shadow: 0 1px 0 var(--nx-edge-hi);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-slot="badge"] { --nx-k: 5px; font-family: var(--nx-mono); letter-spacing: .06em; }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="focus-badge"], [data-testid="change-badge"], [data-testid="focus-count"], [data-testid="cleanup-badge"]) { border-radius: 0; font-family: var(--nx-mono); box-shadow: 0 0 8px -2px currentColor; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="commit-ref"] { border-radius: 0; font-family: var(--nx-mono); font-size: 10.5px; box-shadow: 0 0 6px -2px currentColor; }
+/* Checkboxes and radios: square HUD boxes, filled core when checked. */
+:root[data-theme="addon:neon-cyberpunk:neon"] input:is([type="checkbox"], [type="radio"]) {
+    appearance: none;
+    -webkit-appearance: none;
+    flex-shrink: 0;
+    border: 1px solid var(--nx-edge-hi);
+    border-radius: 0;
+    background: color-mix(in srgb, var(--background) 50%, transparent);
+    cursor: pointer;
+    transition: box-shadow .15s ease, background-color .15s ease;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] input[type="radio"] { transform: rotate(45deg) scale(.82); }
+:root[data-theme="addon:neon-cyberpunk:neon"] input:is([type="checkbox"], [type="radio"]):checked { background: var(--nx-hi); box-shadow: inset 0 0 0 3px var(--card), 0 0 8px -1px var(--nx-glow); border-color: var(--nx-hi); }
+:root[data-theme="addon:neon-cyberpunk:neon"] input[type="checkbox"]:indeterminate { background: linear-gradient(var(--nx-hi) 0 0) center / 60% 2px no-repeat; border-color: var(--nx-hi); }
+:root[data-theme="addon:neon-cyberpunk:neon"] input:is([type="checkbox"], [type="radio"]):hover { box-shadow: 0 0 8px -2px var(--nx-glow); }
+:root[data-theme="addon:neon-cyberpunk:neon"] input:is([type="checkbox"], [type="radio"]):checked:hover { box-shadow: inset 0 0 0 3px var(--card), 0 0 10px var(--nx-glow); }
+:root[data-theme="addon:neon-cyberpunk:neon"] input:is([type="checkbox"], [type="radio"]):focus-visible { outline: 1px solid var(--nx-hi); outline-offset: 2px; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [role="switch"] { border-radius: 0 !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [role="switch"] > * { border-radius: 0 !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [role="switch"][aria-checked="true"] { box-shadow: 0 0 10px -2px var(--nx-glow); }
+/* Focus rings. */
+:root[data-theme="addon:neon-cyberpunk:neon"] :focus-visible { outline-color: var(--nx-hi); }
+
+/* ---------- Side panes: changes, files, graph, focus, terminal, diffs, editor. ---------- */
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="side-panel"] > div:first-child { background: linear-gradient(90deg, var(--nx-tint-hi), transparent 70%); border-bottom-color: var(--nx-edge); }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="changes-panel"], [data-testid="graph-panel"], [data-testid="files-panel"]) .border-b { border-bottom-color: var(--nx-edge); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="file-diff-header"] { font-family: var(--nx-mono); font-size: 11.5px; background: linear-gradient(90deg, var(--nx-tint-hi), color-mix(in srgb, var(--card) 85%, transparent) 60%); border-color: var(--nx-edge); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="file-diff"] { border-color: var(--nx-edge); border-radius: 0; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="changes-list-view"] { font-family: var(--nx-mono); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [role="group"].bg-secondary { border-radius: 0; background: var(--nx-tint); box-shadow: inset 0 0 0 1px var(--nx-edge); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [role="group"].bg-secondary > [aria-pressed="true"] { background: var(--nx-tint-hi); color: var(--primary); box-shadow: inset 0 0 0 1px var(--nx-hi), 0 0 10px -3px var(--nx-glow); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="file-tree"] [data-testid="tree-entry"] { border-radius: 0; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="commit-graph"] svg,
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="commit-list"] svg :is(path, circle) { filter: drop-shadow(0 0 2px currentColor); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="focus-queue"] { border-right-color: var(--nx-edge); background: linear-gradient(to bottom, var(--nx-tint), transparent 40%); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="focus-page"] > div:first-child { background: linear-gradient(90deg, var(--nx-tint-hi), transparent 60%); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="focus-title"] { font-family: var(--nx-mono); text-transform: uppercase; letter-spacing: .12em; color: var(--primary); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="bottom-panel"] { border-color: var(--nx-edge); }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is(.cm-editor .cm-gutters) { border-right: 1px solid var(--nx-edge); background: color-mix(in srgb, var(--background) 40%, transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] .cm-editor .cm-cursor { border-left-color: var(--nx-hi); }
+:root[data-theme="addon:neon-cyberpunk:neon"] .xterm { padding-left: 2px; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="context-meter"] svg { filter: drop-shadow(0 0 4px color-mix(in srgb, var(--nx-glow) 70%, transparent)); }
+
+/* ---------- Terminal, diffs, visualization frame. ---------- */
+/* Terminal: xterm draws on the panel glass (its own surface colour off); HUD tab chips and toolbar. */
+:root[data-theme="addon:neon-cyberpunk:neon"] .xterm :is(.xterm-viewport, .xterm-scrollable-element) { background-color: transparent !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="terminal"] > div:first-child { background: linear-gradient(90deg, var(--nx-tint-hi), transparent 70%); border-bottom-color: var(--nx-edge); }
+:root[data-theme="addon:neon-cyberpunk:neon"] div:has(> [data-testid="terminal-tab"]) {
+    --nx-k: 6px;
+    --nx-ce: transparent;
+    font-family: var(--nx-mono);
+    font-size: 12px;
+    letter-spacing: .06em;
+    background-image: var(--nx-dg), var(--nx-dg);
+    background-size: var(--nx-k) var(--nx-k);
+    background-position: top right, bottom left;
+    background-repeat: no-repeat;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] div:has(> [data-testid="terminal-tab"]):hover { --nx-ce: var(--nx-edge); background-color: var(--nx-tint); box-shadow: inset 0 0 0 1px var(--nx-edge); }
+:root[data-theme="addon:neon-cyberpunk:neon"] div:has(> [data-testid="terminal-tab"][aria-selected="true"]) {
+    --nx-ce: var(--nx-hi);
+    color: var(--primary);
+    background-color: var(--nx-tint);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nx-hi) 60%, transparent), inset 0 -2px 0 var(--nx-hi);
+}
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="terminal-tab"] { border-radius: 0; }
+/* Light: the selected pane / terminal tab text darker than the primary (4.5:1 over the tint and the bright day scene). */
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) :is(:is([data-pane-tab], [role="tab"][data-testid^="pane-"])[aria-selected="true"], div:has(> [data-testid="terminal-tab"][aria-selected="true"])) { color: color-mix(in srgb, var(--primary) 75%, #000); }
+/* Below lg the pane tabs row sits over the scene (outside the panels): each tab gets a glass chip. */
+@media (width < 64rem) {
+    :root[data-theme="addon:neon-cyberpunk:neon"] :is([data-pane-tab], [role="tab"][data-testid^="pane-"]):not([aria-selected="true"]) { background-color: color-mix(in srgb, var(--card) 80%, transparent); }
+    :root[data-theme="addon:neon-cyberpunk:neon"] :is([data-pane-tab], [role="tab"][data-testid^="pane-"])[aria-selected="true"] { background-color: color-mix(in srgb, var(--card) 80%, var(--nx-cyan) 14%); }
+    /* Tighter letters so the five tabs fit a phone row. */
+    :root[data-theme="addon:neon-cyberpunk:neon"] :is([data-pane-tab], [role="tab"][data-testid^="pane-"]) { letter-spacing: .04em; padding-inline: 8px; }
+}
+/* ANSI colours from the theme tokens (the same mapping as themes.ts terminalTheme), so an addon palette without an xterm theme matches too. */
+:root[data-theme="addon:neon-cyberpunk:neon"] .xterm .xterm-rows { color: var(--foreground) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] .xterm .xterm-rows :is(.xterm-fg-1, .xterm-fg-9) { color: var(--destructive) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] .xterm .xterm-rows :is(.xterm-fg-2, .xterm-fg-10) { color: var(--success) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] .xterm .xterm-rows :is(.xterm-fg-3, .xterm-fg-11) { color: var(--warning) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] .xterm .xterm-rows :is(.xterm-fg-4, .xterm-fg-12) { color: var(--syntax-function) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] .xterm .xterm-rows :is(.xterm-fg-5, .xterm-fg-13) { color: var(--syntax-keyword) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] .xterm .xterm-rows :is(.xterm-fg-6, .xterm-fg-14) { color: var(--info) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] .xterm .xterm-rows :is(.xterm-fg-7, .xterm-fg-15) { color: var(--muted-foreground) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] .xterm .xterm-rows .xterm-fg-8 { color: var(--syntax-comment) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"].dark .xterm .xterm-rows .xterm-fg-0 { color: var(--secondary) !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) .xterm .xterm-rows .xterm-fg-0 { color: var(--foreground) !important; }
+/* Diffs (@pierre/diffs, shadow DOM): its :host theme variables are overridden from outside (inherited custom properties): theme card surface, theme text,
+   additions / deletions in the theme's success / destructive hues. */
+:root[data-theme="addon:neon-cyberpunk:neon"] diffs-container {
+    --diffs-dark-bg: var(--card);
+    --diffs-light-bg: var(--card);
+    --diffs-dark: var(--foreground);
+    --diffs-light: var(--foreground);
+    --diffs-dark-addition-color: var(--success);
+    --diffs-light-addition-color: var(--success);
+    --diffs-dark-deletion-color: var(--destructive);
+    --diffs-light-deletion-color: var(--destructive);
+    --diffs-dark-modified-color: var(--primary);
+    --diffs-light-modified-color: var(--primary);
+}
+/* Visualization frame (its document gets the theme tokens from the app): square, cyan edge, glow. */
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="visualize-frame"], [data-testid="visualize-frame-expanded"]) { border-radius: 0; border-color: var(--nx-edge-hi); box-shadow: 0 0 0 1px #00e5ff1f, 0 0 22px -8px var(--nx-glow); }
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) :is([data-testid="visualize-frame"], [data-testid="visualize-frame-expanded"]) { box-shadow: 0 8px 22px -12px #007a8f66; }
+
+/* Settings groups (vertical tabs), palette keybind chips. */
+:root[data-theme="addon:neon-cyberpunk:neon"] [id^="settings-category-"] { color: var(--muted-foreground); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid^="settings-group-"] { border-radius: 0; position: relative; }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid^="settings-group-"]:hover { background: linear-gradient(90deg, var(--nx-tint-hi), transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid^="settings-group-"][aria-selected="true"] { background: linear-gradient(90deg, color-mix(in srgb, var(--nx-cyan) 22%, transparent), transparent); box-shadow: inset 2px 0 0 var(--nx-hi); color: var(--foreground); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="keybind"] > span { border-radius: 0; background: var(--nx-tint); box-shadow: inset 0 0 0 1px var(--nx-edge); color: var(--foreground); font-family: var(--nx-mono); }
+:root[data-theme="addon:neon-cyberpunk:neon"] :is([data-testid="focus-page"] h1, [data-testid="focus-page"] h2) { font-family: var(--nx-mono); text-transform: uppercase; letter-spacing: .14em; color: var(--primary); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="focus-queue"] :is(h2, h3, [data-testid="focus-group"] > :first-child) { font-family: var(--nx-mono); text-transform: uppercase; letter-spacing: .12em; font-size: 10.5px; }
+/* Streamdown tables and code block inner frames. */
+:root[data-theme="addon:neon-cyberpunk:neon"] .timeline [data-streamdown="table-wrapper"],
+:root[data-theme="addon:neon-cyberpunk:neon"] .timeline [data-streamdown="table-wrapper"] *,
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] *,
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block-actions"] { border-radius: 0 !important; }
+:root[data-theme="addon:neon-cyberpunk:neon"] .timeline [data-streamdown="table-wrapper"] { border-color: var(--nx-edge); background: color-mix(in srgb, var(--card) 70%, transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] [data-streamdown="code-block"] > div:last-child { border-color: var(--nx-edge); }
+
+:root[data-theme="addon:neon-cyberpunk:neon"] :has(> [data-testid="focus-row"]) { border-radius: 0; }
+:root[data-theme="addon:neon-cyberpunk:neon"] .ring-foreground:has(> [data-testid="focus-row"]) { --tw-ring-color: var(--nx-hi); background-color: transparent; box-shadow: 0 0 0 1px var(--nx-hi), 0 0 14px -3px var(--nx-glow); }
+
+/* Text selection, scrollbars. */
+:root[data-theme="addon:neon-cyberpunk:neon"] ::selection { background: color-mix(in srgb, var(--nx-cyan) 32%, transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) ::selection { background: color-mix(in srgb, var(--nx-cyan) 24%, transparent); }
+:root[data-theme="addon:neon-cyberpunk:neon"] * { scrollbar-color: color-mix(in srgb, var(--nx-cyan) 45%, transparent) transparent; scrollbar-width: thin; }
+:root[data-theme="addon:neon-cyberpunk:neon"] ::-webkit-scrollbar { width: 8px; height: 8px; }
+:root[data-theme="addon:neon-cyberpunk:neon"] ::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--nx-cyan) 40%, transparent); border-radius: 0; }
+:root[data-theme="addon:neon-cyberpunk:neon"] ::-webkit-scrollbar-thumb:hover { background: var(--nx-cyan); box-shadow: 0 0 8px var(--nx-glow); }
+:root[data-theme="addon:neon-cyberpunk:neon"] ::-webkit-scrollbar-track { background: transparent; }
+
+@property --neon-a {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+/* ---------- Motion (transform / opacity only, reduced motion: none). ---------- */
+@media (prefers-reduced-motion: no-preference) {
+    @keyframes neon-spin { to { --neon-a: 360deg; } }
+    @keyframes neon-breathe {
+        0%, 100% { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nx-pink) 20%, transparent), 0 0 6px color-mix(in srgb, var(--nx-pink) 10%, transparent); }
+        50% { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nx-pink) 45%, transparent), 0 0 20px color-mix(in srgb, var(--nx-pink) 30%, transparent); }
+    }
+    @keyframes neon-sweep { from { transform: translateX(-100%); } to { transform: translateX(500%); } }
+    @keyframes neon-in { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+    @keyframes neon-drift { 0%, 100% { transform: translate3d(-1%, 0, 0); } 50% { transform: translate3d(1%, -.6%, 0); } }
+    @keyframes neon-flicker { 0%, 100% { opacity: .9; } 41% { opacity: .9; } 42% { opacity: .15; } 43% { opacity: .85; } 44% { opacity: .2; } 46% { opacity: .9; } 78% { opacity: .9; } 79% { opacity: .35; } 80% { opacity: .9; } }
+    @keyframes neon-rain-a { from { transform: rotate(12deg) translate3d(0, -400px, 0); } to { transform: rotate(12deg) translate3d(0, 0, 0); } }
+    @keyframes neon-rain-b { from { transform: rotate(12deg) translate3d(0, -300px, 0); } to { transform: rotate(12deg) translate3d(0, 0, 0); } }
+    @keyframes neon-rain-c { from { transform: rotate(12deg) translate3d(0, -600px, 0); } to { transform: rotate(12deg) translate3d(0, 0, 0); } }
+    @keyframes neon-shimmer { 0%, 100% { opacity: 1; } 50% { opacity: .7; } }
+    @keyframes neon-pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--success); } 50% { opacity: .55; box-shadow: 0 0 12px var(--success), 0 0 2px var(--success); } }
+    @keyframes neon-glitch {
+        0%, 84%, 100% { transform: none; text-shadow: none; clip-path: none; }
+        85% { transform: translate(-2px, 0) skewX(-8deg); text-shadow: 1.5px 0 var(--nx-pink), -1.5px 0 var(--nx-cyan); clip-path: inset(10% 0 55% 0); }
+        87% { transform: translate(2px, 0) skewX(6deg); text-shadow: -1.5px 0 var(--nx-pink), 1.5px 0 var(--nx-cyan); clip-path: inset(55% 0 8% 0); }
+        89% { transform: translate(-1px, 0) skewX(10deg); text-shadow: 1.5px 0 var(--nx-pink), -1.5px 0 var(--nx-cyan); clip-path: inset(30% 0 35% 0); }
+        91% { transform: translate(2px, 0) skewX(-5deg); text-shadow: -1.5px 0 var(--nx-pink), 1.5px 0 var(--nx-cyan); clip-path: inset(0 0 70% 0); }
+        93% { transform: translate(-2px, 0) skewX(4deg); text-shadow: 1.5px 0 var(--nx-pink), -1.5px 0 var(--nx-cyan); clip-path: inset(65% 0 0 0); }
+        95% { transform: translate(1px, 0) skewX(-3deg); text-shadow: -1.5px 0 var(--nx-pink), 1.5px 0 var(--nx-cyan); clip-path: none; }
+    }
+    @keyframes neon-blink { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+
+    :root[data-theme="addon:neon-cyberpunk:neon"] body::before { animation: neon-drift 60s ease-in-out infinite; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] #root::before { animation: neon-flicker 7s steps(1, end) infinite; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] #root::after { animation: neon-shimmer 5s ease-in-out infinite; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] div:has(> header[data-testid="titlebar"])::before { animation: neon-rain-b 1.3s linear infinite; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] div:has(> header[data-testid="titlebar"])::after { animation: neon-rain-a .85s linear infinite; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] body::after { animation: neon-rain-c .7s linear infinite; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="prompt-box"]:focus-within::before { animation: neon-spin 4s linear infinite; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="thinking"] { animation: neon-breathe 2.6s ease-in-out infinite; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="connection-status"][data-status="connected"] > span[aria-hidden] { animation: neon-pulse 2s ease-in-out infinite; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tab"][data-state="running"]::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 20%;
+        background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--nx-pink) 35%, transparent), transparent);
+        pointer-events: none;
+        animation: neon-sweep 2.4s ease-in-out infinite;
+    }
+    :root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="tab"][data-state="running"] button[role="tab"] > span.truncate { animation: neon-glitch 2s steps(1, end) infinite; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="user-message"] { animation: neon-in 220ms ease-out both; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] [data-testid="prompt-box"] textarea:placeholder-shown:focus::placeholder { animation: neon-blink 1.6s ease-in-out infinite; }
+}
+
+/* Reduced motion: the rain stands still, so its streaks are fainter and the near layer (over the panels and their text) is off. */
+@media (prefers-reduced-motion: reduce) {
+    :root[data-theme="addon:neon-cyberpunk:neon"] div:has(> header[data-testid="titlebar"])::before { opacity: .28; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] div:has(> header[data-testid="titlebar"])::after { opacity: .35; }
+    :root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::before { opacity: .16; }
+    :root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::after { opacity: .18; }
+    :root[data-theme="addon:neon-cyberpunk:neon"] body::after { display: none; }
+}
+
+/* Rain option off (data-opt-rain, theme option "rain"): every rain layer goes (animations with them) and the wet-street glow and shimmer of the veil;
+   the city, the veil's darkening and the HUD stay. */
+:root[data-theme="addon:neon-cyberpunk:neon"][data-opt-rain="off"] div:has(> header[data-testid="titlebar"])::before,
+:root[data-theme="addon:neon-cyberpunk:neon"][data-opt-rain="off"] div:has(> header[data-testid="titlebar"])::after,
+:root[data-theme="addon:neon-cyberpunk:neon"][data-opt-rain="off"] body::after { display: none; }
+:root[data-theme="addon:neon-cyberpunk:neon"][data-opt-rain="off"] #root::after { animation: none; }
+:where(:root[data-theme="addon:neon-cyberpunk:neon"][data-opt-rain="off"].dark) { --neon-veil: radial-gradient(120% 80% at 50% 35%, transparent 40%, #05070d80 100%); }
+:where(:root[data-theme="addon:neon-cyberpunk:neon"][data-opt-rain="off"]:not(.dark)) { --neon-veil: radial-gradient(120% 80% at 50% 35%, transparent 45%, #eef4fb66 100%); }
+
+/* Extra tokens the addon manifest cannot carry: graph lanes and context colours (same hues as the built-in Neon). */
+:root[data-theme="addon:neon-cyberpunk:neon"].dark {
+    --graph-1: #00e5ff; --graph-2: #ff3ea5; --graph-3: #ffe34d; --graph-4: #a8ff3e; --graph-5: #c38bff; --graph-6: #ff9e64; --graph-7: #ff4d7d; --graph-8: #5cc8ff;
+    --context-1: #00e5ff; --context-2: #ff3ea5; --context-3: #a8ff3e; --context-4: #ff9e64; --context-5: #ffe34d; --context-6: #c38bff;
+}
+:root[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) {
+    --graph-1: #007a8f; --graph-2: #c2187a; --graph-3: #7a5800; --graph-4: #2b6a00; --graph-5: #6a2fc0; --graph-6: #b84a00; --graph-7: #c2183f; --graph-8: #0058b0;
+    --context-1: #007a8f; --context-2: #c2187a; --context-3: #2b6a00; --context-4: #ea3a00; --context-5: #7a5800; --context-6: #6a2fc0;
+}

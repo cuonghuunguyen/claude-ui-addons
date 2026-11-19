@@ -1,0 +1,42 @@
+/*
+ * neon-city: city pictures behind the Neon Cyberpunk theme (addon neon-cyberpunk). Active only while Settings > Appearance > Neon Cyberpunk is picked.
+ * Neon Cyberpunk layer API: --neon-art (its own city), --neon-flicker, --neon-veil, --neon-glass. The pictures sit on html::before / ::after
+ * (z-index -6, below Neon's veil and rain), so Neon's own art is switched off. URLs are relative to this file (images/).
+ */
+html[data-theme="addon:neon-cyberpunk:neon"] {
+  --neon-art: none;
+  --neon-flicker: none;
+}
+html[data-theme="addon:neon-cyberpunk:neon"].dark {
+  --neon-veil:
+    linear-gradient(to top, #05070dcc, transparent 30%),
+    radial-gradient(120% 90% at 50% 30%, transparent 35%, #05070db3 100%),
+    linear-gradient(#05070d47, #05070d47);
+}
+html[data-theme="addon:neon-cyberpunk:neon"]:not(.dark) {
+  --neon-veil:
+    linear-gradient(to top, #eef4fbb3, transparent 35%),
+    radial-gradient(120% 90% at 50% 30%, transparent 35%, #eef4fb99 100%),
+    linear-gradient(#eef4fb40, #eef4fb40);
+}
+html[data-theme="addon:neon-cyberpunk:neon"]::before,
+html[data-theme="addon:neon-cyberpunk:neon"]::after {
+  content: "";
+  position: fixed;
+  inset: -3%;
+  z-index: -6;
+  pointer-events: none;
+  background: url("images/street.webp") center / cover no-repeat;
+}
+/* Dark: the street and the tower cross-fade. */
+html[data-theme="addon:neon-cyberpunk:neon"].dark::after { background-image: url("images/tower.jpg"); opacity: 0; }
+/* Light: the sunlit city. */
+html[data-theme="addon:neon-cyberpunk:neon"]:not(.dark)::before { background-image: url("images/day.jpg"); }
+html[data-theme="addon:neon-cyberpunk:neon"]:not(.dark)::after { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes neon-city-fade { 0%, 40% { opacity: 0; } 50%, 90% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes neon-city-pan { 0%, 100% { transform: scale(1.02) translate3d(-1%, 0, 0); } 50% { transform: scale(1.06) translate3d(1%, -1%, 0); } }
+  html[data-theme="addon:neon-cyberpunk:neon"]::before { animation: neon-city-pan 70s ease-in-out infinite; }
+  html[data-theme="addon:neon-cyberpunk:neon"].dark::after { animation: neon-city-fade 40s ease-in-out infinite, neon-city-pan 70s ease-in-out infinite reverse; }
+}

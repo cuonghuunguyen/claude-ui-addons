@@ -1,0 +1,7 @@
+{
+  "name": "neon-city",
+  "version": "1.0.0",
+  "description": "City pictures behind the Neon Cyberpunk theme (dark: slideshow, light: one picture). Needs addon neon-cyberpunk; pick Neon Cyberpunk in Settings > Appearance. No capabilities.",
+  "capabilities": [],
+  "css": "theme.css"
+}

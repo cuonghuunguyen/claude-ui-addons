@@ -111,13 +111,13 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
     transform: rotate(12deg);
     will-change: transform;
 }
-:root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::before { z-index: -2; background: url("images/rain2.svg") 0 0 / 200px 300px; opacity: .6; }
-:root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after { z-index: -2; background: url("images/rain1.svg") 0 0 / 260px 400px; opacity: .85; }
+:root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::before { z-index: -2; background: url("images/rain2.svg") 0 0 / 200px 300px; opacity: .45; }
+:root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after { z-index: -2; background: url("images/rain1.svg") 0 0 / 260px 400px; opacity: .55; }
 /* Near rain over the panels and the sidebar (z 40): sparse, faint, below every popup (z 50). */
-:root[data-theme="addon:neon-city:neon"] body::after { z-index: 45; background: url("images/rain3.svg") 0 0 / 360px 600px; opacity: .4; }
-:root[data-theme="addon:neon-city:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::before { opacity: .35; }
-:root[data-theme="addon:neon-city:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::after { opacity: .4; }
-:root[data-theme="addon:neon-city:neon"]:not(.dark) body::after { opacity: .16; }
+:root[data-theme="addon:neon-city:neon"] body::after { z-index: 45; background: url("images/rain3.svg") 0 0 / 360px 600px; opacity: .25; }
+:root[data-theme="addon:neon-city:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::before { opacity: .25; }
+:root[data-theme="addon:neon-city:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::after { opacity: .28; }
+:root[data-theme="addon:neon-city:neon"]:not(.dark) body::after { opacity: .1; }
 /* Scanlines over the work area. The sidebar is positioned only from md on: below md it is the fixed drawer (position: relative would put it back in the row). */
 :root[data-theme="addon:neon-city:neon"] [data-testid="work-area"] { position: relative; }
 @media (width >= 48rem) { :root[data-theme="addon:neon-city:neon"] aside[data-testid="sidebar"] { position: relative; } }

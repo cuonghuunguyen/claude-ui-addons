@@ -134,6 +134,16 @@
 /* tool cards without the hidden open button (28px + 4px gap) reserve the same room, so status icons line up across cards */
 :root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] > button { padding-right: 32px; }
 :root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] > button { padding-left: 14px; }
+/* smoke inside hover and selected items (option "Cursed energy smoke") */
+:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] aside[data-testid="sidebar"] :is(a, button, [role="button"], [role="treeitem"]):hover,
+:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [data-testid="tab"]:hover,
+:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([role="menuitem"], [role="option"], [role="menuitemcheckbox"], [role="menuitemradio"])[data-highlighted],
+:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([role="menuitem"], [role="option"], [role="menuitemcheckbox"], [role="menuitemradio"]):hover { background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 26%, transparent), color-mix(in srgb, var(--primary) 4%, transparent)), linear-gradient(color-mix(in srgb, var(--card) 78%, transparent), color-mix(in srgb, var(--card) 78%, transparent)), url("images/smoke-ring.svg") 0 0 / 320px 320px; }
+:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [aria-current="page"] { background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 38%, transparent), color-mix(in srgb, var(--primary) 6%, transparent)), linear-gradient(color-mix(in srgb, var(--card) 78%, transparent), color-mix(in srgb, var(--card) 78%, transparent)), url("images/smoke-ring.svg") 0 0 / 320px 320px; }
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] aside[data-testid="sidebar"] :is(a, button, [role="button"], [role="treeitem"]):hover, :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [data-testid="tab"]:hover, :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([role="menuitem"], [role="option"])[data-highlighted], :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [aria-current="page"] { animation: gojo-rise-item 12s linear infinite; }
+  @keyframes gojo-rise-item { from { background-position: 0 0, 0 0, 0 0; } to { background-position: 0 0, 0 0, 0 -160px; } }
+}
 /* other boxes: manga panel shape (two sharp corners, two round), colored edge bar */
 :root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] { border-radius: 4px 14px 4px 14px; box-shadow: 0 0 0 1.5px var(--ink), inset 4px 0 0 var(--primary), 3px 3px 0 var(--manga-shadow); }
 :root[data-theme="addon:gojo:gojo"] [data-testid="permission-panel"] { border-radius: 6px 20px 6px 20px; box-shadow: 0 0 0 2px var(--ink), inset 0 5px 0 #ff5a1e, 4px 4px 0 var(--manga-shadow); }

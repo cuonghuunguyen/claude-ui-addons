@@ -102,6 +102,10 @@
 
 /* manga: ink outlines (box-shadow, no layout shift), hard offset shadows, screentone on panels */
 :root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"], :root[data-theme="addon:gojo:gojo"] [data-testid="permission-panel"], :root[data-theme="addon:gojo:gojo"] [data-testid="user-message"] > .is-user > div { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); }
+/* other boxes: manga panel shape (two sharp corners, two round), colored edge bar */
+:root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] { border-radius: 4px 14px 4px 14px; box-shadow: 0 0 0 1.5px var(--ink), inset 4px 0 0 var(--primary), 3px 3px 0 var(--manga-shadow); }
+:root[data-theme="addon:gojo:gojo"] [data-testid="permission-panel"] { border-radius: 6px 20px 6px 20px; box-shadow: 0 0 0 2px var(--ink), inset 0 5px 0 #ff5a1e, 4px 4px 0 var(--manga-shadow); }
+:root[data-theme="addon:gojo:gojo"] [data-testid="prompt-box"] { border-radius: 6px 22px 6px 22px; }
 /* user message: speech-bubble shape (sharp tail corner), blue-violet gradient, left cursed-energy bar, speed lines fading in from the right */
 :root[data-theme="addon:gojo:gojo"] [data-testid="user-message"] > .is-user > div { position: relative; border-radius: 20px 20px 3px 20px; border: 2px solid var(--ink); background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 30%, var(--card)), color-mix(in srgb, #7c5cff 22%, var(--card))); box-shadow: inset 5px 0 0 var(--primary), 4px 4px 0 var(--manga-shadow); }
 :root[data-theme="addon:gojo:gojo"] [data-testid="user-message"] > .is-user > div::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: repeating-linear-gradient(115deg, transparent 0 8px, color-mix(in srgb, var(--ink) 14%, transparent) 8px 9px); -webkit-mask-image: linear-gradient(270deg, #000, transparent 42%); mask-image: linear-gradient(270deg, #000, transparent 42%); }
@@ -179,6 +183,7 @@
   :root[data-theme="addon:gojo:gojo"] :is([data-testid="permission-panel"])::before { display: none; }
 }
 :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"].dark :is([data-testid="prompt-box"], [data-testid="permission-panel"]) { box-shadow: 0 0 0 2px var(--ink), 5px 5px 0 var(--manga-shadow), 0 -8px 26px -6px rgba(255, 70, 40, .5); }
+:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"].dark [data-testid="permission-panel"] { box-shadow: 0 0 0 2px var(--ink), inset 0 5px 0 #ff5a1e, 4px 4px 0 var(--manga-shadow), 0 -8px 26px -6px rgba(255, 70, 40, .5); }
 @media (prefers-reduced-motion: no-preference) {
   :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { animation: gojo-smoke 5s ease-in-out infinite alternate; }
   @keyframes gojo-smoke { from { transform: translateY(2px) scale(1); opacity: .65; } to { transform: translateY(-4px) scale(1.015); opacity: 1; } }

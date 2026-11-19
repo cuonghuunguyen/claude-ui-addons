@@ -204,16 +204,14 @@
 }
 
 /* ---- cursed energy: fire and smoke around frames ----
-   Kept away from text: thin outside haze ring around the input box, your message and popups;
+   Kept away from text: smoke drifts inside the input box, your message and popups (no outside ring);
    thin ring only, no panel-wide mist. Static look always; drift and flicker only when motion is allowed. */
 :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"]) { position: relative; }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { content: ""; position: absolute; inset: -58px -16px -4px -16px; padding: 58px 16px 4px 16px; border-radius: 26px; pointer-events: none; z-index: 1; background: url("images/smoke-ring.svg") 0 0 / 400px 400px; -webkit-mask: linear-gradient(to top, #000 25%, transparent 95%), linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: source-in, source-in, xor; mask: linear-gradient(to top, #000 25%, transparent 95%), linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: intersect, intersect, exclude; filter: blur(1px); }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"]:not(.dark) :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { filter: blur(1px) brightness(.42) saturate(2.2) contrast(1.3); }
+:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 1; background: url("images/smoke-ring.svg") 0 0 / 400px 400px; opacity: .6; -webkit-mask-image: radial-gradient(ellipse 75% 130% at 50% 50%, transparent 15%, #000 100%); mask-image: radial-gradient(ellipse 75% 130% at 50% 50%, transparent 15%, #000 100%); }
+:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"]:not(.dark) :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { filter: brightness(.45) saturate(2.2) contrast(1.3); opacity: .7; }
 @media (width < 48rem) {
   :root[data-theme="addon:gojo:gojo"] :is([data-testid="permission-panel"])::before { display: none; }
 }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"].dark :is([data-testid="prompt-box"], [data-testid="permission-panel"]) { box-shadow: 0 0 0 2px var(--ink), 5px 5px 0 var(--manga-shadow), 0 -8px 26px -6px rgba(255, 70, 40, .5); }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"].dark [data-testid="permission-panel"] { box-shadow: 0 0 0 2px var(--ink), inset 0 5px 0 #ff5a1e, 4px 4px 0 var(--manga-shadow), 0 -8px 26px -6px rgba(255, 70, 40, .5); }
 @media (prefers-reduced-motion: no-preference) {
   :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { animation: gojo-rise 16s linear infinite; }
   @keyframes gojo-rise { from { background-position: 0 0; } to { background-position: 0 -400px; } }

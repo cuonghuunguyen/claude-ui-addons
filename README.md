@@ -7,7 +7,7 @@ Addons for [claude-ui](https://github.com/cuonghuunguyen/claude-code-ui). An add
 | Folder | Type | Capabilities | Description |
 | --- | --- | --- | --- |
 | [`chainsaw-man-reze`](chainsaw-man-reze) | Theme | none | Chainsaw Man Reze: art background, palettes, dancing loader, bomb animations. Images in `images/`. |
-| [`neon-cyberpunk`](neon-cyberpunk) | Theme | none | Neon Cyberpunk: HUD glass panels, rain, glitch, animated prompt border, original night and dawn city (SVG in `images/`). |
+| [`neon-city`](neon-city) | Theme | none | Neon City: cyberpunk HUD glass panels, city pictures as background (slideshow dark, one picture light), rain, glitch, HUD loaders. Images in `images/`. |
 
 ## Install
 
@@ -33,4 +33,4 @@ Update: `git pull`. claude-ui reads a local folder again each time the dialog op
 
 ## License
 
-Fan-made addons reference third-party works. Characters and artwork belong to their owners. `chainsaw-man-reze` embeds fan art in its `theme.css`: personal use, all rights stay with the owners; it is removed on request.
+Fan-made addons reference third-party works. Characters, artwork and pictures belong to their owners. `neon-city` bundles city pictures: personal use, removed on request. `chainsaw-man-reze` embeds fan art in its `theme.css`: personal use, all rights stay with the owners; it is removed on request.

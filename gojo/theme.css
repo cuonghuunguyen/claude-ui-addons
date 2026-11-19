@@ -116,8 +116,8 @@
 }
 
 /* work and session areas show the art through a light veil */
-:root[data-theme="addon:gojo:gojo"] [data-testid="work-area"], :root[data-theme="addon:gojo:gojo"] [data-testid="session-area"] { background: color-mix(in srgb, var(--card) 48%, transparent); }
-:root[data-theme="addon:gojo:gojo"].dark [data-testid="work-area"], :root[data-theme="addon:gojo:gojo"].dark [data-testid="session-area"] { background: color-mix(in srgb, var(--card) 54%, transparent); }
+:root[data-theme="addon:gojo:gojo"] [data-testid="work-area"], :root[data-theme="addon:gojo:gojo"] [data-testid="session-area"] { background: color-mix(in srgb, var(--card) 16%, transparent); }
+:root[data-theme="addon:gojo:gojo"].dark [data-testid="work-area"], :root[data-theme="addon:gojo:gojo"].dark [data-testid="session-area"] { background: color-mix(in srgb, var(--card) 16%, transparent); }
 
 /* manga: ink outlines (box-shadow, no layout shift), hard offset shadows, screentone on panels */
 :root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"], :root[data-theme="addon:gojo:gojo"] [data-testid="permission-panel"], :root[data-theme="addon:gojo:gojo"] [data-testid="user-message"] > .is-user > div { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); }

@@ -118,7 +118,7 @@
 }
 
 /* Focus page background: Unlimited Void picture under a dark veil so text stays readable */
-:root[data-theme="addon:gojo:gojo"] [data-testid="focus-page"] { background: linear-gradient(rgba(2, 4, 10, .5), rgba(2, 4, 10, .62)), url("images/void.jpg") center / cover no-repeat !important; }
+:root[data-theme="addon:gojo:gojo"] [data-testid="focus-page"] { background: linear-gradient(rgba(2, 4, 10, .78), rgba(2, 4, 10, .88)), url("images/void.jpg") center / cover no-repeat !important; }
 :root[data-theme="addon:gojo:gojo"] [data-testid="focus-page"] > * { background-color: transparent !important; }
 
 /* Domain Expansion: opening the Focus page plays the eye, then Unlimited Void, then fades to the page (each mount plays once) */
@@ -211,3 +211,6 @@
   @keyframes gojo-flow { from { background-position: 0 0; } to { background-position: -300% 0; } }
   @keyframes gojo-sheen { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
 }
+
+/* Focus page: text shadow keeps text readable over the bright ink splashes in the picture */
+:root[data-theme="addon:gojo:gojo"] [data-testid="focus-page"] { text-shadow: 0 1px 3px rgba(0, 0, 0, .9); }

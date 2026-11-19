@@ -785,8 +785,8 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
     html[data-theme="addon:neon-city:neon"]::before { animation: neon-city-pan 70s ease-in-out infinite; }
     html[data-theme="addon:neon-city:neon"].dark::after { animation: neon-city-fade 40s ease-in-out infinite, neon-city-pan 70s ease-in-out infinite reverse; }
     :root[data-theme="addon:neon-city:neon"] #root::after { animation: neon-shimmer 5s ease-in-out infinite; }
-    :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::before { animation: neon-rain-b 1.3s linear infinite; }
-    :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after { animation: neon-rain-a .85s linear infinite; }
+    :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::before { animation: neon-rain-b 2s linear infinite; }
+    :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after { animation: neon-rain-a 1.3s linear infinite; }
     :root[data-theme="addon:neon-city:neon"] [data-testid="prompt-box"]:focus-within::before { animation: neon-spin 4s linear infinite; }
     :root[data-theme="addon:neon-city:neon"] [data-testid="thinking"] { animation: neon-breathe 2.6s ease-in-out infinite; }
     :root[data-theme="addon:neon-city:neon"] [data-testid="connection-status"][data-status="connected"] > span[aria-hidden] { animation: neon-pulse 2s ease-in-out infinite; }
@@ -816,7 +816,7 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
 
 /* Light rain option (data-opt-rain-light, default off): one far layer only, slower and about a third as visible. Rain off still hides everything. */
 :root[data-theme="addon:neon-city:neon"][data-opt-rain-light="on"] div:has(> header[data-testid="titlebar"])::after { display: none; }
-:root[data-theme="addon:neon-city:neon"][data-opt-rain-light="on"] div:has(> header[data-testid="titlebar"])::before { display: block; opacity: .2; animation-duration: 2.4s; }
+:root[data-theme="addon:neon-city:neon"][data-opt-rain-light="on"] div:has(> header[data-testid="titlebar"])::before { display: block; opacity: .2; animation-duration: 3.6s; }
 :root[data-theme="addon:neon-city:neon"][data-opt-rain-light="on"]:not(.dark) div:has(> header[data-testid="titlebar"])::before { opacity: .12; }
 @media (prefers-reduced-motion: reduce) {
     :root[data-theme="addon:neon-city:neon"][data-opt-rain-light="on"] div:has(> header[data-testid="titlebar"])::before { opacity: .1; }

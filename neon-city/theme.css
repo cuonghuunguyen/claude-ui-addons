@@ -109,10 +109,10 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
     transform: rotate(12deg);
     will-change: transform;
 }
-:root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::before { z-index: -2; background: url("images/rain2.svg") 0 0 / 200px 300px; opacity: .3; }
-:root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after { z-index: -2; background: url("images/rain1.svg") 0 0 / 260px 400px; opacity: .35; }
-:root[data-theme="addon:neon-city:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::before { opacity: .16; }
-:root[data-theme="addon:neon-city:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::after { opacity: .18; }
+:root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::before { z-index: -2; background: url("images/rain2.svg") 0 0 / 200px 300px; opacity: .5; }
+:root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after { z-index: -2; background: url("images/rain1.svg") 0 0 / 260px 400px; opacity: .65; }
+:root[data-theme="addon:neon-city:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::before { opacity: .3; }
+:root[data-theme="addon:neon-city:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::after { opacity: .35; }
 /* Scanlines over the work area. The sidebar is positioned only from md on: below md it is the fixed drawer (position: relative would put it back in the row). */
 :root[data-theme="addon:neon-city:neon"] [data-testid="work-area"] { position: relative; }
 @media (width >= 48rem) { :root[data-theme="addon:neon-city:neon"] aside[data-testid="sidebar"] { position: relative; } }

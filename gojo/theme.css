@@ -68,19 +68,28 @@
 :root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] span[data-state="output-available"] > svg.lucide-check { background: url("images/done.svg") center / contain no-repeat; }
 :root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] span[data-state="output-available"] > svg.lucide-check > * { display: none; }
 
+/* thinking = sound-effect tag: skewed red-violet plate, ink outline, hard shadow, Bangers label */
+:root[data-theme="addon:gojo:gojo"] [data-testid="thinking"] { position: relative; width: fit-content; padding: 4px 18px; color: #fff; font-family: "Gojo Display", var(--font-sans, system-ui); background: linear-gradient(100deg, #ff1744, #7b1fa2, #ff1744) 0 0 / 200% 100%; border: 2px solid var(--ink); border-radius: 4px 14px 4px 14px; box-shadow: 3px 3px 0 var(--manga-shadow); transform: skewX(-8deg); }
+:root[data-theme="addon:gojo:gojo"] [data-testid="thinking"] > * { display: inline-block; transform: skewX(8deg); color: #fff; text-shadow: 1px 1px 0 #000; }
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-theme="addon:gojo:gojo"] [data-testid="thinking"] { animation: gojo-pulse 1.6s ease-in-out infinite alternate, gojo-shimmer 2.4s linear infinite; }
+  @keyframes gojo-shimmer { to { background-position: -200% 0; } }
+  @keyframes gojo-pulse { from { box-shadow: 3px 3px 0 var(--manga-shadow), 0 0 0 rgba(255, 23, 68, 0); } to { box-shadow: 3px 3px 0 var(--manga-shadow), 0 0 16px rgba(255, 23, 68, .75); } }
+}
 /* thinking label rotates; element text stays for tests and screen readers */
 @media (prefers-reduced-motion: no-preference) {
   :root[data-theme="addon:gojo:gojo"] [data-testid="thinking"] > * { font-size: 0 !important; }
-  :root[data-theme="addon:gojo:gojo"] [data-testid="thinking"] > *::after { content: "Gathering cursed energy…"; font-size: 14px; font-weight: 500; animation: gojo-words 18s steps(1, end) infinite; }
+  :root[data-theme="addon:gojo:gojo"] [data-testid="thinking"] > *::after { content: "Throughout Heaven and Earth…"; font: 400 17px/1.2 "Gojo Display", var(--font-sans, system-ui); letter-spacing: .05em; text-transform: uppercase; animation: gojo-words 18s steps(1, end) infinite, gojo-type 3s steps(20, end) infinite, gojo-glitch 3s steps(1, end) infinite; }
   @keyframes gojo-words {
-    0%, 16.6% { content: "Gathering cursed energy…"; }
-    16.7%, 33.3% { content: "Focusing the output…"; }
-    33.4%, 49.9% { content: "Distortion building…"; }
-    50%, 66.6% { content: "0.000001 seconds…"; }
-    66.7%, 83.3% { content: "Black Flash charging…"; }
+    0%, 16.6% { content: "Throughout Heaven and Earth…"; }
+    16.7%, 33.3% { content: "I alone am the honored one."; }
+    33.4%, 49.9% { content: "Cursed technique: Infinity…"; }
+    50%, 66.6% { content: "Nine ropes, polarized light…"; }
+    66.7%, 83.3% { content: "Hollow Purple charging…"; }
     83.4%, 100% { content: "Black Flash incoming…"; }
   }
-  }
+  @keyframes gojo-type { 0% { clip-path: inset(0 100% 0 0); } 40%, 100% { clip-path: inset(0 0 0 0); } }
+  @keyframes gojo-glitch { 0%, 100% { text-shadow: 1px 1px 0 #000; } 44% { text-shadow: -2px 0 #00e5ff, 2px 0 #ff1744; } 48% { text-shadow: 2px 0 #00e5ff, -2px 0 #ff1744; } 52% { text-shadow: 1px 1px 0 #000; } }
   /* stars drift: one transformed layer, opacity only on the second */
   :root[data-theme="addon:gojo:gojo"][data-opt-stars="on"].dark::after {
     content: ""; position: fixed; inset: -10% 0; z-index: -1; pointer-events: none;
@@ -167,13 +176,8 @@
 
 @media (prefers-reduced-motion: no-preference) {
   /* Thinking = charging a Black Flash: dark red aura, crackling strip, tiny tremor */
-  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="thinking"] { position: relative; isolation: isolate; width: fit-content; }
-  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="thinking"]::before { content: ""; position: absolute; inset: -12px -20px; z-index: -1; pointer-events: none; border-radius: 14px; background: radial-gradient(ellipse at 18% 55%, rgba(255, 30, 60, .8), transparent 62%), radial-gradient(ellipse at 55% 40%, rgba(70, 0, 110, .6), transparent 70%); filter: blur(9px); animation: gojo-charge 2.2s ease-in-out infinite; }
   :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="thinking"]::after { content: ""; position: absolute; left: -6px; right: -6px; bottom: -8px; height: 14px; pointer-events: none; background: url("images/crackle.svg") repeat-x 0 center / auto 100%; animation: gojo-crackle .5s steps(4, end) infinite; }
-  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="thinking"] > * { animation: gojo-tremor .14s steps(2, end) infinite; }
-  @keyframes gojo-charge { 0%, 100% { opacity: .35; transform: scale(.92); } 50% { opacity: 1; transform: scale(1.1); } }
   @keyframes gojo-crackle { from { transform: translateX(0); opacity: .9; } 50% { opacity: .35; } to { transform: translateX(-64px); opacity: .9; } }
-  @keyframes gojo-tremor { 0% { transform: translate(.4px, -.3px); } 100% { transform: translate(-.4px, .3px); } }
 
   /* Release: when the thinking row leaves, the session area shows a small inline Black Flash badge once (transition of --gojo-bf, 0 -> 1 through a spike curve) */
   :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"] { position: relative; }

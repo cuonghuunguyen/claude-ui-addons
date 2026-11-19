@@ -133,6 +133,7 @@
 }
 /* tool cards without the hidden open button (28px + 4px gap) reserve the same room, so status icons line up across cards */
 :root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] > button { padding-right: 32px; }
+:root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] > button { padding-left: 14px; }
 /* other boxes: manga panel shape (two sharp corners, two round), colored edge bar */
 :root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] { border-radius: 4px 14px 4px 14px; box-shadow: 0 0 0 1.5px var(--ink), inset 4px 0 0 var(--primary), 3px 3px 0 var(--manga-shadow); }
 :root[data-theme="addon:gojo:gojo"] [data-testid="permission-panel"] { border-radius: 6px 20px 6px 20px; box-shadow: 0 0 0 2px var(--ink), inset 0 5px 0 #ff5a1e, 4px 4px 0 var(--manga-shadow); }
@@ -140,8 +141,8 @@
 /* user message: red speech bubble (sharp tail corner bottom right), left bar, speed lines fading in from the right */
 :root[data-theme="addon:gojo:gojo"] [data-testid="user-message"] > .is-user > div { position: relative; border-radius: 20px 20px 3px 20px; border: 2px solid var(--ink); background: linear-gradient(135deg, color-mix(in srgb, #ff3b4e 30%, var(--card)), color-mix(in srgb, #9c1030 26%, var(--card))); box-shadow: inset 5px 0 0 #ff3b4e, 4px 4px 0 var(--manga-shadow); }
 :root[data-theme="addon:gojo:gojo"] [data-testid="user-message"] > .is-user > div::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: repeating-linear-gradient(115deg, transparent 0 8px, color-mix(in srgb, var(--ink) 14%, transparent) 8px 9px); -webkit-mask-image: linear-gradient(270deg, #000, transparent 42%); mask-image: linear-gradient(270deg, #000, transparent 42%); }
-/* agent text: blue speech bubble, mirrored tail (bottom left), Six Eyes glow */
-:root[data-theme="addon:gojo:gojo"] [data-testid="assistant-text"] { border-radius: 20px 20px 20px 3px; border: 2px solid var(--ink); padding: 12px 18px; background: linear-gradient(135deg, color-mix(in srgb, #2fb4ff 22%, var(--card)), color-mix(in srgb, var(--primary) 14%, var(--card))); box-shadow: inset -5px 0 0 #2fb4ff, -4px 4px 0 var(--manga-shadow), 0 0 16px -4px rgba(47, 180, 255, .45); }
+/* agent text: quiet blue bubble (thin border, edge bar), mirrored tail; loud styles are kept for the user bubble, prompt box and permission panel */
+:root[data-theme="addon:gojo:gojo"] [data-testid="assistant-text"] { border-radius: 20px 20px 20px 3px; border: 1px solid color-mix(in srgb, #2fb4ff 45%, transparent); padding: 12px 18px; background: color-mix(in srgb, #2fb4ff 9%, var(--card)); box-shadow: inset -3px 0 0 color-mix(in srgb, #2fb4ff 70%, transparent); }
 :root[data-theme="addon:gojo:gojo"] [data-testid="tab"][aria-selected="true"], :root[data-theme="addon:gojo:gojo"] [data-testid="tab"][data-active] { box-shadow: 0 0 0 1.5px var(--ink), 2px 2px 0 var(--manga-shadow); }
 :root[data-theme="addon:gojo:gojo"] [aria-current="page"] { box-shadow: inset 4px 0 0 var(--ink); }
 :root[data-theme="addon:gojo:gojo"] [data-slot="tooltip-content"] { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); border-radius: 2px; }
@@ -205,7 +206,7 @@
    Kept away from text: thin outside haze ring around the input box, your message and popups;
    thin ring only, no panel-wide mist. Static look always; drift and flicker only when motion is allowed. */
 :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"]) { position: relative; }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { content: ""; position: absolute; inset: -9px; padding: 9px; border-radius: 18px; pointer-events: none; z-index: 1; background: radial-gradient(ellipse 90% 90% at 50% 50%, rgba(255, 90, 30, .55), rgba(124, 92, 255, .5)), url("images/smoke.svg") 0 0 / 360px 360px; background-blend-mode: screen; -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); -webkit-mask-composite: xor; filter: blur(3px); }
+:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { content: ""; position: absolute; inset: -38px -12px -4px -12px; padding: 38px 12px 4px 12px; border-radius: 26px; pointer-events: none; z-index: 1; background: url("images/smoke-ring.svg") 0 0 / 400px 400px; -webkit-mask: linear-gradient(to top, #000 8%, transparent 92%), linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: source-in, source-in, xor; mask: linear-gradient(to top, #000 8%, transparent 92%), linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: intersect, intersect, exclude; filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='w' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.035' numOctaves='2' seed='3' result='t'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='t' scale='18'/%3E%3CfeGaussianBlur stdDeviation='1.4'/%3E%3C/filter%3E%3C/svg%3E#w"); }
 :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"]:not(.dark) :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { opacity: .85; }
 @media (width < 48rem) {
   :root[data-theme="addon:gojo:gojo"] :is([data-testid="permission-panel"])::before { display: none; }
@@ -213,8 +214,8 @@
 :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"].dark :is([data-testid="prompt-box"], [data-testid="permission-panel"]) { box-shadow: 0 0 0 2px var(--ink), 5px 5px 0 var(--manga-shadow), 0 -8px 26px -6px rgba(255, 70, 40, .5); }
 :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"].dark [data-testid="permission-panel"] { box-shadow: 0 0 0 2px var(--ink), inset 0 5px 0 #ff5a1e, 4px 4px 0 var(--manga-shadow), 0 -8px 26px -6px rgba(255, 70, 40, .5); }
 @media (prefers-reduced-motion: no-preference) {
-  :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { animation: gojo-smoke 5s ease-in-out infinite alternate; }
-  @keyframes gojo-smoke { from { transform: translateY(2px) scale(1); opacity: .65; } to { transform: translateY(-4px) scale(1.015); opacity: 1; } }
+  :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { animation: gojo-rise 16s linear infinite; }
+  @keyframes gojo-rise { from { background-position: 0 0; } to { background-position: 0 -400px; } }
 }
 
 /* ---- usage gauge: cursed energy output ----
@@ -249,3 +250,5 @@
 
 /* Focus page: text shadow keeps text readable over the bright ink splashes in the picture */
 :root[data-theme="addon:gojo:gojo"] [data-testid="focus-page"] { text-shadow: 0 1px 3px rgba(0, 0, 0, .9); }
+
+:root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] .group\/head > button:first-child { padding-left: 14px; }

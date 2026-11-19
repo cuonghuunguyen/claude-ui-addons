@@ -1,0 +1,55 @@
+{
+  "name": "chainsaw-man-reze",
+  "version": "1.0.0",
+  "description": "Chainsaw Man Reze: blurred art background (light and dark), matching colours, dancing-figure loader, rotating Thinking text, burning bomb. No capabilities.",
+  "capabilities": [],
+  "themes": [
+    {
+      "id": "reze",
+      "name": "Chainsaw Man Reze",
+      "light": {
+        "bg": "#e9eff7",
+        "card": "#f6f9fd",
+        "side": "#dde7f3",
+        "fg": "#1b2433",
+        "muted": "#2c3850",
+        "border": "#c3d0e2",
+        "primary": "#c4261f",
+        "pfg": "#ffffff",
+        "kw": "#b3203a",
+        "str": "#1b6b45",
+        "fn": "#2f4fb0",
+        "type": "#7a4a00",
+        "num": "#a23a00",
+        "cmt": "#56627a",
+        "varc": "#8a3a8f",
+        "err": "#b3203a",
+        "warn": "#7a4a00",
+        "ok": "#1b6b45",
+        "info": "#2f4fb0"
+      },
+      "dark": {
+        "bg": "#0f1512",
+        "card": "#16201b",
+        "side": "#1b2722",
+        "fg": "#eaf0ec",
+        "muted": "#dde5e0",
+        "border": "#2a3a32",
+        "primary": "#b79cf0",
+        "pfg": "#120e1c",
+        "kw": "#c9a8ff",
+        "str": "#8fdca6",
+        "fn": "#8ab4ff",
+        "type": "#f2c879",
+        "num": "#ffa66b",
+        "cmt": "#9db0a5",
+        "varc": "#f49ac2",
+        "err": "#ff8a9e",
+        "warn": "#f2c879",
+        "ok": "#8fdca6",
+        "info": "#8ab4ff"
+      }
+    }
+  ],
+  "css": "theme.css"
+}

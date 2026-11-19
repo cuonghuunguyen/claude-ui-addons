@@ -1,0 +1,35 @@
+# claude-ui-addons
+
+Addons for [claude-ui](https://github.com/cuonghuunguyen/claude-code-ui). An addon changes the claude-ui web app: color themes, panes, bands, slash commands, code fence and tool renderers. Full addon reference: [addons.md](https://github.com/cuonghuunguyen/claude-code-ui/blob/main/docs/site/features/addons.md).
+
+## Addons
+
+| Folder | Type | Capabilities | Description |
+| --- | --- | --- | --- |
+| [`chainsaw-man-reze`](chainsaw-man-reze) | Theme | none | Chainsaw Man Reze: art background, palettes, dancing loader, bomb animations. Images embedded in `theme.css`. |
+
+## Install
+
+Each addon is one folder with `addon.json` at its root. This repo holds many addons, so install from a local clone, not from the repo URL.
+
+1. Clone the repo on the machine that runs claude-ui:
+   ```sh
+   git clone https://github.com/cuonghuunguyen/claude-ui-addons.git
+   ```
+2. In claude-ui, enter `/addons` in the prompt box.
+3. Choose **Local folder**, enter the absolute path of the addon folder (example: `/path/to/claude-ui-addons/chainsaw-man-reze`), then **Install**.
+4. Review the approval card, then **Approve and enable**.
+5. For a theme: Settings > Appearance > pick the theme.
+
+Update: `git pull`. claude-ui reads a local folder again each time the dialog opens. A new capability needs a new approval.
+
+## Add an addon
+
+1. Create `<name>/addon.json`. `name`: lowercase letters, digits, `-`, max 64.
+2. Declare every capability the addon uses. An addon without capabilities cannot read sessions, send prompts or access the network.
+3. Add a `README.md` with install notes and a list of required assets.
+4. Do not commit copyrighted assets or secrets.
+
+## License
+
+Fan-made addons reference third-party works. Characters and artwork belong to their owners. `chainsaw-man-reze` embeds fan art in its `theme.css`: personal use, all rights stay with the owners; it is removed on request.

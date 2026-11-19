@@ -214,17 +214,17 @@
 }
 
 /* ---- cursed energy: fire and smoke around frames ----
-   Kept away from text: smoke drifts inside the input box, your message and popups (no outside ring);
+   Kept away from text: smoke drifts outside the border of the input box, messages and popups (soft gray-violet, no colored band);
    thin ring only, no panel-wide mist. Static look always; drift and flicker only when motion is allowed. */
 :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"], [data-testid="assistant-text"]) { position: relative; }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"], [data-testid="assistant-text"])::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 1; background: url("images/smoke-ring.svg") 0 0 / 220px 220px; opacity: .85; -webkit-mask-image: radial-gradient(ellipse 75% 130% at 50% 50%, transparent 15%, #000 100%); mask-image: radial-gradient(ellipse 75% 130% at 50% 50%, transparent 15%, #000 100%); }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"]:not(.dark) :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"], [data-testid="assistant-text"])::before { filter: brightness(.45) saturate(2.2) contrast(1.3); opacity: .7; }
+:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"], [data-testid="assistant-text"])::before { content: ""; position: absolute; inset: -20px; padding: 20px; border-radius: 34px; pointer-events: none; z-index: 1; background: url("images/smoke-wisp.svg") 0 0 / 300px 300px; -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); filter: blur(5px); opacity: .95; }
+:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"]:not(.dark) :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"], [data-testid="assistant-text"])::before { filter: blur(5px) brightness(.5) saturate(1.8) contrast(1.2); opacity: .8; }
 @media (width < 48rem) {
   :root[data-theme="addon:gojo:gojo"] :is([data-testid="permission-panel"])::before { display: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
   :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"], [data-testid="assistant-text"])::before { animation: gojo-rise 16s linear infinite; }
-  @keyframes gojo-rise { from { background-position: 0 0; } to { background-position: 0 -220px; } }
+  @keyframes gojo-rise { from { background-position: 0 0; } to { background-position: 0 -300px; } }
 }
 
 /* ---- usage gauge: cursed energy output ----

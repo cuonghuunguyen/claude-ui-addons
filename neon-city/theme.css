@@ -75,8 +75,7 @@ html:root[data-theme="addon:neon-city:neon"]:not(.dark) {
 :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"]) { background: transparent; }
 :root[data-theme="addon:neon-city:neon"] #root::after,
 :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::before,
-:root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after,
-:root[data-theme="addon:neon-city:neon"] body::after {
+:root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after {
     content: "";
     position: fixed;
     pointer-events: none;
@@ -102,8 +101,7 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
 }
 /* Rain: far and mid layers under the panels, tilted 12deg; each layer one tile taller than the viewport and moved by one tile. */
 :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::before,
-:root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after,
-:root[data-theme="addon:neon-city:neon"] body::after {
+:root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after {
     top: -60%;
     left: -40%;
     width: 180%;
@@ -113,15 +111,12 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
 }
 :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::before { z-index: -2; background: url("images/rain2.svg") 0 0 / 200px 300px; opacity: .3; }
 :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after { z-index: -2; background: url("images/rain1.svg") 0 0 / 260px 400px; opacity: .35; }
-/* Near rain over the panels and the sidebar (z 40): sparse, faint, below every popup (z 50). */
-:root[data-theme="addon:neon-city:neon"] body::after { z-index: 45; background: url("images/rain3.svg") 0 0 / 360px 600px; opacity: .15; }
 :root[data-theme="addon:neon-city:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::before { opacity: .16; }
 :root[data-theme="addon:neon-city:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::after { opacity: .18; }
-:root[data-theme="addon:neon-city:neon"]:not(.dark) body::after { opacity: .06; }
 /* Scanlines over the work area. The sidebar is positioned only from md on: below md it is the fixed drawer (position: relative would put it back in the row). */
 :root[data-theme="addon:neon-city:neon"] [data-testid="work-area"] { position: relative; }
 @media (width >= 48rem) { :root[data-theme="addon:neon-city:neon"] aside[data-testid="sidebar"] { position: relative; } }
-/* Phone and narrow tablet: no backdrop blur on the tab chips either (GPU cost), a denser glass; far rain layer off (2 rain layers). */
+/* Phone and narrow tablet: no backdrop blur on the tab chips either (GPU cost), a denser glass; far rain layer off (1 rain layer left). */
 @media (width < 48rem) {
     :where(:root[data-theme="addon:neon-city:neon"]) { --neon-glass: color-mix(in srgb, var(--card) 90%, transparent); }
     :root[data-theme="addon:neon-city:neon"] :is([data-testid="tab"], [data-testid="focus-tab"]) { backdrop-filter: none; -webkit-backdrop-filter: none; }
@@ -774,7 +769,6 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
     @keyframes neon-in { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
     @keyframes neon-rain-a { from { transform: rotate(12deg) translate3d(0, -400px, 0); } to { transform: rotate(12deg) translate3d(0, 0, 0); } }
     @keyframes neon-rain-b { from { transform: rotate(12deg) translate3d(0, -300px, 0); } to { transform: rotate(12deg) translate3d(0, 0, 0); } }
-    @keyframes neon-rain-c { from { transform: rotate(12deg) translate3d(0, -600px, 0); } to { transform: rotate(12deg) translate3d(0, 0, 0); } }
     @keyframes neon-shimmer { 0%, 100% { opacity: 1; } 50% { opacity: .7; } }
     @keyframes neon-pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--success); } 50% { opacity: .55; box-shadow: 0 0 12px var(--success), 0 0 2px var(--success); } }
     @keyframes neon-glitch {
@@ -793,7 +787,6 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
     :root[data-theme="addon:neon-city:neon"] #root::after { animation: neon-shimmer 5s ease-in-out infinite; }
     :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::before { animation: neon-rain-b 1.3s linear infinite; }
     :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after { animation: neon-rain-a .85s linear infinite; }
-    :root[data-theme="addon:neon-city:neon"] body::after { animation: neon-rain-c .7s linear infinite; }
     :root[data-theme="addon:neon-city:neon"] [data-testid="prompt-box"]:focus-within::before { animation: neon-spin 4s linear infinite; }
     :root[data-theme="addon:neon-city:neon"] [data-testid="thinking"] { animation: neon-breathe 2.6s ease-in-out infinite; }
     :root[data-theme="addon:neon-city:neon"] [data-testid="connection-status"][data-status="connected"] > span[aria-hidden] { animation: neon-pulse 2s ease-in-out infinite; }
@@ -813,18 +806,16 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
     :root[data-theme="addon:neon-city:neon"] [data-testid="prompt-box"] textarea:placeholder-shown:focus::placeholder { animation: neon-blink 1.6s ease-in-out infinite; }
 }
 
-/* Reduced motion: the rain stands still, so its streaks are fainter and the near layer (over the panels and their text) is off. */
+/* Reduced motion: the rain stands still, so its streaks are fainter. */
 @media (prefers-reduced-motion: reduce) {
     :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::before { opacity: .28; }
     :root[data-theme="addon:neon-city:neon"] div:has(> header[data-testid="titlebar"])::after { opacity: .35; }
     :root[data-theme="addon:neon-city:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::before { opacity: .16; }
     :root[data-theme="addon:neon-city:neon"]:not(.dark) div:has(> header[data-testid="titlebar"])::after { opacity: .18; }
-    :root[data-theme="addon:neon-city:neon"] body::after { display: none; }
 }
 
 /* Light rain option (data-opt-rain-light, default off): one far layer only, slower and about a third as visible. Rain off still hides everything. */
-:root[data-theme="addon:neon-city:neon"][data-opt-rain-light="on"] div:has(> header[data-testid="titlebar"])::after,
-:root[data-theme="addon:neon-city:neon"][data-opt-rain-light="on"] body::after { display: none; }
+:root[data-theme="addon:neon-city:neon"][data-opt-rain-light="on"] div:has(> header[data-testid="titlebar"])::after { display: none; }
 :root[data-theme="addon:neon-city:neon"][data-opt-rain-light="on"] div:has(> header[data-testid="titlebar"])::before { display: block; opacity: .2; animation-duration: 2.4s; }
 :root[data-theme="addon:neon-city:neon"][data-opt-rain-light="on"]:not(.dark) div:has(> header[data-testid="titlebar"])::before { opacity: .12; }
 @media (prefers-reduced-motion: reduce) {
@@ -835,8 +826,7 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
 /* Rain option off (data-opt-rain, theme option "rain"): every rain layer goes (animations with them) and the shimmer of the veil;
    the pictures, the veil's darkening and the HUD stay. */
 :root[data-theme="addon:neon-city:neon"][data-opt-rain="off"] div:has(> header[data-testid="titlebar"])::before,
-:root[data-theme="addon:neon-city:neon"][data-opt-rain="off"] div:has(> header[data-testid="titlebar"])::after,
-:root[data-theme="addon:neon-city:neon"][data-opt-rain="off"] body::after { display: none; }
+:root[data-theme="addon:neon-city:neon"][data-opt-rain="off"] div:has(> header[data-testid="titlebar"])::after { display: none; }
 :root[data-theme="addon:neon-city:neon"][data-opt-rain="off"] #root::after { animation: none; }
 
 /* Extra tokens the addon manifest cannot carry: graph lanes and context colours (same hues as the built-in Neon). */

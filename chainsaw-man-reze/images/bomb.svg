@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g>
+    <g>
+      <animateTransform attributeName="transform" type="translate" dur="2.4s" repeatCount="indefinite" values="0 0;0 0;-0.6 0.2;0.6 -0.2;-1.2 0;1.2 0.4;-1.2 0.4;0 0;0 0" keyTimes="0;0.55;0.62;0.68;0.74;0.80;0.86;0.90;1"/>
+      <path d="M31 17 C31 8 40 9 45 4" fill="none" stroke="#17121f" stroke-width="6" stroke-linecap="round"/>
+      <path d="M31 17 C31 8 40 9 45 4" fill="none" stroke="#f0c070" stroke-width="3.6" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1">
+        <animate attributeName="stroke-dasharray" dur="2.4s" repeatCount="indefinite" values="1 1;0.2 1;0.2 1;1 1" keyTimes="0;0.85;0.98;1"/>
+      </path>
+      <circle cx="30" cy="39" r="21" fill="#2d2150" stroke="#17121f" stroke-width="7">
+        <animate attributeName="fill" dur="2.4s" repeatCount="indefinite" values="#2d2150;#2d2150;#b3203d;#b3203d;#2d2150" keyTimes="0;0.05;0.85;0.97;1"/>
+      </circle>
+      <circle cx="30" cy="39" r="21" fill="#2d2150" stroke="#efe6ff" stroke-width="2.4">
+        <animate attributeName="fill" dur="2.4s" repeatCount="indefinite" values="#2d2150;#2d2150;#b3203d;#b3203d;#2d2150" keyTimes="0;0.05;0.85;0.97;1"/>
+      </circle>
+      <ellipse cx="21" cy="30" rx="7" ry="4.5" fill="#ffffff" opacity="0.8" transform="rotate(-35 21 30)"/>
+      <rect x="23" y="14" width="14" height="10" rx="3" fill="#7a6bc0" stroke="#efe6ff" stroke-width="2.2"/>
+      <g>
+        <animateMotion dur="2.4s" repeatCount="indefinite" path="M45 4 C40 9 31 8 31 17" keyPoints="0;0.8;0.8;0" keyTimes="0;0.85;0.98;1" calcMode="linear"/>
+        <animate attributeName="opacity" dur="2.4s" repeatCount="indefinite" values="1;1;0;0;1" keyTimes="0;0.85;0.9;0.99;1"/>
+        <g>
+          <animateTransform attributeName="transform" type="scale" dur="0.25s" repeatCount="indefinite" values="0.85;1.2;0.85"/>
+          <path d="M0 -11 C6 -4 8 2 0 7 C-8 2 -6 -4 0 -11Z" fill="#ff3b2f"/>
+          <path d="M0 -7 C4 -2 5 2 0 5 C-5 2 -4 -2 0 -7Z" fill="#ff9d1c"/>
+          <path d="M0 -3 C2 0 2.6 2 0 3.6 C-2.6 2 -2 0 0 -3Z" fill="#fff3a6"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

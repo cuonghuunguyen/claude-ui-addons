@@ -267,3 +267,5 @@
 :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"].dark [data-testid="permission-panel"] { box-shadow: 0 0 0 2px var(--ink), inset 0 5px 0 #ff5a1e, 4px 4px 0 var(--manga-shadow), 0 -8px 26px -6px rgba(255, 70, 40, .5); }
 /* the message bubble may clip its children; let the smoke ring around it show */
 :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [data-testid="user-message"] > .is-user > div { overflow: visible !important; }
+:root[data-theme="addon:gojo:gojo"] :is([data-testid="new-session-tab"], [data-testid="starting-session"]) { background: color-mix(in srgb, var(--card) 16%, transparent); }
+:root[data-theme="addon:gojo:gojo"].dark :is([data-testid="new-session-tab"], [data-testid="starting-session"]) { text-shadow: 0 1px 4px rgba(0, 0, 0, .85); }

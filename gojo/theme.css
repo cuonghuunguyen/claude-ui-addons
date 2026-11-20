@@ -19,7 +19,7 @@
 :root[data-theme="addon:gojo:gojo"] body { background: transparent; }
 :root[data-theme="addon:gojo:gojo"]::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: url("images/bg-light.svg") center / cover no-repeat; }
 :root[data-theme="addon:gojo:gojo"].dark::before { background-image: url("images/bg-dark.svg"); }
-:root[data-theme="addon:gojo:gojo"] div:has(> header[data-testid="titlebar"]) { background: color-mix(in srgb, var(--background) 30%, transparent); }
+:root[data-theme="addon:gojo:gojo"] div:has(> header[data-testid="titlebar"]) { background: transparent; }
 :root[data-theme="addon:gojo:gojo"].dark div:has(> header[data-testid="titlebar"]) { background: color-mix(in srgb, var(--background) 34%, transparent); }
 
 /* panels: dense glass, no blur on big surfaces */
@@ -151,12 +151,12 @@
 :root[data-theme="addon:gojo:gojo"] .timeline [data-streamdown="table-wrapper"] { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); }
 
 /* art: landscape picture fills the window behind a veil; panels stay readable */
-:root[data-theme="addon:gojo:gojo"] body::before { content: ""; position: fixed; inset: 0 -10% -10% 0; z-index: -1; pointer-events: none; background: url("images/bg-light.jpg") center / cover no-repeat; opacity: .85; }
+:root[data-theme="addon:gojo:gojo"] body::before { content: ""; position: fixed; inset: 0 -10% -10% 0; z-index: -1; pointer-events: none; background: url("images/bg-light.jpg") center / cover no-repeat; opacity: 1; }
 :root[data-theme="addon:gojo:gojo"].dark body::before { background-image: url("images/bg-dark.jpg"); opacity: .8; }
 @media (width < 48rem) {
   :root[data-theme="addon:gojo:gojo"] body::before { opacity: .55; background-position: 38% center; }
   /* light: bright picture, keep it strong; center the glasses in the narrow portrait window */
-  :root[data-theme="addon:gojo:gojo"]:not(.dark) body::before { opacity: .9; background-position: 49% center; }
+  :root[data-theme="addon:gojo:gojo"]:not(.dark) body::before { opacity: 1; background-position: 49% center; }
 }
 
 /* Font: Bangers (OFL, bundled) for headings and labels, manga title look; body text keeps the app font */
@@ -184,7 +184,7 @@
 
 /* light: deeper link colour over the art */
 :root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="assistant-text"] a { color: color-mix(in srgb, var(--primary) 78%, #000); }
-:root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="work-area"], :root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="session-area"] { background: color-mix(in srgb, var(--card) 14%, transparent); }
+:root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="work-area"], :root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="session-area"] { background: transparent; }
 :root[data-theme="addon:gojo:gojo"]:not(.dark) :is([data-testid="tool-card"], [data-testid="permission-panel"]) { background: color-mix(in srgb, var(--card) 82%, transparent); }
 
 /* ---- registered progress for the Black Flash release ---- */
@@ -271,3 +271,28 @@
 :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [data-testid="user-message"] > .is-user > div { overflow: visible !important; }
 :root[data-theme="addon:gojo:gojo"] :is([data-testid="new-session-tab"], [data-testid="starting-session"]) { background: color-mix(in srgb, var(--card) 16%, transparent); }
 :root[data-theme="addon:gojo:gojo"].dark :is([data-testid="new-session-tab"], [data-testid="starting-session"]) { text-shadow: 0 1px 4px rgba(0, 0, 0, .85); }
+
+/* fluid veil: soft colour blobs flow over the art, behind the panels; one transformed layer, no layout cost */
+:root[data-theme="addon:gojo:gojo"] body::after {
+  content: ""; position: fixed; inset: -20%; z-index: -1; pointer-events: none; opacity: .3;
+  background:
+    radial-gradient(40% 35% at 25% 30%, color-mix(in srgb, var(--primary) 70%, transparent), transparent 70%),
+    radial-gradient(35% 40% at 75% 25%, color-mix(in srgb, #9c5cff 60%, transparent), transparent 70%),
+    radial-gradient(45% 35% at 60% 80%, color-mix(in srgb, #2fb4ff 60%, transparent), transparent 70%),
+    radial-gradient(30% 30% at 15% 85%, color-mix(in srgb, #ff6b9a 45%, transparent), transparent 70%);
+  filter: blur(40px); will-change: transform;
+}
+:root[data-theme="addon:gojo:gojo"].dark body::after { opacity: .35; mix-blend-mode: screen; }
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-theme="addon:gojo:gojo"] body::after { animation: gojo-fluid 28s ease-in-out infinite alternate; }
+  @keyframes gojo-fluid {
+    0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+    33%  { transform: translate3d(6%, -4%, 0) rotate(40deg) scale(1.15); }
+    66%  { transform: translate3d(-5%, 5%, 0) rotate(-30deg) scale(1.05); }
+    100% { transform: translate3d(3%, 6%, 0) rotate(70deg) scale(1.2); }
+  }
+}
+@media (width < 48rem) { :root[data-theme="addon:gojo:gojo"] body::after { display: none; } }
+
+/* TEST: animated wallpaper (video converted to GIF, CSS cannot play video). Remove this block to restore the still art. */
+:root[data-theme="addon:gojo:gojo"] body::before, :root[data-theme="addon:gojo:gojo"].dark body::before { background-image: url("images/bg-anim.gif"); opacity: 1; }

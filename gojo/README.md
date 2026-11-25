@@ -4,16 +4,19 @@ Theme for claude-ui. Fan-made, personal use. Characters and artwork belong to th
 
 - Dark "Unlimited Void": navy, Six Eyes blue, Hollow Purple keywords, red errors. Light "Six Eyes": snow white and ice blue.
 - Manga style: ink outlines, hard offset shadows, halftone, speed lines.
-- Full-window art background (dark and light), Six Eyes eye loader (animated), Six Eyes done mark, rotating Thinking text.
+- Full-window art background (dark and light; animated GIF wallpaper, remove the last block of `theme.css` for the still art), Six Eyes eye loader (animated, `loader` slot), Six Eyes done mark (`done-icon` slot), rotating Thinking text (one Gojo phrase per turn under reduced motion, `thinking-phrases` slot).
 - Opening the Focus page plays the eye, then Unlimited Void (option "Domain Expansion on Focus").
-- Thinking charges a Black Flash (red-black aura, crackle, tremor); when thinking ends, the a small Black Flash badge flashes inline once.
+- Thinking charges a Black Flash (red-black aura, crackle, tremor); when a turn ends, a small Black Flash badge flashes inline once.
 - Cursed energy smoke (fire and smoke haze) around the prompt box, your message and permission panels.
 - Usage gauge: animated arc with an orbiting comet and breathing glow, calm (cyan), tense (violet), hot (red, fast, trembling) by context percent; flowing gradient bars in plan usage.
+- Settings, dialogs, switches, selects, inputs, badges, keys, pane tabs and tables use the same manga style (ink outline, hard shadow, two sharp corners).
 - Options: Drifting stars, Domain Expansion on Focus, Cursed energy smoke, Black Flash. All motion is off under reduced motion.
-- Capabilities: none.
+- Capabilities: none. Needs Claude UI 1.5 or newer (theme CSS, slots, lifecycle attributes, parts).
 
 Fonts: `fonts/Bangers.ttf` (Bangers, SIL OFL) for headings and labels; `fonts/BeVietnamPro-*.ttf` (Be Vietnam Pro, SIL OFL, Vietnamese support) for body text.
 
-Images in `images/`: `bg-dark.jpg`, `bg-light.jpg` (user-provided pictures), `void.jpg` (Unlimited Void picture), `eye.gif` (eye clip converted from video), `bg-*.svg`, `done.svg`, `lightning.svg`, `crackle.svg`, `smoke.svg` (original).
+Images in `images/`: `bg-dark.jpg`, `bg-light.jpg` (user-provided pictures), `bg-anim.gif` (animated wallpaper), `void.jpg` (Unlimited Void picture), `eye.gif` (eye clip converted from video), `bg-*.svg`, `done.svg`, `lightning.svg`, `crackle.svg`, `smoke.svg` (original).
 
 Install: `/addons` > Local folder > this folder path > Approve and enable. Settings > Appearance > Gojo.
+
+Develop: `claude-ui addon dev <this folder>` reloads the CSS on save and prints the preview page URL (`#/addon-preview`).

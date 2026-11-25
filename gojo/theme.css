@@ -1,5 +1,5 @@
-/* gojo: void background with Six Eyes orbs, glass panels, orb loader. Original SVG art, no third-party pictures. */
-:root[data-theme="addon:gojo:gojo"] {
+/* gojo: manga theme. Fan pictures and original SVG art as backgrounds (images/), ink outlines, hard shadows, Six Eyes loader, Black Flash, cursed energy smoke. */
+:root {
   --border: color-mix(in srgb, var(--primary) 28%, var(--card));
   --input: color-mix(in srgb, var(--primary) 22%, var(--card));
   --accent: color-mix(in srgb, var(--primary) 16%, var(--card));
@@ -8,78 +8,76 @@
   --ink: #e8f1ff; --manga-shadow: #000000;
   --graph-1: #5ab8ff; --graph-2: #bf9bff; --graph-3: #ff7385; --graph-4: #7fe3c6; --graph-5: #ffd47e; --graph-6: #86b6ff; --graph-7: #ff9bb5; --graph-8: #8fdcff;
 }
-:root[data-theme="addon:gojo:gojo"]:not(.dark) {
+:root:not(.dark) {
   --ink: #0e1a33; --manga-shadow: #0e1a33;
   --graph-1: #1663d0; --graph-2: #5c1fbf; --graph-3: #c0102e; --graph-4: #056b55; --graph-5: #7a4700; --graph-6: #1556c6; --graph-7: #a52d58; --graph-8: #005f84;
 }
-:root[data-theme="addon:gojo:gojo"] ::selection { background: color-mix(in srgb, var(--primary) 40%, transparent); }
+:root ::selection { background: color-mix(in srgb, var(--primary) 40%, transparent); }
 
 /* background: fixed layer under the app, app root transparent, veil keeps text readable */
-:root[data-theme="addon:gojo:gojo"] { background: var(--background); }
-:root[data-theme="addon:gojo:gojo"] body { background: transparent; }
-:root[data-theme="addon:gojo:gojo"]::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: url("images/bg-light.svg") center / cover no-repeat; }
-:root[data-theme="addon:gojo:gojo"].dark::before { background-image: url("images/bg-dark.svg"); }
-:root[data-theme="addon:gojo:gojo"] div:has(> header[data-testid="titlebar"]) { background: transparent; }
-:root[data-theme="addon:gojo:gojo"].dark div:has(> header[data-testid="titlebar"]) { background: color-mix(in srgb, var(--background) 34%, transparent); }
+:root { background: var(--background); }
+:root body { background: transparent; }
+:root::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: url("images/bg-light.svg") center / cover no-repeat; }
+:root.dark::before { background-image: url("images/bg-dark.svg"); }
+:root div:has(> [data-part="titlebar"]) { background: transparent; }
+:root.dark div:has(> [data-part="titlebar"]) { background: color-mix(in srgb, var(--background) 34%, transparent); }
 
 /* panels: dense glass, no blur on big surfaces */
-:root[data-theme="addon:gojo:gojo"] aside[data-testid="sidebar"] { background: color-mix(in srgb, var(--sidebar, var(--card)) 90%, transparent); border-color: var(--border); }
-:root[data-theme="addon:gojo:gojo"] header[data-testid="titlebar"] { background: color-mix(in srgb, var(--card) 80%, transparent); border-bottom: 1px solid var(--border); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="prompt-box"] { background: color-mix(in srgb, var(--card) 92%, transparent); border: 1px solid var(--border); box-shadow: 0 0 0 2px var(--ink), 5px 5px 0 var(--manga-shadow); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="prompt-box"]:focus-within { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary), 5px 5px 0 var(--primary); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"],
-:root[data-theme="addon:gojo:gojo"] [data-testid="permission-panel"],
-:root[data-theme="addon:gojo:gojo"] [data-testid="side-panel"] { background: color-mix(in srgb, var(--card) 90%, transparent); border-color: var(--border); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="user-message"] > .is-user > div { background: color-mix(in srgb, var(--primary) 16%, var(--card)); border: 1px solid color-mix(in srgb, var(--primary) 40%, transparent); }
-:root[data-theme="addon:gojo:gojo"] [aria-current="page"] { background: color-mix(in srgb, var(--primary) 20%, transparent); box-shadow: inset 2px 0 0 var(--primary); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="tab"] { overflow: clip; border-radius: 8px; }
-:root[data-theme="addon:gojo:gojo"] [data-testid="tab"][data-state="running"] { box-shadow: inset 0 -2px 0 var(--primary); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="send"] { background: var(--primary); color: var(--primary-foreground); box-shadow: 0 0 0 2px var(--ink), 3px 3px 0 var(--manga-shadow); }
-:root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="send"] { box-shadow: 0 0 0 2px var(--ink), 3px 3px 0 var(--manga-shadow); }
+:root [data-part="sidebar"] { background: color-mix(in srgb, var(--sidebar, var(--card)) 90%, transparent); border-color: var(--border); }
+:root [data-part="titlebar"] { background: color-mix(in srgb, var(--card) 80%, transparent); border-bottom: 1px solid var(--border); }
+:root [data-part="prompt-box"] { background: color-mix(in srgb, var(--card) 92%, transparent); border: 1px solid var(--border); box-shadow: 0 0 0 2px var(--ink), 5px 5px 0 var(--manga-shadow); }
+:root [data-part="prompt-box"]:focus-within { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary), 5px 5px 0 var(--primary); }
+:root [data-part="tool-card"],
+:root [data-part="permission-panel"],
+:root [data-part="side-panel"] { background: color-mix(in srgb, var(--card) 90%, transparent); border-color: var(--border); }
+:root [data-part="tab"] { overflow: clip; border-radius: 8px; }
+:root [data-part="tab"][data-state="running"] { box-shadow: inset 0 -2px 0 var(--primary); }
+:root [data-part="send"] { background: var(--primary); color: var(--primary-foreground); box-shadow: 0 0 0 2px var(--ink), 3px 3px 0 var(--manga-shadow); }
 
 /* diffs + terminal keep palette colours */
-:root[data-theme="addon:gojo:gojo"] diffs-container {
+:root diffs-container {
   --diffs-dark-bg: var(--card); --diffs-light-bg: var(--card); --diffs-dark: var(--foreground); --diffs-light: var(--foreground);
   --diffs-dark-addition-color: var(--success); --diffs-light-addition-color: var(--success);
   --diffs-dark-deletion-color: var(--destructive); --diffs-light-deletion-color: var(--destructive);
   --diffs-dark-modified-color: var(--primary); --diffs-light-modified-color: var(--primary);
 }
-:root[data-theme="addon:gojo:gojo"] .xterm-viewport, :root[data-theme="addon:gojo:gojo"] .xterm-scrollable-element { background: transparent !important; }
-:root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-1, :root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-9 { color: var(--destructive) !important; }
-:root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-2, :root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-10 { color: var(--success) !important; }
-:root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-3, :root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-11 { color: var(--warning) !important; }
-:root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-4, :root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-12 { color: var(--syntax-function) !important; }
-:root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-5, :root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-13 { color: var(--syntax-keyword) !important; }
-:root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-6, :root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-14 { color: var(--info) !important; }
-:root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-7, :root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-15 { color: var(--muted-foreground) !important; }
-:root[data-theme="addon:gojo:gojo"] .xterm-rows .xterm-fg-8 { color: var(--syntax-comment) !important; }
+:root .xterm-viewport, :root .xterm-scrollable-element { background: transparent !important; }
+:root .xterm-rows .xterm-fg-1, :root .xterm-rows .xterm-fg-9 { color: var(--destructive) !important; }
+:root .xterm-rows .xterm-fg-2, :root .xterm-rows .xterm-fg-10 { color: var(--success) !important; }
+:root .xterm-rows .xterm-fg-3, :root .xterm-rows .xterm-fg-11 { color: var(--warning) !important; }
+:root .xterm-rows .xterm-fg-4, :root .xterm-rows .xterm-fg-12 { color: var(--syntax-function) !important; }
+:root .xterm-rows .xterm-fg-5, :root .xterm-rows .xterm-fg-13 { color: var(--syntax-keyword) !important; }
+:root .xterm-rows .xterm-fg-6, :root .xterm-rows .xterm-fg-14 { color: var(--info) !important; }
+:root .xterm-rows .xterm-fg-7, :root .xterm-rows .xterm-fg-15 { color: var(--muted-foreground) !important; }
+:root .xterm-rows .xterm-fg-8 { color: var(--syntax-comment) !important; }
 
 /* streamdown code: GitHub hexes -> syntax tokens */
-:root[data-theme="addon:gojo:gojo"] [data-streamdown="code-block"] code span[style*="#d73a49" i], :root[data-theme="addon:gojo:gojo"] [data-streamdown="code-block"] code span[style*="#f97583" i] { --sdm-c: var(--syntax-keyword) !important; --shiki-dark: var(--syntax-keyword) !important; }
-:root[data-theme="addon:gojo:gojo"] [data-streamdown="code-block"] code span[style*="#032f62" i], :root[data-theme="addon:gojo:gojo"] [data-streamdown="code-block"] code span[style*="#9ecbff" i] { --sdm-c: var(--syntax-string) !important; --shiki-dark: var(--syntax-string) !important; }
-:root[data-theme="addon:gojo:gojo"] [data-streamdown="code-block"] code span[style*="#6f42c1" i], :root[data-theme="addon:gojo:gojo"] [data-streamdown="code-block"] code span[style*="#b392f0" i] { --sdm-c: var(--syntax-function) !important; --shiki-dark: var(--syntax-function) !important; }
-:root[data-theme="addon:gojo:gojo"] [data-streamdown="code-block"] code span[style*="#005cc5" i], :root[data-theme="addon:gojo:gojo"] [data-streamdown="code-block"] code span[style*="#79b8ff" i] { --sdm-c: var(--syntax-number) !important; --shiki-dark: var(--syntax-number) !important; }
-:root[data-theme="addon:gojo:gojo"] [data-streamdown="code-block"] code span[style*="#6a737d" i] { --sdm-c: var(--syntax-comment) !important; --shiki-dark: var(--syntax-comment) !important; }
-:root[data-theme="addon:gojo:gojo"] [data-streamdown="code-block"] code span[style*="#e36209" i], :root[data-theme="addon:gojo:gojo"] [data-streamdown="code-block"] code span[style*="#ffab70" i] { --sdm-c: var(--syntax-variable) !important; --shiki-dark: var(--syntax-variable) !important; }
+:root [data-streamdown="code-block"] code span[style*="#d73a49" i], :root [data-streamdown="code-block"] code span[style*="#f97583" i] { --sdm-c: var(--syntax-keyword) !important; --shiki-dark: var(--syntax-keyword) !important; }
+:root [data-streamdown="code-block"] code span[style*="#032f62" i], :root [data-streamdown="code-block"] code span[style*="#9ecbff" i] { --sdm-c: var(--syntax-string) !important; --shiki-dark: var(--syntax-string) !important; }
+:root [data-streamdown="code-block"] code span[style*="#6f42c1" i], :root [data-streamdown="code-block"] code span[style*="#b392f0" i] { --sdm-c: var(--syntax-function) !important; --shiki-dark: var(--syntax-function) !important; }
+:root [data-streamdown="code-block"] code span[style*="#005cc5" i], :root [data-streamdown="code-block"] code span[style*="#79b8ff" i] { --sdm-c: var(--syntax-number) !important; --shiki-dark: var(--syntax-number) !important; }
+:root [data-streamdown="code-block"] code span[style*="#6a737d" i] { --sdm-c: var(--syntax-comment) !important; --shiki-dark: var(--syntax-comment) !important; }
+:root [data-streamdown="code-block"] code span[style*="#e36209" i], :root [data-streamdown="code-block"] code span[style*="#ffab70" i] { --sdm-c: var(--syntax-variable) !important; --shiki-dark: var(--syntax-variable) !important; }
 
-/* loader: three orbs (blue, red, purple) orbit a white core; done: Six Eyes mark */
-:root[data-theme="addon:gojo:gojo"] svg:is([class*="animate-spin"], .lucide-loader-circle):not(.absolute) { width: 24px !important; height: 14px !important; margin: 1px -4px !important; background: url("images/eye-loader.gif") center / 100% 100% no-repeat; -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); animation: none !important; flex: none; overflow: visible; }
-:root[data-theme="addon:gojo:gojo"] svg:is([class*="animate-spin"], .lucide-loader-circle):not(.absolute) > * { display: none; }
-:root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] span[data-state="output-available"] > svg.lucide-check { background: url("images/done.svg") center / contain no-repeat; }
-:root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] span[data-state="output-available"] > svg.lucide-check > * { display: none; }
+/* loader: three orbs (blue, red, purple) orbit a white core; done: Six Eyes mark.
+   Tool call, session row and tab: `loader` and `done-icon` slots (addon.json) put the image in [data-part="loader"] / [data-part="done-icon"].
+   Other spinners (Focus page, side panel, dialogs) have no part: the svg gets the same picture as a background. */
+:root [data-part="loader"] > img { width: 24px; height: 14px; margin: 1px -4px; object-fit: fill; -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); }
+:root svg:is([class*="animate-spin"], .lucide-loader-circle):not(.absolute) { width: 24px; height: 14px; margin: 1px -4px; background: url("images/eye-loader.gif") center / 100% 100% no-repeat; -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); animation: none; flex: none; overflow: visible; }
+:root svg:is([class*="animate-spin"], .lucide-loader-circle):not(.absolute) > * { display: none; }
 
 /* thinking = sound-effect tag: skewed red-violet plate, ink outline, hard shadow, Bangers label */
-:root[data-theme="addon:gojo:gojo"] [data-testid="thinking"] { position: relative; width: fit-content; padding: 4px 18px; color: #fff; font-family: "Gojo Display", var(--font-sans, system-ui); background: linear-gradient(100deg, #ff1744, #7b1fa2, #ff1744) 0 0 / 200% 100%; border: 2px solid var(--ink); border-radius: 4px 14px 4px 14px; box-shadow: 3px 3px 0 var(--manga-shadow); transform: skewX(-8deg); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="thinking"] > * { display: inline-block; transform: skewX(8deg); color: #fff; text-shadow: 1px 1px 0 #000; }
+:root [data-part="thinking"] { position: relative; width: fit-content; padding: 4px 18px; color: #fff; font-family: "gojo-display", var(--font-sans, system-ui); background: linear-gradient(100deg, #ff1744, #7b1fa2, #ff1744) 0 0 / 200% 100%; border: 2px solid var(--ink); border-radius: 4px 14px 4px 14px; box-shadow: 3px 3px 0 var(--manga-shadow); transform: skewX(-8deg); }
+:root [data-part="thinking"] > * { display: inline-block; transform: skewX(8deg); color: #fff; text-shadow: 1px 1px 0 #000; }
 @media (prefers-reduced-motion: no-preference) {
-  :root[data-theme="addon:gojo:gojo"] [data-testid="thinking"] { animation: gojo-pulse 1.6s ease-in-out infinite alternate, gojo-shimmer 2.4s linear infinite; }
+  :root [data-part="thinking"] { animation: gojo-pulse 1.6s ease-in-out infinite alternate, gojo-shimmer 2.4s linear infinite; }
   @keyframes gojo-shimmer { to { background-position: -200% 0; } }
   @keyframes gojo-pulse { from { box-shadow: 3px 3px 0 var(--manga-shadow), 0 0 0 rgba(255, 23, 68, 0); } to { box-shadow: 3px 3px 0 var(--manga-shadow), 0 0 16px rgba(255, 23, 68, .75); } }
 }
 /* thinking label rotates; element text stays for tests and screen readers */
 @media (prefers-reduced-motion: no-preference) {
-  :root[data-theme="addon:gojo:gojo"] [data-testid="thinking"] > * { font-size: 0 !important; }
-  :root[data-theme="addon:gojo:gojo"] [data-testid="thinking"] > *::after { content: "Throughout Heaven and Earth…"; font: 400 17px/1.2 "Gojo Display", var(--font-sans, system-ui); letter-spacing: .05em; text-transform: uppercase; animation: gojo-words 18s steps(1, end) infinite, gojo-type 3s steps(20, end) infinite, gojo-glitch 3s steps(1, end) infinite; }
+  :root [data-part="thinking"] > * { font-size: 0; }
+  :root [data-part="thinking"] > *::after { content: "Throughout Heaven and Earth…"; font: 400 17px/1.2 "gojo-display", var(--font-sans, system-ui); letter-spacing: .05em; text-transform: uppercase; animation: gojo-words 18s steps(1, end) infinite, gojo-type 3s steps(20, end) infinite, gojo-glitch 3s steps(1, end) infinite; }
   @keyframes gojo-words {
     0%, 16.6% { content: "Throughout Heaven and Earth…"; }
     16.7%, 33.3% { content: "I alone am the honored one."; }
@@ -89,7 +87,7 @@
     83.4%, 100% { content: "Black Flash incoming…"; }
   }
   /* Vietnamese labels follow <html lang="vi"> (set by Settings > Appearance > Language) */
-  :root[data-theme="addon:gojo:gojo"]:lang(vi) [data-testid="thinking"] > *::after { content: "Thiên thượng thiên hạ…"; animation-name: gojo-words-vi, gojo-type, gojo-glitch; }
+  :root:lang(vi) [data-part="thinking"] > *::after { content: "Thiên thượng thiên hạ…"; animation-name: gojo-words-vi, gojo-type, gojo-glitch; }
   @keyframes gojo-words-vi {
     0%, 16.6% { content: "Thiên thượng thiên hạ…"; }
     16.7%, 33.3% { content: "Duy ngã độc tôn."; }
@@ -101,7 +99,7 @@
   @keyframes gojo-type { 0% { clip-path: inset(0 100% 0 0); } 40%, 100% { clip-path: inset(0 0 0 0); } }
   @keyframes gojo-glitch { 0%, 100% { text-shadow: 1px 1px 0 #000; } 44% { text-shadow: -2px 0 #00e5ff, 2px 0 #ff1744; } 48% { text-shadow: 2px 0 #00e5ff, -2px 0 #ff1744; } 52% { text-shadow: 1px 1px 0 #000; } }
   /* stars drift: one transformed layer, opacity only on the second */
-  :root[data-theme="addon:gojo:gojo"][data-opt-stars="on"].dark::after {
+  :root[data-opt-stars="on"].dark::after {
     content: ""; position: fixed; inset: -10% 0; z-index: -1; pointer-events: none;
     background: url("images/bg-dark.svg") center / cover no-repeat; opacity: .35; mix-blend-mode: screen;
     animation: gojo-drift 90s linear infinite alternate;
@@ -111,120 +109,117 @@
 
 /* phone: lighter veil effects, no drift layer */
 @media (width < 48rem) {
-  :root[data-theme="addon:gojo:gojo"]::after { display: none !important; }
-  :root[data-theme="addon:gojo:gojo"] aside[data-testid="sidebar"] { background: color-mix(in srgb, var(--card) 96%, transparent); }
+  :root::after { display: none !important; }
+  :root [data-part="sidebar"] { background: color-mix(in srgb, var(--card) 96%, transparent); }
 }
 
 /* work and session areas show the art through a light veil */
-:root[data-theme="addon:gojo:gojo"] [data-testid="work-area"], :root[data-theme="addon:gojo:gojo"] [data-testid="session-area"] { background: color-mix(in srgb, var(--card) 16%, transparent); }
-:root[data-theme="addon:gojo:gojo"].dark [data-testid="work-area"], :root[data-theme="addon:gojo:gojo"].dark [data-testid="session-area"] { background: color-mix(in srgb, var(--card) 16%, transparent); }
+:root [data-part="work-area"], :root [data-part="session-area"] { background: color-mix(in srgb, var(--card) 16%, transparent); }
 
 /* manga: ink outlines (box-shadow, no layout shift), hard offset shadows, screentone on panels */
-:root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"], :root[data-theme="addon:gojo:gojo"] [data-testid="permission-panel"], :root[data-theme="addon:gojo:gojo"] [data-testid="user-message"] > .is-user > div { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); }
+:root [data-part="tool-card"], :root [data-part="permission-panel"], :root [data-part="user-message"] > .is-user > div { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); }
 /* hover and selection: slanted highlight with a primary edge bar */
-:root[data-theme="addon:gojo:gojo"] aside[data-testid="sidebar"] :is(a, button, [role="button"], [role="treeitem"]):hover,
-:root[data-theme="addon:gojo:gojo"] [data-testid="tab"]:hover,
-:root[data-theme="addon:gojo:gojo"] :is([role="menuitem"], [role="option"], [role="menuitemcheckbox"], [role="menuitemradio"])[data-highlighted],
-:root[data-theme="addon:gojo:gojo"] :is([role="menuitem"], [role="option"], [role="menuitemcheckbox"], [role="menuitemradio"]):hover { background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 26%, transparent), color-mix(in srgb, var(--primary) 4%, transparent)); border-radius: 3px 12px 3px 12px; box-shadow: inset 3px 0 0 var(--primary); }
-:root[data-theme="addon:gojo:gojo"] [aria-current="page"] { background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 38%, transparent), color-mix(in srgb, var(--primary) 6%, transparent)); border-radius: 3px 12px 3px 12px; }
+:root [data-part="sidebar"] :is(a, button, [role="button"], [role="treeitem"]):hover,
+:root [data-part="tab"]:hover,
+:root :is([role="menuitem"], [role="option"], [role="menuitemcheckbox"], [role="menuitemradio"])[data-highlighted],
+:root :is([role="menuitem"], [role="option"], [role="menuitemcheckbox"], [role="menuitemradio"]):hover { background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 26%, transparent), color-mix(in srgb, var(--primary) 4%, transparent)); border-radius: 3px 12px 3px 12px; box-shadow: inset 3px 0 0 var(--primary); }
+:root [aria-current="page"] { background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 38%, transparent), color-mix(in srgb, var(--primary) 6%, transparent)); border-radius: 3px 12px 3px 12px; }
 @media (prefers-reduced-motion: no-preference) {
-  :root[data-theme="addon:gojo:gojo"] aside[data-testid="sidebar"] :is(a, button, [role="button"], [role="treeitem"]), :root[data-theme="addon:gojo:gojo"] [data-testid="tab"], :root[data-theme="addon:gojo:gojo"] :is([role="menuitem"], [role="option"]) { transition: background-color .12s, box-shadow .12s, transform .12s; }
-  :root[data-theme="addon:gojo:gojo"] aside[data-testid="sidebar"] :is(a, button, [role="button"], [role="treeitem"]):hover, :root[data-theme="addon:gojo:gojo"] :is([role="menuitem"], [role="option"])[data-highlighted] { transform: translateX(2px); }
+  :root [data-part="sidebar"] :is(a, button, [role="button"], [role="treeitem"]), :root [data-part="tab"], :root :is([role="menuitem"], [role="option"]) { transition: background-color .12s, box-shadow .12s, transform .12s; }
+  :root [data-part="sidebar"] :is(a, button, [role="button"], [role="treeitem"]):hover, :root :is([role="menuitem"], [role="option"])[data-highlighted] { transform: translateX(2px); }
 }
 /* tool cards without the hidden open button (28px + 4px gap) reserve the same room, so status icons line up across cards */
-:root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] > button { padding-right: 32px; }
-:root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] > button { padding-left: 14px; }
+:root [data-part="tool-card"] > button { padding-right: 32px; padding-left: 14px; }
 /* other boxes: manga panel shape (two sharp corners, two round), colored edge bar */
-:root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] { border-radius: 4px 14px 4px 14px; box-shadow: 0 0 0 1.5px var(--ink), inset 4px 0 0 var(--primary), 3px 3px 0 var(--manga-shadow); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="permission-panel"] { border-radius: 6px 20px 6px 20px; box-shadow: 0 0 0 2px var(--ink), inset 0 5px 0 #ff5a1e, 4px 4px 0 var(--manga-shadow); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="prompt-box"] { border-radius: 6px 22px 6px 22px; }
+:root [data-part="tool-card"] { border-radius: 4px 14px 4px 14px; box-shadow: 0 0 0 1.5px var(--ink), inset 4px 0 0 var(--primary), 3px 3px 0 var(--manga-shadow); }
+:root [data-part="permission-panel"] { border-radius: 6px 20px 6px 20px; box-shadow: 0 0 0 2px var(--ink), inset 0 5px 0 #ff5a1e, 4px 4px 0 var(--manga-shadow); }
+:root [data-part="prompt-box"] { border-radius: 6px 22px 6px 22px; }
 /* user message: red speech bubble (sharp tail corner bottom right), left bar, speed lines fading in from the right */
-:root[data-theme="addon:gojo:gojo"] [data-testid="user-message"] > .is-user > div { position: relative; border-radius: 20px 20px 3px 20px; border: 2px solid var(--ink); background: linear-gradient(135deg, color-mix(in srgb, #ff3b4e 30%, var(--card)), color-mix(in srgb, #9c1030 26%, var(--card))); box-shadow: 4px 4px 0 var(--manga-shadow); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="user-message"] > .is-user > div::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: repeating-linear-gradient(115deg, transparent 0 8px, color-mix(in srgb, var(--ink) 14%, transparent) 8px 9px); -webkit-mask-image: linear-gradient(270deg, #000, transparent 42%); mask-image: linear-gradient(270deg, #000, transparent 42%); }
+:root [data-part="user-message"] > .is-user > div { position: relative; border-radius: 20px 20px 3px 20px; border: 2px solid var(--ink); background: linear-gradient(135deg, color-mix(in srgb, #ff3b4e 30%, var(--card)), color-mix(in srgb, #9c1030 26%, var(--card))); box-shadow: 4px 4px 0 var(--manga-shadow); }
+:root [data-part="user-message"] > .is-user > div::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: repeating-linear-gradient(115deg, transparent 0 8px, color-mix(in srgb, var(--ink) 14%, transparent) 8px 9px); -webkit-mask-image: linear-gradient(270deg, #000, transparent 42%); mask-image: linear-gradient(270deg, #000, transparent 42%); }
 /* agent text: quiet blue bubble (thin border, edge bar), mirrored tail; loud styles are kept for the user bubble, prompt box and permission panel */
-:root[data-theme="addon:gojo:gojo"] [data-testid="assistant-text"] { border-radius: 20px 20px 20px 3px; border: 2px solid color-mix(in srgb, #2fb4ff 80%, var(--ink)); padding: 12px 18px; background: color-mix(in srgb, #2fb4ff 16%, color-mix(in srgb, var(--card) 80%, transparent)); box-shadow: 3px 3px 0 var(--manga-shadow); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="tab"][aria-selected="true"], :root[data-theme="addon:gojo:gojo"] [data-testid="tab"][data-active] { box-shadow: 0 0 0 1.5px var(--ink), 2px 2px 0 var(--manga-shadow); }
-:root[data-theme="addon:gojo:gojo"] [aria-current="page"] { box-shadow: inset 4px 0 0 var(--ink); }
-:root[data-theme="addon:gojo:gojo"] [data-slot="tooltip-content"] { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); border-radius: 2px; }
-:root[data-theme="addon:gojo:gojo"] [data-streamdown="code-block"] { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); }
-:root[data-theme="addon:gojo:gojo"] :is([role="dialog"], [role="menu"], [role="listbox"]:not(#palette-list, [data-testid^="create-worktree-"])) { box-shadow: 0 0 0 2px var(--ink), 6px 6px 0 var(--manga-shadow); }
-:root[data-theme="addon:gojo:gojo"] .timeline [data-streamdown="table-wrapper"] { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); }
+:root [data-part="assistant-text"] { border-radius: 20px 20px 20px 3px; border: 2px solid color-mix(in srgb, #2fb4ff 80%, var(--ink)); padding: 12px 18px; background: color-mix(in srgb, #2fb4ff 16%, color-mix(in srgb, var(--card) 80%, transparent)); box-shadow: 3px 3px 0 var(--manga-shadow); }
+:root [data-part="tab"][aria-selected="true"], :root [data-part="tab"][data-active] { box-shadow: 0 0 0 1.5px var(--ink), 2px 2px 0 var(--manga-shadow); }
+:root [aria-current="page"] { box-shadow: inset 4px 0 0 var(--ink); }
+:root [data-slot="tooltip-content"] { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); border-radius: 2px; }
+:root [data-streamdown="code-block"] { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); }
+:root :is([role="dialog"], [role="menu"], [role="listbox"]:not(#palette-list, [data-testid^="create-worktree-"])) { box-shadow: 0 0 0 2px var(--ink), 6px 6px 0 var(--manga-shadow); }
+:root .timeline [data-streamdown="table-wrapper"] { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); }
 
 /* art: landscape picture fills the window behind a veil; panels stay readable */
-:root[data-theme="addon:gojo:gojo"] body::before { content: ""; position: fixed; inset: 0 -10% -10% 0; z-index: -1; pointer-events: none; background: url("images/bg-light.jpg") center / cover no-repeat; opacity: 1; }
-:root[data-theme="addon:gojo:gojo"].dark body::before { background-image: url("images/bg-dark.jpg"); opacity: .8; }
+:root body::before { content: ""; position: fixed; inset: 0 -10% -10% 0; z-index: -1; pointer-events: none; background: url("images/bg-light.jpg") center / cover no-repeat; opacity: 1; }
+:root.dark body::before { background-image: url("images/bg-dark.jpg"); opacity: .8; }
 @media (width < 48rem) {
-  :root[data-theme="addon:gojo:gojo"] body::before { opacity: .55; background-position: 38% center; }
+  :root body::before { opacity: .55; background-position: 38% center; }
   /* light: bright picture, keep it strong; center the glasses in the narrow portrait window */
-  :root[data-theme="addon:gojo:gojo"]:not(.dark) body::before { opacity: 1; background-position: 49% center; }
+  :root:not(.dark) body::before { opacity: 1; background-position: 49% center; }
 }
 
 /* Font: Bangers (OFL, bundled) for headings and labels, manga title look; body text keeps the app font */
-@font-face { font-family: "Gojo Text"; src: url("fonts/BeVietnamPro-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "Gojo Text"; src: url("fonts/BeVietnamPro-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
-@font-face { font-family: "Gojo Text"; src: url("fonts/BeVietnamPro-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
-@font-face { font-family: "Gojo Display"; src: url("fonts/Bangers.ttf") format("truetype"); font-weight: 400; font-display: swap; }
-:root[data-theme="addon:gojo:gojo"] { --font-sans: "Gojo Text", system-ui, sans-serif; }
-:root[data-theme="addon:gojo:gojo"] :is(h1, h2, h3, [data-testid="session-project"], [data-testid="focus-page"] h1, [data-testid="focus-page"] h2) { font-family: "Gojo Display", var(--font-sans, system-ui), sans-serif; font-weight: 400; letter-spacing: .05em; }
+@font-face { font-family: "gojo-text"; src: url("fonts/BeVietnamPro-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "gojo-text"; src: url("fonts/BeVietnamPro-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "gojo-text"; src: url("fonts/BeVietnamPro-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "gojo-display"; src: url("fonts/Bangers.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+:root { --font-sans: "gojo-text", system-ui, sans-serif; }
+:root :is(h1, h2, h3, [data-testid="session-project"], [data-part="focus-page"] h1, [data-part="focus-page"] h2) { font-family: "gojo-display", var(--font-sans, system-ui), sans-serif; font-weight: 400; letter-spacing: .05em; }
 
 /* Focus page background: Unlimited Void picture under a dark veil so text stays readable */
-:root[data-theme="addon:gojo:gojo"] [data-testid="focus-page"] { background: linear-gradient(rgba(2, 4, 10, .78), rgba(2, 4, 10, .88)), url("images/void.jpg") center / cover no-repeat !important; }
-:root[data-theme="addon:gojo:gojo"] [data-testid="focus-page"] > * { background-color: transparent !important; }
+:root [data-part="focus-page"] { background: linear-gradient(rgba(2, 4, 10, .78), rgba(2, 4, 10, .88)), url("images/void.jpg") center / cover no-repeat; }
+:root [data-part="focus-page"] > * { background-color: transparent; }
 
-/* Domain Expansion: opening the Focus page plays the eye, then Unlimited Void, then fades to the page (each mount plays once) */
+/* Domain Expansion: opening the Focus page plays the eye, then Unlimited Void, then fades to the page (data-focus-opened: 1.2 s after the page opens) */
 @media (prefers-reduced-motion: no-preference) {
-  :root[data-theme="addon:gojo:gojo"][data-opt-domain="on"] [data-testid="focus-page"] { position: relative; }
-  :root[data-theme="addon:gojo:gojo"][data-opt-domain="on"] [data-testid="focus-page"]::after,
-  :root[data-theme="addon:gojo:gojo"][data-opt-domain="on"] [data-testid="focus-page"]::before { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; }
-  :root[data-theme="addon:gojo:gojo"][data-opt-domain="on"] [data-testid="focus-page"]::after { z-index: 30; background: radial-gradient(circle at 50% 50%, transparent 0 10%, rgba(0, 0, 0, .4) 75%), url("images/void.jpg") center / cover no-repeat; animation: gojo-domain 1.2s ease-out both; }
-  :root[data-theme="addon:gojo:gojo"][data-opt-domain="on"] [data-testid="focus-page"]::before { z-index: 31; inset: auto; top: 50%; left: 50%; translate: -50% -50%; width: min(320px, 80%); aspect-ratio: 280 / 162; border-radius: 0; background: url("images/eye.gif") center / cover no-repeat; -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 72%); mask-image: radial-gradient(ellipse at center, #000 40%, transparent 72%); animation: gojo-eye 1.2s ease-in-out both; }
+  :root[data-opt-domain="on"] [data-part="focus-page"] { position: relative; }
+  :root[data-opt-domain="on"] [data-part="focus-page"][data-focus-opened]::after,
+  :root[data-opt-domain="on"] [data-part="focus-page"][data-focus-opened]::before { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; }
+  :root[data-opt-domain="on"] [data-part="focus-page"][data-focus-opened]::after { z-index: 30; background: radial-gradient(circle at 50% 50%, transparent 0 10%, rgba(0, 0, 0, .4) 75%), url("images/void.jpg") center / cover no-repeat; animation: gojo-domain 1.2s ease-out both; }
+  :root[data-opt-domain="on"] [data-part="focus-page"][data-focus-opened]::before { z-index: 31; inset: auto; top: 50%; left: 50%; translate: -50% -50%; width: min(320px, 80%); aspect-ratio: 280 / 162; border-radius: 0; background: url("images/eye.gif") center / cover no-repeat; -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 72%); mask-image: radial-gradient(ellipse at center, #000 40%, transparent 72%); animation: gojo-eye 1.2s ease-in-out both; }
   @keyframes gojo-domain { 0% { opacity: .9; transform: scale(1.3); } 30% { opacity: .8; transform: scale(1); } 99% { opacity: 0; transform: scale(1); visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
   @keyframes gojo-eye { 0%, 8% { opacity: 0; transform: scale(.6); } 24% { opacity: 1; transform: scale(1); } 58% { opacity: 1; transform: scale(1.12); } 78% { opacity: 0; transform: scale(3); } 100% { opacity: 0; visibility: hidden; } }
 }
 
 /* light: deeper link colour over the art */
-:root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="assistant-text"] a { color: color-mix(in srgb, var(--primary) 78%, #000); }
-:root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="work-area"], :root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="session-area"] { background: transparent; }
-:root[data-theme="addon:gojo:gojo"]:not(.dark) :is([data-testid="tool-card"], [data-testid="permission-panel"]) { background: color-mix(in srgb, var(--card) 82%, transparent); }
+:root:not(.dark) [data-part="assistant-text"] a { color: color-mix(in srgb, var(--primary) 78%, #000); }
+:root:not(.dark) [data-part="work-area"], :root:not(.dark) [data-part="session-area"] { background: transparent; }
+:root:not(.dark) :is([data-part="tool-card"], [data-part="permission-panel"]) { background: color-mix(in srgb, var(--card) 82%, transparent); }
 
 /* ---- registered progress for the Black Flash release ---- */
 @property --gojo-bf { syntax: "<number>"; inherits: false; initial-value: 1; }
 
 @media (prefers-reduced-motion: no-preference) {
   /* Thinking = charging a Black Flash: dark red aura, crackling strip, tiny tremor */
-  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="thinking"]::after { content: ""; position: absolute; left: -6px; right: -6px; bottom: -8px; height: 14px; pointer-events: none; background: url("images/crackle.svg") repeat-x 0 center / auto 100%; animation: gojo-crackle .5s steps(4, end) infinite; }
+  :root[data-opt-flash="on"] [data-part="thinking"]::after { content: ""; position: absolute; left: -6px; right: -6px; bottom: -8px; height: 14px; pointer-events: none; background: url("images/crackle.svg") repeat-x 0 center / auto 100%; animation: gojo-crackle .5s steps(4, end) infinite; }
   @keyframes gojo-crackle { from { transform: translateX(0); opacity: .9; } 50% { opacity: .35; } to { transform: translateX(-64px); opacity: .9; } }
 
-  /* Release: when the thinking row leaves, the session area shows a small inline Black Flash badge once (transition of --gojo-bf, 0 -> 1 through a spike curve) */
-  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"] { position: relative; }
-  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]::after,
-  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]::before { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; --gojo-bf: 1; opacity: calc(min(var(--gojo-bf), 1 - var(--gojo-bf)) * 2); transition: --gojo-bf .9s linear(0, 0.5 7%, 0.5 12%, 0.56 16%, 0.5 21%, 0.62 30%, 0.78 50%, 0.9 75%, 1); }
-  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]::after { z-index: 40; inset: auto 0 0 0; height: 56px; background: url("images/lightning.svg") center / cover no-repeat; -webkit-mask-image: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent); mask-image: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent); }
-  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]::before { z-index: 41; content: "BLACK FLASH"; inset: auto 0 12px 0; height: 32px; display: flex; align-items: center; justify-content: center; font: 400 26px/1 "Gojo Display", var(--font-sans, system-ui); letter-spacing: .06em; white-space: nowrap; color: #fff; text-shadow: 0 0 10px #ff1744, 2px 2px 0 #ff1744, -2px -2px 0 #000; transform: rotate(-3deg); }
-  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]:has([data-testid="thinking"])::after,
-  :root[data-theme="addon:gojo:gojo"][data-opt-flash="on"] [data-testid="session-area"]:has([data-testid="thinking"])::before { --gojo-bf: 0; transition: none; }
+  /* Release: when a turn ends (data-just-finished, 1.2 s) the session area shows a small inline Black Flash badge once (--gojo-bf 0 -> 1 through a spike curve) */
+  :root[data-opt-flash="on"] [data-part="session-area"] { position: relative; }
+  :root[data-opt-flash="on"] [data-part="session-area"][data-just-finished]::after,
+  :root[data-opt-flash="on"] [data-part="session-area"][data-just-finished]::before { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; opacity: calc(min(var(--gojo-bf), 1 - var(--gojo-bf)) * 2); animation: gojo-black-flash .9s linear(0, 0.5 7%, 0.5 12%, 0.56 16%, 0.5 21%, 0.62 30%, 0.78 50%, 0.9 75%, 1) both; }
+  :root[data-opt-flash="on"] [data-part="session-area"][data-just-finished]::after { z-index: 40; inset: auto 0 0 0; height: 56px; background: url("images/lightning.svg") center / cover no-repeat; -webkit-mask-image: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent); mask-image: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent); }
+  :root[data-opt-flash="on"] [data-part="session-area"][data-just-finished]::before { z-index: 41; content: "BLACK FLASH"; inset: auto 0 12px 0; height: 32px; display: flex; align-items: center; justify-content: center; font: 400 26px/1 "gojo-display", var(--font-sans, system-ui); letter-spacing: .06em; white-space: nowrap; color: #fff; text-shadow: 0 0 10px #ff1744, 2px 2px 0 #ff1744, -2px -2px 0 #000; transform: rotate(-3deg); }
+  @keyframes gojo-black-flash { from { --gojo-bf: 0; } to { --gojo-bf: 1; } }
 }
 
 /* ---- cursed energy: fire and smoke around frames ----
    Kept away from text: outside haze above and beside the input box, your message and popups (never below them: the footer line lives there);
    inside mist only in the side gutters of the main panel, between header and footer. Static look always; drift and flicker only when motion is allowed. */
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"]) { position: relative; }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [data-testid="prompt-box"]::before { content: ""; position: absolute; inset: -12px; box-sizing: border-box; border: 12px solid transparent; pointer-events: none; z-index: 1; background: radial-gradient(ellipse 60% 45% at 50% -6%, rgba(255, 90, 30, .8), transparent 75%), url("images/smoke.svg") 0 0 / 360px 360px; background-origin: border-box; background-clip: border-box; -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box; -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) padding-box exclude, linear-gradient(#000 0 0) border-box; filter: blur(5px); opacity: .8; border-radius: 18px 34px 18px 34px; }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [data-testid="user-message"] > .is-user > div::before { content: ""; position: absolute; inset: -12px; box-sizing: border-box; border: 12px solid transparent; pointer-events: none; z-index: 1; background: radial-gradient(ellipse 60% 45% at 50% -6%, rgba(255, 90, 30, .8), transparent 75%), url("images/smoke.svg") 0 0 / 360px 360px; background-origin: border-box; background-clip: border-box; -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box; -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) padding-box exclude, linear-gradient(#000 0 0) border-box; filter: blur(5px); opacity: .8; border-radius: 32px 32px 15px 32px; }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [data-testid="permission-panel"]::before { content: ""; position: absolute; inset: -12px; box-sizing: border-box; border: 12px solid transparent; pointer-events: none; z-index: 1; background: radial-gradient(ellipse 60% 45% at 50% -6%, rgba(255, 90, 30, .8), transparent 75%), url("images/smoke.svg") 0 0 / 360px 360px; background-origin: border-box; background-clip: border-box; -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box; -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) padding-box exclude, linear-gradient(#000 0 0) border-box; filter: blur(5px); opacity: .8; border-radius: 18px 32px 18px 32px; }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"]:not(.dark) :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { opacity: .85; }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [data-testid="work-area"] { position: relative; }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [data-testid="work-area"]::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 5; background: radial-gradient(ellipse 30% 40% at 0% 70%, rgba(255, 90, 30, .6), transparent 70%), radial-gradient(ellipse 30% 40% at 100% 70%, rgba(255, 90, 30, .6), transparent 70%), url("images/smoke.svg") 0 0 / 420px 420px; -webkit-mask-image: linear-gradient(90deg, #000, transparent 11%, transparent 89%, #000), linear-gradient(180deg, transparent 12%, #000 30%, #000 72%, transparent 84%); mask-image: linear-gradient(90deg, #000, transparent 11%, transparent 89%, #000), linear-gradient(180deg, transparent 12%, #000 30%, #000 72%, transparent 84%); -webkit-mask-composite: source-in; mask-composite: intersect; opacity: 1; mix-blend-mode: screen; }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"]:not(.dark) [data-testid="work-area"]::after { mix-blend-mode: normal; opacity: .55; }
+:root[data-opt-smoke="on"] :is([data-part="prompt-box"], [data-part="user-message"] > .is-user > div, [data-part="permission-panel"]) { position: relative; }
+:root[data-opt-smoke="on"] [data-part="prompt-box"]::before { content: ""; position: absolute; inset: -12px; box-sizing: border-box; border: 12px solid transparent; pointer-events: none; z-index: 1; background: radial-gradient(ellipse 60% 45% at 50% -6%, rgba(255, 90, 30, .8), transparent 75%), url("images/smoke.svg") 0 0 / 360px 360px; background-origin: border-box; background-clip: border-box; -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box; -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) padding-box exclude, linear-gradient(#000 0 0) border-box; filter: blur(5px); opacity: .8; border-radius: 18px 34px 18px 34px; }
+:root[data-opt-smoke="on"] [data-part="user-message"] > .is-user > div::before { content: ""; position: absolute; inset: -12px; box-sizing: border-box; border: 12px solid transparent; pointer-events: none; z-index: 1; background: radial-gradient(ellipse 60% 45% at 50% -6%, rgba(255, 90, 30, .8), transparent 75%), url("images/smoke.svg") 0 0 / 360px 360px; background-origin: border-box; background-clip: border-box; -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box; -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) padding-box exclude, linear-gradient(#000 0 0) border-box; filter: blur(5px); opacity: .8; border-radius: 32px 32px 15px 32px; }
+:root[data-opt-smoke="on"] [data-part="permission-panel"]::before { content: ""; position: absolute; inset: -12px; box-sizing: border-box; border: 12px solid transparent; pointer-events: none; z-index: 1; background: radial-gradient(ellipse 60% 45% at 50% -6%, rgba(255, 90, 30, .8), transparent 75%), url("images/smoke.svg") 0 0 / 360px 360px; background-origin: border-box; background-clip: border-box; -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box; -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) padding-box exclude, linear-gradient(#000 0 0) border-box; filter: blur(5px); opacity: .8; border-radius: 18px 32px 18px 32px; }
+:root[data-opt-smoke="on"]:not(.dark) :is([data-part="prompt-box"], [data-part="user-message"] > .is-user > div, [data-part="permission-panel"])::before { opacity: .85; }
+:root[data-opt-smoke="on"] [data-part="work-area"] { position: relative; }
+:root[data-opt-smoke="on"] [data-part="work-area"]::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 5; background: radial-gradient(ellipse 30% 40% at 0% 70%, rgba(255, 90, 30, .6), transparent 70%), radial-gradient(ellipse 30% 40% at 100% 70%, rgba(255, 90, 30, .6), transparent 70%), url("images/smoke.svg") 0 0 / 420px 420px; -webkit-mask-image: linear-gradient(90deg, #000, transparent 11%, transparent 89%, #000), linear-gradient(180deg, transparent 12%, #000 30%, #000 72%, transparent 84%); mask-image: linear-gradient(90deg, #000, transparent 11%, transparent 89%, #000), linear-gradient(180deg, transparent 12%, #000 30%, #000 72%, transparent 84%); -webkit-mask-composite: source-in; mask-composite: intersect; opacity: 1; mix-blend-mode: screen; }
+:root[data-opt-smoke="on"]:not(.dark) [data-part="work-area"]::after { mix-blend-mode: normal; opacity: .55; }
 /* side panel open: the right gutter belongs to it, keep the mist on the left only */
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [data-testid="work-area"]:has([data-testid="side-panel"])::after { -webkit-mask-image: linear-gradient(90deg, #000, transparent 11%), linear-gradient(180deg, transparent 12%, #000 30%, #000 72%, transparent 84%); mask-image: linear-gradient(90deg, #000, transparent 11%), linear-gradient(180deg, transparent 12%, #000 30%, #000 72%, transparent 84%); }
+:root[data-opt-smoke="on"] [data-part="work-area"]:has([data-part="side-panel"])::after { -webkit-mask-image: linear-gradient(90deg, #000, transparent 11%), linear-gradient(180deg, transparent 12%, #000 30%, #000 72%, transparent 84%); mask-image: linear-gradient(90deg, #000, transparent 11%), linear-gradient(180deg, transparent 12%, #000 30%, #000 72%, transparent 84%); }
 @media (width < 48rem) {
-  :root[data-theme="addon:gojo:gojo"] :is([data-testid="permission-panel"])::before, :root[data-theme="addon:gojo:gojo"] [data-testid="work-area"]::after { display: none; }
+  :root :is([data-part="permission-panel"])::before, :root [data-part="work-area"]::after { display: none; }
 }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"].dark :is([data-testid="prompt-box"], [data-testid="permission-panel"]) { box-shadow: 0 0 0 2px var(--ink), 5px 5px 0 var(--manga-shadow), 0 -8px 26px -6px rgba(255, 70, 40, .5); }
+:root[data-opt-smoke="on"].dark :is([data-part="prompt-box"], [data-part="permission-panel"]) { box-shadow: 0 0 0 2px var(--ink), 5px 5px 0 var(--manga-shadow), 0 -8px 26px -6px rgba(255, 70, 40, .5); }
 @media (prefers-reduced-motion: no-preference) {
-  :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [data-testid="work-area"]::after { animation: gojo-mist 38s linear infinite, gojo-fire 2.3s steps(1, end) infinite; }
-  :root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] :is([data-testid="prompt-box"], [data-testid="user-message"] > .is-user > div, [data-testid="permission-panel"])::before { animation: gojo-smoke 5s ease-in-out infinite alternate; }
+  :root[data-opt-smoke="on"] [data-part="work-area"]::after { animation: gojo-mist 38s linear infinite, gojo-fire 2.3s steps(1, end) infinite; }
+  :root[data-opt-smoke="on"] :is([data-part="prompt-box"], [data-part="user-message"] > .is-user > div, [data-part="permission-panel"])::before { animation: gojo-smoke 5s ease-in-out infinite alternate; }
   @keyframes gojo-mist { from { background-position: 0 0, 0 0, 0 0; } to { background-position: 0 0, 0 0, 420px -420px; } }
   @keyframes gojo-fire { 0% { opacity: .8; } 17% { opacity: .58; } 33% { opacity: .85; } 52% { opacity: .66; } 71% { opacity: .9; } 86% { opacity: .62; } }
   @keyframes gojo-smoke { from { transform: translateY(2px) scale(1); opacity: .65; } to { transform: translateY(-4px) scale(1.015); opacity: 1; } }
@@ -232,27 +227,27 @@
 
 /* ---- usage gauge: cursed energy output ----
    Level from the arc itself: the app writes stroke-dashoffset = 39.27 * (1 - percent). Offset < 5.9 means 85% or more (hot), < 15.7 means 60% or more (tense). */
-:root[data-theme="addon:gojo:gojo"] [data-testid="context-meter"] { position: relative; --gj-a: #00e5ff; --gj-b: #7c3aed; --gj-glow: rgba(0, 229, 255, .55); --gj-orbit: 3.6s; --gj-pulse: 2.6s; }
-:root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="context-meter"] { --gj-a: #0a59c0; --gj-b: #5c1fbf; --gj-glow: rgba(10, 89, 192, .4); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="context-meter"]:is(:has(circle[stroke-dashoffset^="6."], circle[stroke-dashoffset^="7."], circle[stroke-dashoffset^="8."], circle[stroke-dashoffset^="9."], circle[stroke-dashoffset^="10."], circle[stroke-dashoffset^="11."], circle[stroke-dashoffset^="12."], circle[stroke-dashoffset^="13."], circle[stroke-dashoffset^="14."], circle[stroke-dashoffset^="15."])) { --gj-a: #7c3aed; --gj-b: #d946ef; --gj-glow: rgba(168, 85, 247, .6); --gj-orbit: 2s; --gj-pulse: 1.4s; }
-:root[data-theme="addon:gojo:gojo"] [data-testid="context-meter"]:has(circle[stroke-dashoffset^="0."], circle[stroke-dashoffset^="1."], circle[stroke-dashoffset^="2."], circle[stroke-dashoffset^="3."], circle[stroke-dashoffset^="4."], circle[stroke-dashoffset^="5."], circle[stroke-dashoffset="0"]) { --gj-a: #ff1744; --gj-b: #ff6d00; --gj-glow: rgba(255, 23, 68, .7); --gj-orbit: .9s; --gj-pulse: .7s; }
-:root[data-theme="addon:gojo:gojo"] [data-testid="context-meter"] svg { width: 22px; height: 22px; overflow: visible; filter: drop-shadow(0 0 3px var(--gj-glow)); }
-:root[data-theme="addon:gojo:gojo"] [data-testid="context-meter"] svg circle { stroke-width: 2; }
-:root[data-theme="addon:gojo:gojo"] [data-testid="context-meter"] svg circle:first-child { stroke-dasharray: 2.2 1.6; opacity: .55; }
-:root[data-theme="addon:gojo:gojo"] [data-testid="context-meter"] svg circle:last-child { stroke: var(--gj-a); stroke-linecap: round; }
-:root[data-theme="addon:gojo:gojo"] [data-testid="plan-window"] .bg-ring-progress { background-image: linear-gradient(90deg, #00e5ff, #7c3aed, #ff003c); background-size: 300% 100%; }
-:root[data-theme="addon:gojo:gojo"] [data-testid="context-bar"] { box-shadow: 0 0 0 1.5px var(--ink); position: relative; }
+:root [data-part="context-meter"] { position: relative; --gj-a: #00e5ff; --gj-b: #7c3aed; --gj-glow: rgba(0, 229, 255, .55); --gj-orbit: 3.6s; --gj-pulse: 2.6s; }
+:root:not(.dark) [data-part="context-meter"] { --gj-a: #0a59c0; --gj-b: #5c1fbf; --gj-glow: rgba(10, 89, 192, .4); }
+:root [data-part="context-meter"]:is(:has(circle[stroke-dashoffset^="6."], circle[stroke-dashoffset^="7."], circle[stroke-dashoffset^="8."], circle[stroke-dashoffset^="9."], circle[stroke-dashoffset^="10."], circle[stroke-dashoffset^="11."], circle[stroke-dashoffset^="12."], circle[stroke-dashoffset^="13."], circle[stroke-dashoffset^="14."], circle[stroke-dashoffset^="15."])) { --gj-a: #7c3aed; --gj-b: #d946ef; --gj-glow: rgba(168, 85, 247, .6); --gj-orbit: 2s; --gj-pulse: 1.4s; }
+:root [data-part="context-meter"]:has(circle[stroke-dashoffset^="0."], circle[stroke-dashoffset^="1."], circle[stroke-dashoffset^="2."], circle[stroke-dashoffset^="3."], circle[stroke-dashoffset^="4."], circle[stroke-dashoffset^="5."], circle[stroke-dashoffset="0"]) { --gj-a: #ff1744; --gj-b: #ff6d00; --gj-glow: rgba(255, 23, 68, .7); --gj-orbit: .9s; --gj-pulse: .7s; }
+:root [data-part="context-meter"] svg { width: 22px; height: 22px; overflow: visible; filter: drop-shadow(0 0 3px var(--gj-glow)); }
+:root [data-part="context-meter"] svg circle { stroke-width: 2; }
+:root [data-part="context-meter"] svg circle:first-child { stroke-dasharray: 2.2 1.6; opacity: .55; }
+:root [data-part="context-meter"] svg circle:last-child { stroke: var(--gj-a); stroke-linecap: round; }
+:root [data-part="plan-window"] .bg-ring-progress { background-image: linear-gradient(90deg, #00e5ff, #7c3aed, #ff003c); background-size: 300% 100%; }
+:root [data-part="context-bar"] { box-shadow: 0 0 0 1.5px var(--ink); position: relative; }
 @media (prefers-reduced-motion: no-preference) {
   /* comet orbiting the gauge, glow breathing; both speed up as usage rises */
-  :root[data-theme="addon:gojo:gojo"] [data-testid="context-meter"]::before { content: ""; position: absolute; left: 4px; top: 50%; width: 30px; height: 30px; margin-top: -15px; border-radius: 50%; pointer-events: none; background: conic-gradient(from 0deg, transparent 0 58%, var(--gj-b) 86%, var(--gj-a) 98%, transparent 100%); -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px)); mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px)); animation: gojo-orbit var(--gj-orbit) linear infinite; }
-  :root[data-theme="addon:gojo:gojo"] [data-testid="context-meter"]::after { content: ""; position: absolute; left: 0; top: 50%; width: 38px; height: 38px; margin-top: -19px; border-radius: 50%; pointer-events: none; z-index: -1; background: radial-gradient(circle, var(--gj-glow), transparent 68%); animation: gojo-breathe var(--gj-pulse) ease-in-out infinite; }
-  :root[data-theme="addon:gojo:gojo"] [data-testid="context-meter"] svg circle:last-child { animation: gojo-arc var(--gj-pulse) ease-in-out infinite alternate; }
-  :root[data-theme="addon:gojo:gojo"] [data-testid="context-meter"]:has(circle[stroke-dashoffset^="0."], circle[stroke-dashoffset^="1."], circle[stroke-dashoffset^="2."], circle[stroke-dashoffset^="3."], circle[stroke-dashoffset^="4."], circle[stroke-dashoffset^="5."], circle[stroke-dashoffset="0"]) { animation: gojo-tremor .12s steps(2, end) infinite; }
+  :root [data-part="context-meter"]::before { content: ""; position: absolute; left: 4px; top: 50%; width: 30px; height: 30px; margin-top: -15px; border-radius: 50%; pointer-events: none; background: conic-gradient(from 0deg, transparent 0 58%, var(--gj-b) 86%, var(--gj-a) 98%, transparent 100%); -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px)); mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px)); animation: gojo-orbit var(--gj-orbit) linear infinite; }
+  :root [data-part="context-meter"]::after { content: ""; position: absolute; left: 0; top: 50%; width: 38px; height: 38px; margin-top: -19px; border-radius: 50%; pointer-events: none; z-index: -1; background: radial-gradient(circle, var(--gj-glow), transparent 68%); animation: gojo-breathe var(--gj-pulse) ease-in-out infinite; }
+  :root [data-part="context-meter"] svg circle:last-child { animation: gojo-arc var(--gj-pulse) ease-in-out infinite alternate; }
+  :root [data-part="context-meter"]:has(circle[stroke-dashoffset^="0."], circle[stroke-dashoffset^="1."], circle[stroke-dashoffset^="2."], circle[stroke-dashoffset^="3."], circle[stroke-dashoffset^="4."], circle[stroke-dashoffset^="5."], circle[stroke-dashoffset="0"]) { animation: gojo-tremor .12s steps(2, end) infinite; }
   /* bars: flowing energy */
-  :root[data-theme="addon:gojo:gojo"] [data-testid="plan-window"] .bg-ring-progress { animation: gojo-flow 2.4s linear infinite; }
-  :root[data-theme="addon:gojo:gojo"] [data-testid="plan-window"][data-level="warning"] .bg-ring-progress { animation-duration: 1.2s; }
-  :root[data-theme="addon:gojo:gojo"] [data-testid="plan-window"][data-level="limit"] { animation: gojo-tremor .12s steps(2, end) infinite; }
-  :root[data-theme="addon:gojo:gojo"] [data-testid="context-bar"]::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .55) 50%, transparent 70%); animation: gojo-sheen 2.6s ease-in-out infinite; }
+  :root [data-part="plan-window"] .bg-ring-progress { animation: gojo-flow 2.4s linear infinite; }
+  :root [data-part="plan-window"][data-level="warning"] .bg-ring-progress { animation-duration: 1.2s; }
+  :root [data-part="plan-window"][data-level="limit"] { animation: gojo-tremor .12s steps(2, end) infinite; }
+  :root [data-part="context-bar"]::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .55) 50%, transparent 70%); animation: gojo-sheen 2.6s ease-in-out infinite; }
   @keyframes gojo-orbit { to { transform: rotate(360deg); } }
   @keyframes gojo-breathe { 0%, 100% { opacity: .3; transform: scale(.85); } 50% { opacity: 1; transform: scale(1.12); } }
   @keyframes gojo-arc { from { stroke: var(--gj-a); } to { stroke: var(--gj-b); } }
@@ -261,19 +256,19 @@
 }
 
 /* Focus page: text shadow keeps text readable over the bright ink splashes in the picture */
-:root[data-theme="addon:gojo:gojo"] [data-testid="focus-page"] { text-shadow: 0 1px 3px rgba(0, 0, 0, .9); }
+:root [data-part="focus-page"] { text-shadow: 0 1px 3px rgba(0, 0, 0, .9); }
 
-:root[data-theme="addon:gojo:gojo"] [data-testid="tool-card"] .group\/head > button:first-child { padding-left: 14px; }
+:root [data-part="tool-card"] .group\/head > button:first-child { padding-left: 14px; }
 
-:root[data-theme="addon:gojo:gojo"]:not(.dark) [data-testid="user-message"] > .is-user > div { background: linear-gradient(135deg, color-mix(in srgb, #ff3b4e 50%, var(--card)), color-mix(in srgb, #c0102e 42%, var(--card))); }
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"].dark [data-testid="permission-panel"] { box-shadow: 0 0 0 2px var(--ink), inset 0 5px 0 #ff5a1e, 4px 4px 0 var(--manga-shadow), 0 -8px 26px -6px rgba(255, 70, 40, .5); }
+:root:not(.dark) [data-part="user-message"] > .is-user > div { background: linear-gradient(135deg, color-mix(in srgb, #ff3b4e 50%, var(--card)), color-mix(in srgb, #c0102e 42%, var(--card))); }
+:root[data-opt-smoke="on"].dark [data-part="permission-panel"] { box-shadow: 0 0 0 2px var(--ink), inset 0 5px 0 #ff5a1e, 4px 4px 0 var(--manga-shadow), 0 -8px 26px -6px rgba(255, 70, 40, .5); }
 /* the message bubble may clip its children; let the smoke ring around it show */
-:root[data-theme="addon:gojo:gojo"][data-opt-smoke="on"] [data-testid="user-message"] > .is-user > div { overflow: visible !important; }
-:root[data-theme="addon:gojo:gojo"] :is([data-testid="new-session-tab"], [data-testid="starting-session"]) { background: color-mix(in srgb, var(--card) 16%, transparent); }
-:root[data-theme="addon:gojo:gojo"].dark :is([data-testid="new-session-tab"], [data-testid="starting-session"]) { text-shadow: 0 1px 4px rgba(0, 0, 0, .85); }
+:root[data-opt-smoke="on"] [data-part="user-message"] > .is-user > div { overflow: visible; }
+:root :is([data-testid="new-session-tab"], [data-testid="starting-session"]) { background: color-mix(in srgb, var(--card) 16%, transparent); }
+:root.dark :is([data-testid="new-session-tab"], [data-testid="starting-session"]) { text-shadow: 0 1px 4px rgba(0, 0, 0, .85); }
 
 /* fluid veil: soft colour blobs flow over the art, behind the panels; one transformed layer, no layout cost */
-:root[data-theme="addon:gojo:gojo"] body::after {
+:root body::after {
   content: ""; position: fixed; inset: -20%; z-index: -1; pointer-events: none; opacity: .3;
   background:
     radial-gradient(40% 35% at 25% 30%, color-mix(in srgb, var(--primary) 70%, transparent), transparent 70%),
@@ -282,9 +277,9 @@
     radial-gradient(30% 30% at 15% 85%, color-mix(in srgb, #ff6b9a 45%, transparent), transparent 70%);
   filter: blur(40px); will-change: transform;
 }
-:root[data-theme="addon:gojo:gojo"].dark body::after { opacity: .35; mix-blend-mode: screen; }
+:root.dark body::after { opacity: .35; mix-blend-mode: screen; }
 @media (prefers-reduced-motion: no-preference) {
-  :root[data-theme="addon:gojo:gojo"] body::after { animation: gojo-fluid 28s ease-in-out infinite alternate; }
+  :root body::after { animation: gojo-fluid 28s ease-in-out infinite alternate; }
   @keyframes gojo-fluid {
     0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
     33%  { transform: translate3d(6%, -4%, 0) rotate(40deg) scale(1.15); }
@@ -292,7 +287,31 @@
     100% { transform: translate3d(3%, 6%, 0) rotate(70deg) scale(1.2); }
   }
 }
-@media (width < 48rem) { :root[data-theme="addon:gojo:gojo"] body::after { display: none; } }
+@media (width < 48rem) { :root body::after { display: none; } }
 
-/* TEST: animated wallpaper (video converted to GIF, CSS cannot play video). Remove this block to restore the still art. */
-:root[data-theme="addon:gojo:gojo"] body::before, :root[data-theme="addon:gojo:gojo"].dark body::before { background-image: url("images/bg-anim.gif"); opacity: 1; }
+/* animated wallpaper (video converted to GIF, CSS cannot play video). Remove this block to restore the still art. */
+:root body::before, :root.dark body::before { background-image: url("images/bg-anim.gif"); opacity: 1; }
+
+/* ---- controls outside the chat: settings, dialogs, forms (same manga vocabulary: ink outline, hard shadow, two sharp corners) ---- */
+:root :focus-visible { outline-color: var(--primary); }
+:root [role="switch"] { border-radius: 3px 9px 3px 9px; box-shadow: 0 0 0 1.5px var(--ink), 2px 2px 0 var(--manga-shadow); }
+:root [role="switch"] > * { border-radius: 2px 6px 2px 6px; }
+:root [role="switch"][aria-checked="true"] { background-color: var(--primary); }
+:root [data-slot="select-trigger"] { border-radius: 3px 10px 3px 10px; border-color: transparent; box-shadow: 0 0 0 1.5px var(--ink), 2px 2px 0 var(--manga-shadow); }
+:root :is([data-slot="button"].bg-primary, [data-slot="button"].border-border, [data-slot="button"].dark\:border-input) { border-radius: 3px 10px 3px 10px; box-shadow: 0 0 0 1.5px var(--ink), 2px 2px 0 var(--manga-shadow); }
+:root :is(input:not([type]), input[type="text"], input[type="search"], input[type="number"], input[type="url"], input[type="password"], textarea).border { border-radius: 3px 10px 3px 10px; border-color: color-mix(in srgb, var(--ink) 55%, transparent); }
+:root :is(input:not([type]), input[type="text"], input[type="search"], input[type="number"], input[type="url"], input[type="password"], textarea).border:focus { border-color: var(--primary); box-shadow: 0 0 0 1.5px var(--primary), 2px 2px 0 var(--primary); }
+:root [data-part="session-search"], :root [data-part="commit-message"] { border-radius: 3px 10px 3px 10px; box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--ink) 55%, transparent); }
+:root [data-slot="badge"] { border-radius: 2px 8px 2px 8px; box-shadow: 0 0 0 1px var(--ink); font-family: "gojo-display", var(--font-sans, system-ui); letter-spacing: .05em; }
+:root kbd { border-radius: 2px 5px 2px 5px; box-shadow: 0 0 0 1px var(--ink), 1px 1px 0 var(--manga-shadow); }
+:root :is([data-part="scroll-to-bottom"], [data-part="toast-region"] > *) { box-shadow: 0 0 0 1.5px var(--ink), 3px 3px 0 var(--manga-shadow); }
+:root :is([data-pane-tab], [role="tab"][data-testid^="pane-"]) { font-family: "gojo-display", var(--font-sans, system-ui); letter-spacing: .06em; border-radius: 3px 10px 3px 10px; }
+:root :is([data-pane-tab], [role="tab"][data-testid^="pane-"])[aria-selected="true"] { background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 30%, transparent), color-mix(in srgb, var(--primary) 6%, transparent)); box-shadow: inset 0 -3px 0 var(--primary); }
+:root [data-testid^="settings-group-"] { border-radius: 3px 12px 3px 12px; }
+:root [data-testid^="settings-group-"]:hover { background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 20%, transparent), transparent); }
+:root [data-testid^="settings-group-"][aria-selected="true"] { background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 34%, transparent), color-mix(in srgb, var(--primary) 6%, transparent)); box-shadow: inset 4px 0 0 var(--ink); }
+:root [data-testid="keybind"] > span { border-radius: 2px 5px 2px 5px; box-shadow: 0 0 0 1px var(--ink), 1px 1px 0 var(--manga-shadow); }
+:root .timeline :not(pre) > code { border-radius: 3px; box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 45%, transparent); }
+:root .timeline blockquote { border-left: 4px solid var(--primary); background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 12%, transparent), transparent); }
+:root .timeline th { font-family: "gojo-display", var(--font-sans, system-ui); letter-spacing: .05em; background: color-mix(in srgb, var(--primary) 16%, transparent); }
+:root * { scrollbar-color: color-mix(in srgb, var(--primary) 55%, transparent) transparent; scrollbar-width: thin; }

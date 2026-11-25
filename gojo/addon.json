@@ -1,8 +1,19 @@
 {
   "name": "gojo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Gojo: manga style, art background, Six Eyes intro, Unlimited Void on opening Focus, cursed energy smoke on frames, Black Flash charge and release. No capabilities.",
   "capabilities": [],
+  "claudeUi": ">=1.5",
+  "assets": {
+    "eye-loader": {
+      "path": "images/eye-loader.gif",
+      "label": "Six Eyes loader"
+    },
+    "done": {
+      "path": "images/done.svg",
+      "label": "Six Eyes done mark"
+    }
+  },
   "themes": [
     {
       "id": "gojo",
@@ -66,8 +77,30 @@
           "id": "flash",
           "label": "Black Flash"
         }
-      ]
+      ],
+      "css": "theme.css",
+      "slots": {
+        "loader": "eye-loader",
+        "done-icon": "done",
+        "thinking-phrases": {
+          "en": [
+            "Throughout Heaven and Earth…",
+            "I alone am the honored one.",
+            "Cursed technique: Infinity…",
+            "Nine ropes, polarized light…",
+            "Hollow Purple charging…",
+            "Black Flash incoming…"
+          ],
+          "vi": [
+            "Thiên thượng thiên hạ…",
+            "Duy ngã độc tôn.",
+            "Chú thuật: Vô Hạ Hạn…",
+            "Chín sợi dây, ánh sáng phân cực…",
+            "Hư Thức: Tím đang tụ lực…",
+            "Hắc Thiểm sắp giáng…"
+          ]
+        }
+      }
     }
-  ],
-  "css": "theme.css"
+  ]
 }

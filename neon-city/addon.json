@@ -1,7 +1,8 @@
 {
   "name": "neon-city",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Cyberpunk HUD theme with city pictures as background, rain, glitch and loaders.",
+  "claudeUi": ">=1.5",
   "capabilities": [],
   "themes": [
     {
@@ -60,8 +61,8 @@
           "label": "Light rain",
           "default": false
         }
-      ]
+      ],
+      "css": "theme.css"
     }
-  ],
-  "css": "theme.css"
+  ]
 }

@@ -12,7 +12,7 @@ Addons for [claude-ui](https://github.com/cuonghuunguyen/claude-code-ui). An add
 
 ## Install
 
-Each addon is one folder with `addon.json` at its root. This repo holds many addons, so install from a local clone, not from the repo URL.
+Each addon is one folder with `addon.json` at its root. Needs Claude UI 1.5 or newer. This repo holds many addons, so install from a local clone, not from the repo URL.
 
 1. Clone the repo on the machine that runs claude-ui:
    ```sh
@@ -34,4 +34,4 @@ Update: `git pull`. claude-ui reads a local folder again each time the dialog op
 
 ## License
 
-Fan-made addons reference third-party works. Characters, artwork and pictures belong to their owners. `neon-city` bundles city pictures: personal use, removed on request. `chainsaw-man-reze` embeds fan art in its `theme.css`: personal use, all rights stay with the owners; it is removed on request. `gojo` bundles fan pictures and a short clip (backgrounds, Unlimited Void, eye) in `images/`: personal use, all rights stay with the owners; removed on request.
+Fan-made addons reference third-party works. Characters, artwork and pictures belong to their owners. `neon-city` bundles city pictures: personal use, removed on request. `chainsaw-man-reze` bundles fan art (backgrounds, dancing loader) in `images/`: personal use, all rights stay with the owners; it is removed on request. `gojo` bundles fan pictures and a short clip (backgrounds, Unlimited Void, eye) in `images/`: personal use, all rights stay with the owners; removed on request.

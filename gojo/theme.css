@@ -50,6 +50,9 @@
 :root .xterm-rows .xterm-fg-6, :root .xterm-rows .xterm-fg-14 { color: var(--info) !important; }
 :root .xterm-rows .xterm-fg-7, :root .xterm-rows .xterm-fg-15 { color: var(--muted-foreground) !important; }
 :root .xterm-rows .xterm-fg-8 { color: var(--syntax-comment) !important; }
+:root .xterm .xterm-rows { color: var(--foreground) !important; }
+:root.dark .xterm .xterm-rows .xterm-fg-0 { color: var(--secondary) !important; }
+:root:not(.dark) .xterm .xterm-rows .xterm-fg-0 { color: var(--foreground) !important; }
 
 /* streamdown code: GitHub hexes -> syntax tokens */
 :root [data-streamdown="code-block"] code span[style*="#d73a49" i], :root [data-streamdown="code-block"] code span[style*="#f97583" i] { --sdm-c: var(--syntax-keyword) !important; --shiki-dark: var(--syntax-keyword) !important; }

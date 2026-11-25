@@ -19,6 +19,8 @@
 /* Frosted panels. Contrast: every text run measured >= 4.5:1 (WCAG AA) at its worst pixel over the picture. */
 :is(.bg-card, [class*="bg-card"]) { background-color: color-mix(in srgb, var(--card) 56%, transparent); backdrop-filter: blur(5px); }
 aside[class] { background-color: color-mix(in srgb, var(--background) 58%, transparent) !important; backdrop-filter: blur(6px); border-radius: 1rem; }
+/* Title bar stays clear on desktop: claude-ui gives it --panel-alpha while the picture shows (phones: the header rule below). */
+@media (min-width: 768px) { :root[data-backdrop] [data-part="titlebar"] { background-color: transparent; } }
 .dark { --destructive: #ff9f9c; --err: #ff9f9c; }
 
 /* Loader fallback (builds without the loader slot): the dancing figure as background of the spinner svg. */
@@ -61,6 +63,21 @@ aside[class] { background-color: color-mix(in srgb, var(--background) 58%, trans
 [data-part="done-icon"] img { animation: none; }
 :root[data-motion="off"] [data-part="thinking"] > * { font-size: inherit; }
 :root[data-motion="off"] [data-part="thinking"] > *::after { content: none; }
+
+/* Terminal (same as neon-city): xterm draws on the frosted panel (its own surface colour off), text and ANSI colours from the theme tokens.
+   xterm styles are not in a cascade layer, so these need !important. */
+:root .xterm :is(.xterm-viewport, .xterm-scrollable-element) { background-color: transparent !important; }
+:root .xterm .xterm-rows { color: var(--foreground) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-1, .xterm-fg-9) { color: var(--destructive) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-2, .xterm-fg-10) { color: var(--success) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-3, .xterm-fg-11) { color: var(--warning) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-4, .xterm-fg-12) { color: var(--syntax-function) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-5, .xterm-fg-13) { color: var(--syntax-keyword) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-6, .xterm-fg-14) { color: var(--info) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-7, .xterm-fg-15) { color: var(--muted-foreground) !important; }
+:root .xterm .xterm-rows .xterm-fg-8 { color: var(--syntax-comment) !important; }
+:root.dark .xterm .xterm-rows .xterm-fg-0 { color: var(--secondary) !important; }
+:root:not(.dark) .xterm .xterm-rows .xterm-fg-0 { color: var(--foreground) !important; }
 
 /* Phones: lighter panels so the picture shows; measured >= 4.5:1 in both modes. */
 @media (max-width: 767px) {

@@ -65,6 +65,9 @@
 :root [data-part="loader"] > img { width: 24px; height: 14px; margin: 1px -4px; object-fit: fill; -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); }
 :root svg:is([class*="animate-spin"], .lucide-loader-circle):not(.absolute) { width: 24px; height: 14px; margin: 1px -4px; background: url("images/eye-loader.gif") center / 100% 100% no-repeat; -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%); animation: none; flex: none; overflow: visible; }
 :root svg:is([class*="animate-spin"], .lucide-loader-circle):not(.absolute) > * { display: none; }
+/* Done fallback (builds without the done-icon slot): the check svg gets the Six Eyes mark. */
+:root:not([data-slot-done-icon]) [data-part="tool-card"] span[data-state="output-available"] > svg.lucide-check { background: url("images/done.svg") center / contain no-repeat; }
+:root:not([data-slot-done-icon]) [data-part="tool-card"] span[data-state="output-available"] > svg.lucide-check > * { display: none; }
 
 /* thinking = sound-effect tag: skewed red-violet plate, ink outline, hard shadow, Bangers label */
 :root [data-part="thinking"] { position: relative; width: fit-content; padding: 4px 18px; color: #fff; font-family: "gojo-display", var(--font-sans, system-ui); background: linear-gradient(100deg, #ff1744, #7b1fa2, #ff1744) 0 0 / 200% 100%; border: 2px solid var(--ink); border-radius: 4px 14px 4px 14px; box-shadow: 3px 3px 0 var(--manga-shadow); transform: skewX(-8deg); }

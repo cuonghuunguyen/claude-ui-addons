@@ -1,15 +1,30 @@
-/* chainsaw-man-reze: blurred picture behind the app (the theme `background`, part backdrop), panels frosted over it.
-   Applies only while the Reze theme is picked (themes[].css), in the addon cascade layer: no !important needed against app classes. */
+/* chainsaw-man-reze: blurred picture behind the app, panels frosted over it. Applies only while the Reze theme is picked (themes[].css).
+   Claude UI with `background` support draws the picture as part backdrop and sets data-backdrop on <html>.
+   An older build ignores `background`: the :not([data-backdrop]) rules draw the same picture with html::before. */
 
-/* Backdrop: blur and tone the picture; oversize it so the blurred edge stays off screen. The veil (--backdrop-veil) is the old translucent app background. */
+/* Backdrop (new builds): blur and tone the picture; oversize it so the blurred edge stays off screen. The veil (--backdrop-veil) is the translucent app background. */
 [data-part="backdrop"] { inset: -24px; filter: blur(2px) saturate(1.1) brightness(1.03) contrast(0.95); }
 .dark [data-part="backdrop"] { filter: blur(2px) brightness(0.72); }
 .dark { --backdrop-veil: 0.42; }
 
-/* Frosted panels, only while the picture shows (data-backdrop). Contrast: every text run measured >= 4.5:1 (WCAG AA) at its worst pixel over the picture. */
-:root[data-backdrop] :is(.bg-card, [class*="bg-card"]) { background-color: color-mix(in srgb, var(--card) 56%, transparent); backdrop-filter: blur(5px); }
-:root[data-backdrop] aside[class] { background-color: color-mix(in srgb, var(--background) 58%, transparent); backdrop-filter: blur(6px); border-radius: 1rem; }
+/* Fallback picture (builds without `background`). */
+:root:not([data-backdrop]) { background: #e9eff7; }
+:root.dark:not([data-backdrop]) { background: #0f1512; }
+:root:not([data-backdrop])::before { content: ""; position: fixed; inset: -24px; z-index: -1; pointer-events: none; background: url("images/bg-light.jpg") center / cover no-repeat; filter: blur(2px) saturate(1.1) brightness(1.03) contrast(0.95); }
+:root.dark:not([data-backdrop])::before { background-image: url("images/bg-dark.jpg"); filter: blur(2px) brightness(0.72); }
+:root:not([data-backdrop]) body { background: transparent; }
+:root:not([data-backdrop]) #root > .bg-background { background: color-mix(in srgb, var(--background) 26%, transparent); }
+:root.dark:not([data-backdrop]) #root > .bg-background { background: color-mix(in srgb, var(--background) 42%, transparent); }
+
+/* Frosted panels. Contrast: every text run measured >= 4.5:1 (WCAG AA) at its worst pixel over the picture. */
+:is(.bg-card, [class*="bg-card"]) { background-color: color-mix(in srgb, var(--card) 56%, transparent); backdrop-filter: blur(5px); }
+aside[class] { background-color: color-mix(in srgb, var(--background) 58%, transparent) !important; backdrop-filter: blur(6px); border-radius: 1rem; }
 .dark { --destructive: #ff9f9c; --err: #ff9f9c; }
+
+/* Loader fallback (builds without the loader slot): the dancing figure as background of the spinner svg. */
+:root:not([data-slot-loader]) svg.lucide-loader-circle:not(.absolute) { width: 20px !important; height: 28px !important; margin: -6px -2px; background: url("images/dance.webp") center / contain no-repeat; animation: none !important; }
+:root:not([data-slot-loader]) svg.lucide-loader-circle:not(.absolute) > * { display: none; }
+.dark:not([data-slot-loader]) svg.lucide-loader-circle:not(.absolute) { filter: drop-shadow(0 0 1px rgba(255,255,255,.95)) drop-shadow(0 0 1px rgba(255,255,255,.7)); }
 
 /* Loader slot (dance.webp, 138-frame animated WebP, transparent background): taller than the 16px box it replaces. */
 [data-part="loader"] img { width: 20px; height: 28px; margin: -6px -2px; }
@@ -18,8 +33,12 @@
 /* Tool calls: a lit bomb burns down while running and never explodes; the explosion is the done-icon slot below. Works with or without the loader image. */
 [data-part="tool-card"] [data-part="loader"] { width: 30px; height: 30px; margin: -7px -5px; background: url("images/bomb.svg") center / contain no-repeat; }
 [data-part="tool-card"] [data-part="loader"] > * { display: none; }
+:root:not([data-slot-loader]) span:is([data-state="input-available"], [data-state="input-streaming"]) > svg.lucide-loader-circle { width: 30px !important; height: 30px !important; margin: -7px -5px; background: url("images/bomb.svg") center / contain no-repeat; filter: none !important; }
 
 /* Done-icon slot (boom.svg): the exploded bomb pops in once. */
+/* Done fallback (builds without the done-icon slot): the check svg gets the boom picture. */
+:root:not([data-slot-done-icon]) span[data-state="output-available"] > svg.lucide-check { width: 24px !important; height: 24px !important; margin: -4px -2px; background: url("images/boom.svg") center / contain no-repeat; animation: chainsaw-man-reze-boom-pop 0.4s ease-out; }
+:root:not([data-slot-done-icon]) span[data-state="output-available"] > svg.lucide-check > * { display: none; }
 [data-part="done-icon"] img { width: 24px; height: 24px; margin: -4px -2px; animation: chainsaw-man-reze-boom-pop 0.4s ease-out; }
 @keyframes chainsaw-man-reze-boom-pop { 0% { transform: scale(0.2) rotate(-20deg); opacity: 0; } 60% { transform: scale(1.3) rotate(6deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
 
@@ -36,17 +55,23 @@
 }
 
 /* Reduced motion: no pop, no rotation (the slot phrase shows instead). */
-:root[data-motion="off"] [data-part="done-icon"] img { animation: none; }
+:root[data-motion="off"] /* Done fallback (builds without the done-icon slot): the check svg gets the boom picture. */
+:root:not([data-slot-done-icon]) span[data-state="output-available"] > svg.lucide-check { width: 24px !important; height: 24px !important; margin: -4px -2px; background: url("images/boom.svg") center / contain no-repeat; animation: chainsaw-man-reze-boom-pop 0.4s ease-out; }
+:root:not([data-slot-done-icon]) span[data-state="output-available"] > svg.lucide-check > * { display: none; }
+[data-part="done-icon"] img { animation: none; }
 :root[data-motion="off"] [data-part="thinking"] > * { font-size: inherit; }
 :root[data-motion="off"] [data-part="thinking"] > *::after { content: none; }
 
 /* Phones: lighter panels so the picture shows; measured >= 4.5:1 in both modes. */
 @media (max-width: 767px) {
   :root:not(.dark) { --backdrop-veil: 0.06; }
+  :root:not([data-backdrop])::before { background-position: 56% 26%; filter: blur(1px) saturate(1.12) brightness(1.04); }
+  :root.dark:not([data-backdrop])::before { filter: blur(1px) brightness(0.78); }
+  :root:not([data-backdrop]) #root > .bg-background { background: color-mix(in srgb, var(--background) 6%, transparent); }
   [data-part="backdrop"] { background-position: 56% 26%; filter: blur(1px) saturate(1.12) brightness(1.04); }
   .dark [data-part="backdrop"] { filter: blur(1px) brightness(0.78); }
-  :root[data-backdrop] :is(.bg-card, [class*="bg-card"]) { background-color: color-mix(in srgb, var(--card) 66%, transparent); }
-  :root[data-backdrop].dark :is(.bg-card, [class*="bg-card"]) { background-color: color-mix(in srgb, var(--card) 38%, transparent); }
-  :root[data-backdrop] header { background-color: color-mix(in srgb, var(--card) 66%, transparent); backdrop-filter: blur(6px); }
-  :root[data-backdrop] aside[class] { background-color: color-mix(in srgb, var(--card) 90%, transparent); }
+  :is(.bg-card, [class*="bg-card"]) { background-color: color-mix(in srgb, var(--card) 66%, transparent); }
+  .dark :is(.bg-card, [class*="bg-card"]) { background-color: color-mix(in srgb, var(--card) 38%, transparent); }
+  header { background-color: color-mix(in srgb, var(--card) 66%, transparent); backdrop-filter: blur(6px); }
+  aside[class] { background-color: color-mix(in srgb, var(--card) 90%, transparent) !important; }
 }

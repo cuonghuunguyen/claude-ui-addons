@@ -520,9 +520,9 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
 :root[data-theme="addon:neon-city:neon"] svg:is([class*="animate-spin"], .lucide-loader-circle) > * { display: none; }
 :root[data-theme="addon:neon-city:neon"] svg:is([class*="animate-spin"], .lucide-loader-circle).absolute { background-image: var(--nx-target-frame); }
 /* Done (a tool row's spinner turns into its check): green brackets at rest around a diamond with the check; it pops in once with a shockwave ring. */
-:root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] [data-part="done-icon"] { position: relative; }
-:root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] [data-part="done-icon"] > svg.lucide-check { background: var(--nx-target-done) center / contain no-repeat; }
-:root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] [data-part="done-icon"] > svg.lucide-check > * { display: none; }
+:root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] :is([data-part="done-icon"], span[data-state="output-available"]:not(:has(> [data-part="done-icon"]))) { position: relative; }
+:root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] :is([data-part="done-icon"], span[data-state="output-available"]:not(:has(> [data-part="done-icon"]))) > svg.lucide-check { background: var(--nx-target-done) center / contain no-repeat; }
+:root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] :is([data-part="done-icon"], span[data-state="output-available"]:not(:has(> [data-part="done-icon"]))) > svg.lucide-check > * { display: none; }
 /* Thinking chip: the target before the label; the label rotates through HUD phrases (CSS content; the element keeps its own text), amber, mono, bold. */
 :root[data-theme="addon:neon-city:neon"] [data-part="thinking"] { padding-left: 24px; background: var(--nx-target) 5px center / 15px 15px no-repeat, linear-gradient(90deg, color-mix(in srgb, var(--nx-pink) 12%, transparent), transparent 40%); }
 :root[data-theme="addon:neon-city:neon"] [data-part="thinking"] > span { --color-muted-foreground: var(--nx-load); --muted-foreground: var(--nx-load); font-size: 0; }
@@ -543,8 +543,8 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
     @keyframes neon-city-nx-done-pop { from { transform: scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
     @keyframes neon-city-nx-shock { from { transform: scale(.35); opacity: .95; } to { transform: scale(1.42); opacity: 0; } }
     :root[data-theme="addon:neon-city:neon"] [data-part="thinking"] > span::after { animation: neon-city-nx-words 30s steps(1, end) infinite; }
-    :root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] [data-part="done-icon"] > svg.lucide-check { animation: neon-city-nx-done-pop .45s cubic-bezier(.175, .885, .32, 1.275) both; }
-    :root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] [data-part="done-icon"]::after {
+    :root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] :is([data-part="done-icon"], span[data-state="output-available"]:not(:has(> [data-part="done-icon"]))) > svg.lucide-check { animation: neon-city-nx-done-pop .45s cubic-bezier(.175, .885, .32, 1.275) both; }
+    :root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] :is([data-part="done-icon"], span[data-state="output-available"]:not(:has(> [data-part="done-icon"])))::after {
         content: "";
         position: absolute;
         inset: 0;

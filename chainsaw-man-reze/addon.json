@@ -1,8 +1,31 @@
 {
   "name": "chainsaw-man-reze",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Chainsaw Man Reze: blurred art background (light and dark), matching colours, dancing-figure loader, rotating Thinking text, burning bomb. No capabilities.",
+  "claudeUi": ">=1.5",
   "capabilities": [],
+  "assets": {
+    "bg-light": {
+      "path": "images/bg-light.jpg",
+      "label": "Light background"
+    },
+    "bg-dark": {
+      "path": "images/bg-dark.jpg",
+      "label": "Dark background"
+    },
+    "dance": {
+      "path": "images/dance.webp",
+      "label": "Dancing loader"
+    },
+    "bomb": {
+      "path": "images/bomb.svg",
+      "label": "Burning bomb"
+    },
+    "boom": {
+      "path": "images/boom.svg",
+      "label": "Exploded bomb"
+    }
+  },
   "themes": [
     {
       "id": "reze",
@@ -48,8 +71,40 @@
         "warn": "#f2c879",
         "ok": "#8fdca6",
         "info": "#8ab4ff"
-      }
+      },
+      "background": {
+        "light": {
+          "image": "bg-light"
+        },
+        "dark": {
+          "image": "bg-dark"
+        },
+        "veil": 0.26,
+        "panelAlpha": 0.56
+      },
+      "slots": {
+        "loader": "dance",
+        "done-icon": "boom",
+        "thinking-phrases": {
+          "en": [
+            "Reze đang châm ngòi…",
+            "Bomb Devil đang nạp thuốc nổ…",
+            "Denji ơi, chờ xíu nha…",
+            "Đang tính vụ nổ tiếp theo…",
+            "Boom sắp tới rồi…",
+            "Reze đang cười bí hiểm…"
+          ],
+          "vi": [
+            "Reze đang châm ngòi…",
+            "Bomb Devil đang nạp thuốc nổ…",
+            "Denji ơi, chờ xíu nha…",
+            "Đang tính vụ nổ tiếp theo…",
+            "Boom sắp tới rồi…",
+            "Reze đang cười bí hiểm…"
+          ]
+        }
+      },
+      "css": "theme.css"
     }
-  ],
-  "css": "theme.css"
+  ]
 }

@@ -528,7 +528,7 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
 :root[data-theme="addon:neon-city:neon"] [data-part="thinking"] > span { --color-muted-foreground: var(--nx-load); --muted-foreground: var(--nx-load); font-size: 0; }
 :root[data-theme="addon:neon-city:neon"] [data-part="thinking"] > span::after { content: "SYNCING NEURAL CORTEX..."; font-family: var(--nx-mono); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 @media (prefers-reduced-motion: no-preference) {
-    @keyframes nx-words {
+    @keyframes neon-city-nx-words {
         0%, 9.99% { content: "SYNCING NEURAL CORTEX..."; }
         10%, 19.990000000000002% { content: "CALIBRATING LOGIC BLADES // STANDBY..."; }
         20%, 29.990000000000002% { content: "DECRYPTING CLAUDE-CORE MATRIX..."; }
@@ -540,10 +540,10 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
         80%, 89.99% { content: "PIERCING THE BLACKWALL... SUMMONING AI"; }
         90%, 99.99% { content: "TARGET LOCKED // COMPILING OUTPUT..."; }
     }
-    @keyframes nx-done-pop { from { transform: scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
-    @keyframes nx-shock { from { transform: scale(.35); opacity: .95; } to { transform: scale(1.42); opacity: 0; } }
-    :root[data-theme="addon:neon-city:neon"] [data-part="thinking"] > span::after { animation: nx-words 30s steps(1, end) infinite; }
-    :root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] [data-part="done-icon"] > svg.lucide-check { animation: nx-done-pop .45s cubic-bezier(.175, .885, .32, 1.275) both; }
+    @keyframes neon-city-nx-done-pop { from { transform: scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
+    @keyframes neon-city-nx-shock { from { transform: scale(.35); opacity: .95; } to { transform: scale(1.42); opacity: 0; } }
+    :root[data-theme="addon:neon-city:neon"] [data-part="thinking"] > span::after { animation: neon-city-nx-words 30s steps(1, end) infinite; }
+    :root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] [data-part="done-icon"] > svg.lucide-check { animation: neon-city-nx-done-pop .45s cubic-bezier(.175, .885, .32, 1.275) both; }
     :root[data-theme="addon:neon-city:neon"] [data-part="tool-card"] [data-part="done-icon"]::after {
         content: "";
         position: absolute;
@@ -554,7 +554,7 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
         border: 1.5px solid var(--nx-done);
         border-radius: 50%;
         pointer-events: none;
-        animation: nx-shock .95s ease-out both;
+        animation: neon-city-nx-shock .95s ease-out both;
     }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -762,18 +762,18 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
 @media (prefers-reduced-motion: no-preference) {
     @keyframes neon-city-fade { 0%, 40% { opacity: 0; } 50%, 90% { opacity: 1; } 100% { opacity: 0; } }
     @keyframes neon-city-pan { 0%, 100% { transform: scale(1.02) translate3d(-1%, 0, 0); } 50% { transform: scale(1.06) translate3d(1%, -1%, 0); } }
-    @keyframes neon-spin { to { --neon-city-a: 360deg; } }
-    @keyframes neon-breathe {
+    @keyframes neon-city-neon-spin { to { --neon-city-a: 360deg; } }
+    @keyframes neon-city-neon-breathe {
         0%, 100% { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nx-pink) 20%, transparent), 0 0 6px color-mix(in srgb, var(--nx-pink) 10%, transparent); }
         50% { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nx-pink) 45%, transparent), 0 0 20px color-mix(in srgb, var(--nx-pink) 30%, transparent); }
     }
-    @keyframes neon-sweep { from { transform: translateX(-100%); } to { transform: translateX(400%); } }
-    @keyframes neon-in { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
-    @keyframes neon-rain-a { from { transform: rotate(12deg) translate3d(0, -400px, 0); } to { transform: rotate(12deg) translate3d(0, 0, 0); } }
-    @keyframes neon-rain-b { from { transform: rotate(12deg) translate3d(0, -300px, 0); } to { transform: rotate(12deg) translate3d(0, 0, 0); } }
-    @keyframes neon-shimmer { 0%, 100% { opacity: 1; } 50% { opacity: .7; } }
-    @keyframes neon-pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--success); } 50% { opacity: .55; box-shadow: 0 0 12px var(--success), 0 0 2px var(--success); } }
-    @keyframes neon-glitch {
+    @keyframes neon-city-neon-sweep { from { transform: translateX(-100%); } to { transform: translateX(400%); } }
+    @keyframes neon-city-neon-in { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+    @keyframes neon-city-neon-rain-a { from { transform: rotate(12deg) translate3d(0, -400px, 0); } to { transform: rotate(12deg) translate3d(0, 0, 0); } }
+    @keyframes neon-city-neon-rain-b { from { transform: rotate(12deg) translate3d(0, -300px, 0); } to { transform: rotate(12deg) translate3d(0, 0, 0); } }
+    @keyframes neon-city-neon-shimmer { 0%, 100% { opacity: 1; } 50% { opacity: .7; } }
+    @keyframes neon-city-neon-pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--success); } 50% { opacity: .55; box-shadow: 0 0 12px var(--success), 0 0 2px var(--success); } }
+    @keyframes neon-city-neon-glitch {
         0%, 84%, 100% { transform: none; text-shadow: none; clip-path: none; }
         85% { transform: translate(-2px, 0) skewX(-8deg); text-shadow: 1.5px 0 var(--nx-pink), -1.5px 0 var(--nx-cyan); clip-path: inset(10% 0 55% 0); }
         87% { transform: translate(2px, 0) skewX(6deg); text-shadow: -1.5px 0 var(--nx-pink), 1.5px 0 var(--nx-cyan); clip-path: inset(55% 0 8% 0); }
@@ -782,16 +782,16 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
         93% { transform: translate(-2px, 0) skewX(4deg); text-shadow: 1.5px 0 var(--nx-pink), -1.5px 0 var(--nx-cyan); clip-path: inset(65% 0 0 0); }
         95% { transform: translate(1px, 0) skewX(-3deg); text-shadow: -1.5px 0 var(--nx-pink), 1.5px 0 var(--nx-cyan); clip-path: none; }
     }
-    @keyframes neon-blink { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+    @keyframes neon-city-neon-blink { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
 
     html[data-theme="addon:neon-city:neon"]::before { animation: neon-city-pan 70s ease-in-out infinite; }
     html[data-theme="addon:neon-city:neon"].dark::after { animation: neon-city-fade 40s ease-in-out infinite, neon-city-pan 70s ease-in-out infinite reverse; }
-    :root[data-theme="addon:neon-city:neon"] #root::after { animation: neon-shimmer 5s ease-in-out infinite; }
-    :root[data-theme="addon:neon-city:neon"] div:has(> header[data-part="titlebar"])::before { animation: neon-rain-b 2s steps(50) infinite; }
-    :root[data-theme="addon:neon-city:neon"] div:has(> header[data-part="titlebar"])::after { animation: neon-rain-a 1.3s steps(32) infinite; }
-    :root[data-theme="addon:neon-city:neon"] [data-part="prompt-box"]:focus-within::before { animation: neon-spin 4s linear infinite; }
-    :root[data-theme="addon:neon-city:neon"] [data-part="thinking"] { animation: neon-breathe 2.6s ease-in-out infinite; }
-    :root[data-theme="addon:neon-city:neon"] [data-testid="connection-status"][data-status="connected"] > span[aria-hidden] { animation: neon-pulse 2s ease-in-out infinite; }
+    :root[data-theme="addon:neon-city:neon"] #root::after { animation: neon-city-neon-shimmer 5s ease-in-out infinite; }
+    :root[data-theme="addon:neon-city:neon"] div:has(> header[data-part="titlebar"])::before { animation: neon-city-neon-rain-b 2s steps(50) infinite; }
+    :root[data-theme="addon:neon-city:neon"] div:has(> header[data-part="titlebar"])::after { animation: neon-city-neon-rain-a 1.3s steps(32) infinite; }
+    :root[data-theme="addon:neon-city:neon"] [data-part="prompt-box"]:focus-within::before { animation: neon-city-neon-spin 4s linear infinite; }
+    :root[data-theme="addon:neon-city:neon"] [data-part="thinking"] { animation: neon-city-neon-breathe 2.6s ease-in-out infinite; }
+    :root[data-theme="addon:neon-city:neon"] [data-testid="connection-status"][data-status="connected"] > span[aria-hidden] { animation: neon-city-neon-pulse 2s ease-in-out infinite; }
     :root[data-theme="addon:neon-city:neon"] [data-part="tab"][data-state="running"]::after {
         content: "";
         position: absolute;
@@ -801,11 +801,11 @@ html[data-theme="addon:neon-city:neon"]:not(.dark)::after { display: none; }
         width: 20%;
         background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--nx-pink) 35%, transparent), transparent);
         pointer-events: none;
-        animation: neon-sweep 2.4s ease-in-out infinite;
+        animation: neon-city-neon-sweep 2.4s ease-in-out infinite;
     }
-    :root[data-theme="addon:neon-city:neon"] [data-part="tab"][data-state="running"] button[role="tab"] > span.truncate { animation: neon-glitch 2s steps(1, end) infinite; }
-    :root[data-theme="addon:neon-city:neon"] [data-part="user-message"] { animation: neon-in 220ms ease-out both; }
-    :root[data-theme="addon:neon-city:neon"] [data-part="prompt-box"] textarea:placeholder-shown:focus::placeholder { animation: neon-blink 1.6s ease-in-out infinite; }
+    :root[data-theme="addon:neon-city:neon"] [data-part="tab"][data-state="running"] button[role="tab"] > span.truncate { animation: neon-city-neon-glitch 2s steps(1, end) infinite; }
+    :root[data-theme="addon:neon-city:neon"] [data-part="user-message"] { animation: neon-city-neon-in 220ms ease-out both; }
+    :root[data-theme="addon:neon-city:neon"] [data-part="prompt-box"] textarea:placeholder-shown:focus::placeholder { animation: neon-city-neon-blink 1.6s ease-in-out infinite; }
 }
 
 /* Reduced motion: the rain stands still, so its streaks are fainter. */

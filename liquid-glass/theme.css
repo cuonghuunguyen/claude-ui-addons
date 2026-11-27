@@ -347,3 +347,17 @@
 
 /* Short popups over form controls (select): a denser fill, so the control under the popup edge does not show through. */
 [data-slot="select-content"] { --lg-tint: max(var(--opt-tint, 0.55), 0.82); }
+
+/* Phone sidebar drawer (below 48rem the core keeps it an opaque bg-card drawer): a glass sheet over the scrim, like an iOS 26 sidebar.
+   Denser tint than popups (long list of text); rounded outer corners, edge light on the open side. */
+@media (width < 48rem) and (prefers-reduced-transparency: no-preference) and (prefers-contrast: no-preference) {
+    :root:not([data-opt-reduce-transparency="on"]) aside[data-part="sidebar"] {
+        background-color: color-mix(in srgb, var(--lg-base) calc(max(var(--lg-tint), 0.72) * 100%), transparent);
+        background-image: var(--lg-sheen);
+        -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 1.25)) saturate(var(--lg-sat)) brightness(var(--lg-bright));
+        backdrop-filter: blur(calc(var(--lg-blur) * 1.25)) saturate(var(--lg-sat)) brightness(var(--lg-bright));
+        border-color: var(--lg-rim);
+        border-radius: 0 var(--lg-r-panel) var(--lg-r-panel) 0;
+        box-shadow: inset -1px 0 0 var(--lg-rim), inset 0 1px 0 var(--lg-spec), var(--lg-shadow);
+    }
+}

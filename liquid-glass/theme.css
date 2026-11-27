@@ -235,7 +235,7 @@
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
 }
-[data-part="terminal"] { background-color: color-mix(in srgb, var(--card) 94%, transparent); }
+[data-part="terminal"] { background-color: color-mix(in srgb, var(--card) calc(max(var(--panel-alpha, 1), 0.86) * 100%), transparent); }
 
 /* ---------- Details ---------- */
 ::selection { background: color-mix(in srgb, var(--primary) 30%, transparent); }
@@ -761,13 +761,20 @@ input[type="range"]:focus-visible { outline: 2px solid var(--ring); outline-offs
 :root.dark .xterm .xterm-rows .xterm-fg-0 { color: var(--lg-secondary-solid) !important; }
 :root:not(.dark) .xterm .xterm-rows .xterm-fg-0 { color: var(--foreground) !important; }
 :root .xterm .xterm-rows .xterm-cursor.xterm-cursor-block { background-color: var(--primary) !important; color: var(--primary-foreground) !important; }
-:root .xterm .xterm-rows :is(.xterm-cursor-bar, .xterm-cursor-underline) { --xterm-cursor: var(--primary); }
+:root .xterm .xterm-rows .xterm-cursor.xterm-cursor-bar { box-shadow: 2px 0 0 0 var(--primary) inset !important; }
+:root .xterm .xterm-rows .xterm-cursor.xterm-cursor-underline { box-shadow: 0 -2px 0 0 var(--primary) inset !important; }
 :root .xterm .xterm-rows .xterm-cursor.xterm-cursor-outline { outline-color: var(--primary) !important; }
 :root .xterm .xterm-selection div { background-color: color-mix(in srgb, var(--primary) 32%, transparent) !important; }
 :root .xterm .xterm-scrollable-element > .scrollbar > .slider { background: var(--lg-fill-hi) !important; border-radius: 999px; }
 :root .xterm .xterm-scrollable-element > .scrollbar.vertical > .slider { width: 6px !important; left: 2px !important; }
 /* Terminal tabs: capsules like the other tabs. */
-[data-part="terminal-tab"] { border-radius: 999px; }
+[data-part="terminal"] [role="tablist"] > .rounded-md, [data-part="terminal"] [role="tablist"] > .rounded-md > .rounded-md { border-radius: 999px; }
+[data-part="terminal"] [role="tablist"] > .rounded-md.bg-secondary {
+    background-color: var(--lg-fill-hi);
+    background-image: var(--lg-sheen);
+    box-shadow: inset 0 1px 0 var(--lg-spec), inset 0 0 0 0.5px var(--lg-rim), 0 1px 3px -1px #00000026;
+}
+[data-part="terminal"] > .border-b { border-color: var(--lg-rim-low); }
 
 /* ---------- Buttons, text fields, focus (components/ui/button.tsx data-slot=button; inputs everywhere) ----------
  * iOS 26: buttons and single-line fields are capsules. Bordered buttons (secondary, outline: commit box, git graph toolbar, dialogs)
@@ -818,3 +825,41 @@ textarea:not([data-part="prompt-box"] textarea):is(.rounded, .rounded-md, .round
 }
 .bg-popover > .flex.border-b:has(> input) > input { background: transparent !important; border: 0 !important; box-shadow: none !important; }
 .bg-popover > .flex.border-b:has(> input:focus-visible) { box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 26%, transparent); }
+
+/* ---------- Checkboxes and radio buttons (native inputs: commit box file rows, question panel, dialogs) ----------
+ * macOS 26 / iOS 26: checkbox = rounded square, radio = circle; off: translucent fill with a hairline rim; on: primary fill with a
+ * specular top and a white mark (check, dot, dash). The mark is an inline SVG (data: URI, allowed by the app's img-src). */
+input:is([type="checkbox"], [type="radio"]) {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: none;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    border: 0;
+    border-radius: 5px;
+    background: var(--lg-fill-hi) center / 100% 100% no-repeat;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 22%, transparent), inset 0 1px 1px #0000001a;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+input[type="radio"] { border-radius: 999px; }
+input:is([type="checkbox"], [type="radio"]):is(:checked, :indeterminate) {
+    background-color: var(--primary);
+    box-shadow: inset 0 1px 0 #ffffff59, inset 0 0 0 0.5px #00000026, 0 1px 3px -1px color-mix(in srgb, var(--primary) 70%, transparent);
+}
+input[type="checkbox"]:checked { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.2 8.4l2.4 2.4 5.2-5.6' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+input[type="checkbox"]:indeterminate { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8h7' stroke='%23fff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); }
+input[type="radio"]:checked { background-image: radial-gradient(circle, #ffffff 0 3px, transparent 3.5px); }
+input:is([type="checkbox"], [type="radio"]):focus-visible { outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 30%, transparent), inset 0 0 0 1px var(--primary); }
+input:is([type="checkbox"], [type="radio"]):disabled { opacity: 0.45; cursor: default; }
+@media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="off"]) input:is([type="checkbox"], [type="radio"]):active:not(:disabled) { scale: 0.88; transition: scale 0.18s cubic-bezier(0.3, 1.6, 0.5, 1); }
+}
+@media (prefers-contrast: more) {
+    input:is([type="checkbox"], [type="radio"]) { box-shadow: inset 0 0 0 1.5px var(--foreground); }
+}
+@media (forced-colors: active) {
+    input:is([type="checkbox"], [type="radio"]) { -webkit-appearance: auto; appearance: auto; background: none; box-shadow: none; }
+}

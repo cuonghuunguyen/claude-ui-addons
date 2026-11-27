@@ -235,7 +235,7 @@
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
 }
-[data-part="terminal"] { background-color: var(--card); }
+[data-part="terminal"] { background-color: color-mix(in srgb, var(--card) 94%, transparent); }
 
 /* ---------- Details ---------- */
 ::selection { background: color-mix(in srgb, var(--primary) 30%, transparent); }
@@ -742,3 +742,29 @@ input[type="range"]:focus-visible { outline: 2px solid var(--ring); outline-offs
 @media (prefers-contrast: more) {
     [data-part="user-message"] [class*="group-[.is-user]:border"] { border-color: var(--foreground); }
 }
+
+/* ---------- Terminal (xterm 6, DOM renderer) ----------
+ * Addon themes get claude-ui's default terminal colours (themes.ts terminalTheme). Like neon-city / gojo / reze: xterm draws on the theme
+ * surface (its own background off), text and ANSI colours from the palette (Xcode-like syntax colours), primary cursor, tinted selection,
+ * thin capsule scrollbar. Content layer: the panel stays near-solid (94% card), no blur. xterm styles are not in a cascade layer: !important.
+ * The terminal font and size are set by the app in JS (grid metrics): not touched. */
+:root .xterm :is(.xterm-viewport, .xterm-scrollable-element) { background-color: transparent !important; }
+:root .xterm .xterm-rows { color: var(--foreground) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-1, .xterm-fg-9) { color: var(--destructive) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-2, .xterm-fg-10) { color: var(--success) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-3, .xterm-fg-11) { color: var(--warning) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-4, .xterm-fg-12) { color: var(--syntax-function) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-5, .xterm-fg-13) { color: var(--syntax-keyword) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-6, .xterm-fg-14) { color: var(--info) !important; }
+:root .xterm .xterm-rows :is(.xterm-fg-7, .xterm-fg-15) { color: var(--muted-foreground) !important; }
+:root .xterm .xterm-rows .xterm-fg-8 { color: var(--syntax-comment) !important; }
+:root.dark .xterm .xterm-rows .xterm-fg-0 { color: var(--lg-secondary-solid) !important; }
+:root:not(.dark) .xterm .xterm-rows .xterm-fg-0 { color: var(--foreground) !important; }
+:root .xterm .xterm-rows .xterm-cursor.xterm-cursor-block { background-color: var(--primary) !important; color: var(--primary-foreground) !important; }
+:root .xterm .xterm-rows :is(.xterm-cursor-bar, .xterm-cursor-underline) { --xterm-cursor: var(--primary); }
+:root .xterm .xterm-rows .xterm-cursor.xterm-cursor-outline { outline-color: var(--primary) !important; }
+:root .xterm .xterm-selection div { background-color: color-mix(in srgb, var(--primary) 32%, transparent) !important; }
+:root .xterm .xterm-scrollable-element > .scrollbar > .slider { background: var(--lg-fill-hi) !important; border-radius: 999px; }
+:root .xterm .xterm-scrollable-element > .scrollbar.vertical > .slider { width: 6px !important; left: 2px !important; }
+/* Terminal tabs: capsules like the other tabs. */
+[data-part="terminal-tab"] { border-radius: 999px; }

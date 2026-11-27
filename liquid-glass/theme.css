@@ -534,6 +534,12 @@ button[role="switch"][aria-checked="true"] > span:first-child > span { translate
     mask-image: linear-gradient(to bottom, transparent 0, #000 var(--liquid-glass-fade-top), #000 calc(100% - var(--liquid-glass-fade-bottom)), transparent 100%);
 }
 [data-part="file-tree"] { --lg-fade-t: 0px; }
+/* While the sticky previous-message capsule floats over the timeline (sibling of the scroller), the top fade covers its height,
+   so content fades out before it passes under the glass instead of showing a hard edge below it. */
+[data-part="session-area"] :has(> .absolute.inset-x-0.top-0.z-10 button.rounded-b-lg) > [role="log"] { --lg-fade-t: 56px; }
+@media (width < 48rem), (pointer: coarse) {
+    [data-part="session-area"] :has(> .absolute.inset-x-0.top-0.z-10 button.rounded-b-lg) > [role="log"] { --lg-fade-t: 68px; }
+}
 @keyframes fade-top {
     from { --liquid-glass-fade-top: 0px; }
     to { --liquid-glass-fade-top: var(--lg-fade-t); }

@@ -3,8 +3,8 @@
   <rect width="800" height="1600" fill="#f2f0fb"/>
   <g filter="url(#soft)">
     <circle cx="150" cy="260" r="260" fill="#7fb2ff" opacity="0.75"/>
-    <circle cx="680" cy="700" r="260" fill="#ff9ec7" opacity="0.6"/>
+    <circle cx="680" cy="700" r="260" fill="#f3b6d6" opacity="0.32"/>
     <circle cx="200" cy="1150" r="280" fill="#b59bff" opacity="0.55"/>
-    <circle cx="650" cy="1480" r="240" fill="#ffc98a" opacity="0.65"/>
+    <circle cx="650" cy="1480" r="240" fill="#ffd6a8" opacity="0.38"/>
   </g>
 </svg>

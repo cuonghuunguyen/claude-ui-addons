@@ -225,6 +225,8 @@
     box-shadow: inset 0 1px 0 var(--lg-spec), var(--elevation-raised);
 }
 [data-part="session-header"] { border-color: var(--lg-rim-low); }
+/* Side panel (diff, file list: text-heavy) sits over the warm corner of the light wallpaper: a denser fill there, so the tint stays as calm as the session area. */
+:root:not(.dark) [data-part="side-panel"] { background-color: color-mix(in srgb, var(--card) calc(max(var(--panel-alpha, 1), 0.8) * 100%), transparent); }
 :root[data-opt-frost-panels="on"] :is([data-part="sidebar"], [data-part="session-area"]:not([data-split]), [data-part="side-panel"], [data-part="focus-page"]) {
     -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 1.5)) saturate(var(--lg-sat));
     backdrop-filter: blur(calc(var(--lg-blur) * 1.5)) saturate(var(--lg-sat));

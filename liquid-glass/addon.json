@@ -1,0 +1,79 @@
+{
+  "name": "liquid-glass",
+  "version": "1.0.0",
+  "description": "Liquid Glass: Apple iOS 26 style translucent chrome. Blurred, saturated glass with specular rims on the title bar, prompt box, menus, dialogs, palette, toasts and tooltips; translucent main panels; solid content. Own mesh-gradient wallpaper (light and dark). Optional refraction in Chromium. No capabilities.",
+  "claudeUi": ">=1.5",
+  "capabilities": [],
+  "assets": {
+    "bg-light": { "path": "images/bg-light.svg", "label": "Light wallpaper" },
+    "bg-dark": { "path": "images/bg-dark.svg", "label": "Dark wallpaper" },
+    "bg-phone-light": { "path": "images/bg-phone-light.svg", "label": "Light wallpaper (phone)" },
+    "bg-phone-dark": { "path": "images/bg-phone-dark.svg", "label": "Dark wallpaper (phone)" }
+  },
+  "themes": [
+    {
+      "id": "glass",
+      "name": "Liquid Glass",
+      "light": {
+        "bg": "#f2f2f7",
+        "card": "#ffffff",
+        "side": "#ebebf0",
+        "fg": "#1c1c1e",
+        "muted": "#48484d",
+        "border": "#d1d1d6",
+        "primary": "#0062cc",
+        "pfg": "#ffffff",
+        "kw": "#9b2393",
+        "str": "#c41a16",
+        "fn": "#326d74",
+        "type": "#0b4f79",
+        "num": "#1c00cf",
+        "cmt": "#5d6c79",
+        "varc": "#6c36a9",
+        "err": "#d70015",
+        "warn": "#8a4b00",
+        "ok": "#1f7a35",
+        "info": "#0062cc",
+        "graph": ["#0062cc", "#c41a7a", "#1f7a35", "#8a4b00", "#6c36a9", "#0b7285", "#d70015", "#5d6c79"]
+      },
+      "dark": {
+        "bg": "#101014",
+        "card": "#1c1c1e",
+        "side": "#161618",
+        "fg": "#f5f5f7",
+        "muted": "#aeaeb2",
+        "border": "#38383a",
+        "primary": "#64a8ff",
+        "pfg": "#0b0b0f",
+        "kw": "#ff7ab2",
+        "str": "#ff8170",
+        "fn": "#67b7a4",
+        "type": "#dabaff",
+        "num": "#d9c97c",
+        "cmt": "#8a96a3",
+        "varc": "#acf2e4",
+        "err": "#ff6961",
+        "warn": "#ffd60a",
+        "ok": "#30d158",
+        "info": "#64d2ff",
+        "graph": ["#64a8ff", "#ff7ab2", "#30d158", "#ffd60a", "#dabaff", "#64d2ff", "#ff9f0a", "#acf2e4"]
+      },
+      "background": {
+        "light": { "image": "bg-light", "mobile": "bg-phone-light" },
+        "dark": { "image": "bg-dark", "mobile": "bg-phone-dark" },
+        "veil": 0.12,
+        "panelAlpha": 0.62
+      },
+      "options": [
+        { "id": "variant", "label": "Glass variant", "type": "select", "choices": [{ "value": "regular", "label": "Regular" }, { "value": "clear", "label": "Clear" }], "default": "regular" },
+        { "id": "blur", "label": "Blur (px)", "type": "range", "min": 0, "max": 28, "step": 1, "default": 16 },
+        { "id": "tint", "label": "Glass tint", "type": "range", "min": 0.3, "max": 0.9, "step": 0.05, "default": 0.55 },
+        { "id": "panels", "label": "Panel opacity", "type": "range", "min": 0.3, "max": 1, "step": 0.05, "default": 0.62 },
+        { "id": "frost-panels", "label": "Blur main panels (slower)", "type": "boolean", "default": false },
+        { "id": "refraction", "label": "Refraction (Chrome, Edge)", "type": "boolean", "default": true },
+        { "id": "reduce-transparency", "label": "Reduce transparency", "type": "boolean", "default": false }
+      ],
+      "css": "theme.css"
+    }
+  ]
+}

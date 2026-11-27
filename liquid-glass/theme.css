@@ -1,0 +1,349 @@
+/*
+ * Liquid Glass (addon liquid-glass, theme glass). Colours: addon.json. Applies only while this theme is picked.
+ *
+ * Three tiers (Apple HIG: glass is the control layer that floats above content, never the content itself):
+ *   A  real glass: backdrop blur + saturate + brightness, tinted fill, specular sheen, edge light, drop shadow.
+ *      Small floating chrome: title bar, prompt box, menus, popovers, select, dialogs, palette, toasts, tooltip, docks, scroll-to-bottom.
+ *   B  translucent fill without blur (core panelAlpha) + edge light: sidebar, session area, side panel, focus page.
+ *      Blur here would recompute on every scroll frame of the timeline; option frost-panels turns it on anyway.
+ *   C  solid: messages, tool cards, code, diffs, terminal, editor. The palette stays opaque, so visualize frames stay opaque too.
+ * No glass on glass: controls on a glass surface (tabs, menu items) use fills, not a second blur.
+ * Motion: transform / opacity only, never backdrop-filter. Accessibility: reduced transparency, more contrast, forced colours, reduced motion.
+ * Selectors: stable [data-part] where one exists; menus, popovers and dialogs by Base UI role + bg-popover (no stable part yet).
+ */
+
+/* ---------- Tokens ---------- */
+:root {
+    --lg-blur: calc(var(--opt-blur, 16) * 1px);
+    --lg-tint: var(--opt-tint, 0.55);
+    --lg-sat: 1.8;
+    --lg-bright: 1.04;
+    --lg-base: #ffffff;
+    --lg-spec: #ffffffd9;
+    --lg-rim: #ffffff73;
+    --lg-rim-low: #0000000f;
+    --lg-shadow: 0 10px 32px -8px #1c1c3a2e, 0 2px 6px #1c1c3a14;
+    --lg-sheen: linear-gradient(160deg, #ffffff66 0%, #ffffff00 38%), radial-gradient(120% 70% at 50% 0%, #ffffff33, #ffffff00 60%);
+    --lg-solid: #f7f7fa;
+    --lg-dim: #00000000;
+    --lg-fill: #7676801f;
+    --lg-fill-hi: #7676802e;
+    --lg-refract: ;
+    --lg-blur-a: var(--lg-blur);
+    --lg-r-panel: 22px;
+    --lg-r-float: 18px;
+    --lg-r-inner: calc(var(--lg-r-float) - 4px); /* menus and the select have 4px padding: concentric */
+    --panel-alpha: var(--opt-panels, 0.62);
+    --overlay: #1c1c3a33;
+    --elevation-floating: var(--lg-shadow);
+    --elevation-raised: 0 4px 16px -6px #1c1c3a24;
+    caret-color: var(--primary);
+    accent-color: var(--primary);
+}
+:root.dark {
+    --lg-sat: 1.6;
+    --lg-bright: 0.92;
+    --lg-base: #1c1c1e;
+    --lg-spec: #ffffff59;
+    --lg-rim: #ffffff2e;
+    --lg-rim-low: #00000059;
+    --lg-shadow: 0 12px 36px -8px #00000099, 0 2px 8px #00000066;
+    --lg-sheen: linear-gradient(160deg, #ffffff1f 0%, #ffffff00 40%), radial-gradient(120% 70% at 50% 0%, #ffffff14, #ffffff00 60%);
+    --lg-solid: #1c1c1e;
+    --lg-fill: #7676803d;
+    --lg-fill-hi: #76768057;
+    --overlay: #00000066;
+    --elevation-raised: 0 6px 20px -8px #000000b3;
+}
+/* Clear variant: more transparent, stronger blur and saturation, a dimming layer in dark mode (HIG: 35% black over bright content). */
+:root[data-opt-variant="clear"] {
+    --lg-tint: calc(var(--opt-tint, 0.55) * 0.4);
+    --lg-blur: calc(var(--opt-blur, 16) * 1.25px);
+    --lg-sat: 2;
+}
+:root.dark[data-opt-variant="clear"] { --lg-dim: #00000059; }
+
+/* ---------- Tier A: glass ---------- */
+:is(
+    [data-part="titlebar"],
+    [data-part="prompt-box"],
+    [data-part="palette"],
+    [data-part="permission-panel"],
+    [data-part="question-panel"],
+    [data-part="scroll-to-bottom"],
+    [data-part="toast-region"] > *,
+    [data-slot="select-content"],
+    :is([role="menu"], [role="dialog"], [role="alertdialog"], [role="listbox"]).bg-popover,
+    .bg-popover:is(.shadow-floating, .shadow-md), .fixed.z-50.rounded-2xl.border.bg-card,
+    :is([role="dialog"], [role="alertdialog"]).bg-card.shadow-floating:not(.inset-0)
+) {
+    background-color: color-mix(in srgb, var(--lg-base) calc(var(--lg-tint) * 100%), transparent) !important;
+    background-image: linear-gradient(var(--lg-dim), var(--lg-dim)), var(--lg-sheen);
+    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat)) brightness(var(--lg-bright));
+    backdrop-filter: blur(var(--lg-blur-a)) saturate(var(--lg-sat)) brightness(var(--lg-bright)) var(--lg-refract);
+    border-color: var(--lg-rim) !important;
+    box-shadow: inset 0 1px 0 var(--lg-spec), inset 0 -1px 0 var(--lg-rim-low), var(--lg-shadow);
+}
+/* Title bar (macOS 26): no bar. The wallpaper shows through and only the controls float: the active tab is a glass capsule.
+   Phones keep a dense bar (see Phones); reduce transparency keeps a solid bar. */
+@media (width >= 48rem) {
+    :root [data-part="titlebar"] {
+        background-color: transparent !important;
+        background-image: none;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        box-shadow: none;
+    }
+}
+
+/* Shapes: concentric radii (inner = outer - padding). */
+[data-part="prompt-box"] { border-radius: var(--lg-r-panel); }
+:is([role="menu"], [role="listbox"]).bg-popover,
+[data-slot="select-content"],
+.bg-popover:is(.shadow-floating, .shadow-md):not([role="dialog"], [role="alertdialog"]) { border-radius: var(--lg-r-float); }
+:is([role="dialog"], [role="alertdialog"]).bg-popover,
+[data-part="palette"],
+.fixed.z-50.rounded-2xl.border.bg-card { border-radius: calc(var(--lg-r-panel) + 2px); }
+/* Settings, Addons and other form dialogs (bg-card) with role dialog. The file viewer (.inset-0) has its own 88% rule below. Phones: full screen, square. */
+@media (width >= 40rem) {
+    :is([role="dialog"], [role="alertdialog"]).bg-card.shadow-floating:not(.inset-0) { border-radius: calc(var(--lg-r-panel) + 2px); }
+}
+[data-part="toast-region"] > * { border-radius: var(--lg-r-float); }
+:is([role="menu"], [role="listbox"]) :is([role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"]) { border-radius: var(--lg-r-inner); }
+[data-slot="select-content"] [role="listbox"] { padding: 4px; }
+/* Palette search field sits 7px inside the palette corner. */
+[data-part="palette"] label:has(input) { border-radius: calc(var(--lg-r-panel) + 2px - 7px); }
+[data-part="scroll-to-bottom"] { border-radius: 999px; }
+[data-part="permission-panel"],
+[data-part="question-panel"] { border-radius: var(--lg-r-float); }
+
+/* Tooltip: an inverted dark capsule of glass in both modes. */
+[data-slot="tooltip-content"] {
+    background-color: color-mix(in srgb, #1c1c1e 78%, transparent) !important;
+    color: #f5f5f7 !important;
+    -webkit-backdrop-filter: blur(12px) saturate(1.6);
+    backdrop-filter: blur(12px) saturate(1.6);
+    border-radius: 10px;
+    box-shadow: inset 0 1px 0 #ffffff33, inset 0 0 0 0.5px #ffffff26, 0 6px 18px -6px #00000080;
+}
+/* Tooltip arrow follows the capsule (it is bg-foreground by default: light in dark mode). */
+[data-slot="tooltip-content"] > :last-child:is([class*="rotate-45"]) { background-color: #1c1c1ec7 !important; fill: #1c1c1ec7 !important; }
+
+/* Opaque bars inside a glass popup (sticky header of find in files, combobox footer, guide tour arrow): a light tint, no second blur. */
+:is([data-part="palette"], [data-slot="select-content"], :is([role="menu"], [role="dialog"], [role="alertdialog"], [role="listbox"]).bg-popover, .bg-popover:is(.shadow-floating, .shadow-md), .fixed.z-50.rounded-2xl.border.bg-card)
+    .bg-popover:not(:is([role="menu"], [role="dialog"], [role="alertdialog"], [role="listbox"]), .shadow-floating, .shadow-md) {
+    background-color: color-mix(in srgb, var(--lg-base) calc(var(--lg-tint) * 100%), transparent);
+}
+
+/* Large viewer dialog (file viewer, about 1200px wide): mostly text, so a denser fill (HIG: a sheet at full size becomes more opaque). */
+.fixed.inset-0.z-50.rounded-2xl.border.bg-card { background-color: color-mix(in srgb, var(--lg-base) 88%, transparent) !important; }
+
+/* Floating aside window (a session in a popup): content inside, so no glass; only the edge light and a larger radius. */
+[data-aside-popup].rounded-lg { border-radius: var(--lg-r-panel); border-color: var(--lg-rim); box-shadow: inset 0 1px 0 var(--lg-spec), var(--lg-shadow); }
+
+/* Dialog and palette scrims: a light frosted dim instead of a flat colour. */
+.inset-0.bg-overlay {
+    background-color: var(--overlay) !important;
+    -webkit-backdrop-filter: blur(6px) saturate(1.2);
+    backdrop-filter: blur(6px) saturate(1.2);
+}
+
+/* Prompt box: the edge lights up while you type. */
+[data-part="prompt-box"] { transition: box-shadow 0.2s ease; }
+[data-part="prompt-box"]:focus-within {
+    box-shadow: inset 0 1px 0 var(--lg-spec), inset 0 0 0 1px color-mix(in srgb, var(--primary) 55%, var(--lg-rim)), 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent), var(--lg-shadow);
+}
+
+/* ---------- Controls on glass: fills, no second blur ---------- */
+[data-part="titlebar"] :is([data-part="tab"], [data-part="focus-tab"]) {
+    background-color: transparent;
+    border-radius: 999px;
+    transition: background-color 0.15s ease;
+}
+[data-part="titlebar"] :is([data-part="tab"], [data-part="focus-tab"]):hover { background-color: var(--lg-fill); }
+[data-part="titlebar"] :is([data-part="tab"][data-active], [data-part="focus-tab"][data-active]) {
+    background-color: color-mix(in srgb, var(--lg-base) calc(var(--lg-tint) * 100%), transparent);
+    background-image: var(--lg-sheen);
+    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat)) brightness(var(--lg-bright));
+    backdrop-filter: blur(var(--lg-blur-a)) saturate(var(--lg-sat)) brightness(var(--lg-bright)) var(--lg-refract);
+    box-shadow: inset 0 1px 0 var(--lg-spec), inset 0 0 0 0.5px var(--lg-rim), 0 2px 8px -2px #00000040;
+    border-radius: 999px;
+}
+/* Phones and reduce transparency: the bar is back, so the tab is a plain fill again (no glass on glass). */
+@media (width < 48rem) {
+    [data-part="titlebar"] :is([data-part="tab"][data-active], [data-part="focus-tab"][data-active]) { -webkit-backdrop-filter: none; backdrop-filter: none; background-image: none; background-color: var(--lg-fill-hi); }
+}
+:root[data-opt-reduce-transparency="on"] [data-part="titlebar"] :is([data-part="tab"][data-active], [data-part="focus-tab"][data-active]) { -webkit-backdrop-filter: none; backdrop-filter: none; background-image: none; background-color: var(--lg-fill-hi); }
+:is([role="menu"], [role="listbox"]) :is([role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"]):is([data-highlighted], :hover) { background-color: var(--lg-fill-hi); }
+[data-part="prompt-box"] :is(textarea, [contenteditable="true"]) { background: transparent; }
+
+/* Surfaces inside glass and translucent panels: --secondary (secondary buttons, pane tabs, active rows) and --muted (hover fills)
+   become translucent fills, scoped to these containers so the root tokens (and the visualize frames that copy them) stay opaque.
+   Content (tier C) gets the solid values back. */
+:root { --lg-secondary-solid: var(--secondary); --lg-muted-solid: var(--muted); }
+:is(
+    [data-part="titlebar"], [data-part="sidebar"], [data-part="session-area"], [data-part="side-panel"], [data-part="focus-page"],
+    [data-part="prompt-box"], [data-part="palette"], [data-part="permission-panel"], [data-part="question-panel"], [data-slot="select-content"],
+    :is([role="menu"], [role="dialog"], [role="alertdialog"], [role="listbox"]).bg-popover, .bg-popover:is(.shadow-floating, .shadow-md),
+    .fixed.z-50.rounded-2xl.border.bg-card, .flex.rounded-2xl.border.bg-card.shadow-raised
+) {
+    --secondary: var(--lg-fill);
+    --muted: var(--lg-fill);
+}
+:is([data-part="tool-card"], [data-part="terminal"], [data-part="file-diff"], [data-part="graph-panel"], pre) {
+    --secondary: var(--lg-secondary-solid);
+    --muted: var(--lg-muted-solid);
+}
+/* Text fields on glass: a recessed translucent well (bg-background is near black in dark mode). */
+:is(
+    [data-part="sidebar"], [data-part="session-area"], [data-part="side-panel"], [data-part="focus-page"], [data-part="palette"],
+    :is([role="menu"], [role="dialog"], [role="alertdialog"], [role="listbox"]).bg-popover, .bg-popover:is(.shadow-floating, .shadow-md),
+    .fixed.z-50.rounded-2xl.border.bg-card, .flex.rounded-2xl.border.bg-card.shadow-raised
+) :is(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"]), textarea, select):is(.bg-background, .bg-card, .bg-secondary, .bg-muted, .bg-transparent, :not([class*="bg-"])):not([data-part="prompt-box"] *, [data-part="palette"] label *) {
+    background-color: var(--lg-fill);
+    border-color: var(--lg-rim-low);
+}
+/* Sticky bars inside panels (filter row, list headers): content scrolls under them, so a dense tint plus a small blur (scroll edge effect). */
+:is([data-part="sidebar"], [data-part="session-area"], [data-part="side-panel"], [data-part="focus-page"], .flex.rounded-2xl.border.bg-card.shadow-raised)
+    .sticky:is(.bg-card, .bg-background, .bg-popover) {
+    background-color: color-mix(in srgb, var(--lg-base) 72%, transparent);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    backdrop-filter: blur(12px) saturate(1.4);
+    border-color: var(--lg-rim-low);
+}
+
+/* ---------- Tier B: translucent panels with edge light ---------- */
+:is([data-part="session-area"], [data-part="side-panel"], [data-part="focus-page"]) {
+    border-color: var(--lg-rim);
+    box-shadow: inset 0 1px 0 var(--lg-spec), var(--elevation-raised);
+}
+@media (width >= 48rem) {
+    :is([data-part="session-area"], [data-part="side-panel"], [data-part="focus-page"]) { border-radius: var(--lg-r-panel); }
+    /* The sidebar floats 8px from the window edge like the other panels, but its status row sits 4px from its corner: a smaller radius. */
+    [data-part="sidebar"] { border-radius: var(--lg-r-inner); }
+}
+/* Other main cards (split panes, new-session tab, starting session, bottom panel without a terminal): same as the panels above.
+   App.tsx `card` const; no stable part. A card that holds a terminal stays solid (tier C). */
+:root:is([data-backdrop], [data-effect-below]) .flex.rounded-2xl.border.bg-card.shadow-raised:not(:has(.xterm)) {
+    background-color: color-mix(in srgb, var(--card) calc(var(--panel-alpha, 1) * 100%), transparent);
+    border-color: var(--lg-rim);
+    box-shadow: inset 0 1px 0 var(--lg-spec), var(--elevation-raised);
+}
+[data-part="session-header"] { border-color: var(--lg-rim-low); }
+:root[data-opt-frost-panels="on"] :is([data-part="sidebar"], [data-part="session-area"]:not([data-split]), [data-part="side-panel"], [data-part="focus-page"]) {
+    -webkit-backdrop-filter: blur(calc(var(--lg-blur) * 1.5)) saturate(var(--lg-sat));
+    backdrop-filter: blur(calc(var(--lg-blur) * 1.5)) saturate(var(--lg-sat));
+}
+
+/* ---------- Tier C: content stays solid ---------- */
+:is([data-part="tool-card"], [data-part="terminal"], [data-part="file-diff"], [data-part="graph-panel"]) {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+[data-part="terminal"] { background-color: var(--card); }
+
+/* ---------- Details ---------- */
+::selection { background: color-mix(in srgb, var(--primary) 30%, transparent); }
+:root ::-webkit-scrollbar { width: 10px; height: 10px; }
+:root ::-webkit-scrollbar-track { background: transparent; }
+:root ::-webkit-scrollbar-thumb { background: var(--lg-fill-hi); border: 3px solid transparent; border-radius: 999px; background-clip: padding-box; }
+:root ::-webkit-scrollbar-thumb:hover { background-color: color-mix(in srgb, var(--muted-foreground) 55%, transparent); }
+
+/* Press: glass compresses a little. Transform only. */
+@media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="off"]) :is([data-part="send"], [data-part="scroll-to-bottom"], [data-part="tab"]) { transition: transform 0.18s cubic-bezier(0.3, 1.6, 0.5, 1), background-color 0.15s ease; }
+    :root:not([data-motion="off"]) :is([data-part="send"], [data-part="scroll-to-bottom"], [data-part="tab"]):active { transform: scale(0.95); }
+}
+
+/* ---------- Phones: glass only on the prompt box and floating popups ---------- */
+@media (width < 48rem) {
+    :is([data-part="titlebar"], [data-part="permission-panel"], [data-part="question-panel"]) {
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        background-color: color-mix(in srgb, var(--lg-base) 88%, transparent) !important;
+    }
+}
+/* Form dialogs fill the phone screen there: a sheet of content, so solid. */
+@media (width < 40rem) {
+    :is([role="dialog"], [role="alertdialog"]).bg-card.shadow-floating:not(.inset-0) {
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        background-color: var(--lg-solid) !important;
+        background-image: none;
+    }
+}
+
+/* ---------- Accessibility: solid surfaces ---------- */
+:root[data-opt-reduce-transparency="on"] { --panel-alpha: 1; }
+@media (prefers-reduced-transparency: reduce) { :root { --panel-alpha: 1; } }
+@media (prefers-contrast: more) { :root { --panel-alpha: 1; --lg-rim: var(--foreground); --lg-rim-low: var(--foreground); } }
+
+:root[data-opt-reduce-transparency="on"] :is(
+    [data-part="titlebar"], [data-part="prompt-box"], [data-part="palette"], [data-part="permission-panel"], [data-part="question-panel"],
+    [data-part="scroll-to-bottom"], [data-part="toast-region"] > *, [data-slot="select-content"], [data-slot="tooltip-content"],
+    :is([role="menu"], [role="dialog"], [role="alertdialog"], [role="listbox"]).bg-popover, .bg-popover:is(.shadow-floating, .shadow-md), .fixed.z-50.rounded-2xl.border.bg-card, :is([role="dialog"], [role="alertdialog"]).bg-card.shadow-floating:not(.inset-0),
+    .inset-0.bg-overlay, [data-part="sidebar"], [data-part="session-area"], [data-part="side-panel"], [data-part="focus-page"]
+) {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background-image: none !important;
+}
+:root[data-opt-reduce-transparency="on"] :is(
+    [data-part="titlebar"], [data-part="prompt-box"], [data-part="palette"], [data-part="permission-panel"], [data-part="question-panel"],
+    [data-part="scroll-to-bottom"], [data-part="toast-region"] > *, [data-slot="select-content"],
+    :is([role="menu"], [role="dialog"], [role="alertdialog"], [role="listbox"]).bg-popover, .bg-popover:is(.shadow-floating, .shadow-md), .fixed.z-50.rounded-2xl.border.bg-card, :is([role="dialog"], [role="alertdialog"]).bg-card.shadow-floating:not(.inset-0)
+) { background-color: var(--lg-solid) !important; }
+
+/* Tooltip: solid capsule too. */
+:root[data-opt-reduce-transparency="on"] [data-slot="tooltip-content"] { background-color: #1c1c1e !important; }
+
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+    :root:root [data-part="titlebar"] :is([data-part="tab"][data-active], [data-part="focus-tab"][data-active]) { -webkit-backdrop-filter: none; backdrop-filter: none; background-image: none; background-color: var(--lg-fill-hi); }
+    [data-slot="tooltip-content"] { background-color: #1c1c1e !important; }
+    :root:root :is(
+        [data-part="titlebar"], [data-part="prompt-box"], [data-part="palette"], [data-part="permission-panel"], [data-part="question-panel"],
+        [data-part="scroll-to-bottom"], [data-part="toast-region"] > *, [data-slot="select-content"], [data-slot="tooltip-content"],
+        :is([role="menu"], [role="dialog"], [role="alertdialog"], [role="listbox"]).bg-popover, .bg-popover:is(.shadow-floating, .shadow-md), .fixed.z-50.rounded-2xl.border.bg-card, :is([role="dialog"], [role="alertdialog"]).bg-card.shadow-floating:not(.inset-0),
+        .inset-0.bg-overlay, [data-part="sidebar"], [data-part="session-area"], [data-part="side-panel"], [data-part="focus-page"]
+    ) {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+        background-image: none !important;
+    }
+    :root:root :is(
+        [data-part="titlebar"], [data-part="prompt-box"], [data-part="palette"], [data-part="permission-panel"], [data-part="question-panel"],
+        [data-part="scroll-to-bottom"], [data-part="toast-region"] > *, [data-slot="select-content"],
+        :is([role="menu"], [role="dialog"], [role="alertdialog"], [role="listbox"]).bg-popover, .bg-popover:is(.shadow-floating, .shadow-md), .fixed.z-50.rounded-2xl.border.bg-card, :is([role="dialog"], [role="alertdialog"]).bg-card.shadow-floating:not(.inset-0)
+    ) { background-color: var(--lg-solid) !important; }
+}
+@media (prefers-contrast: more) {
+    :is([data-part="prompt-box"], [data-part="palette"], [data-slot="select-content"], :is([role="menu"], [role="dialog"], [role="alertdialog"], [role="listbox"]).bg-popover, .bg-popover:is(.shadow-floating, .shadow-md), .fixed.z-50.rounded-2xl.border.bg-card, :is([role="dialog"], [role="alertdialog"]).bg-card.shadow-floating:not(.inset-0)) {
+        box-shadow: inset 0 0 0 1.5px var(--foreground) !important;
+    }
+}
+@media (forced-colors: active) {
+    :is([data-part="titlebar"], [data-part="prompt-box"], [data-part="palette"], [data-slot="select-content"], [data-slot="tooltip-content"], :is([role="menu"], [role="dialog"], [role="alertdialog"], [role="listbox"]).bg-popover, .bg-popover:is(.shadow-floating, .shadow-md), .fixed.z-50.rounded-2xl.border.bg-card, :is([role="dialog"], [role="alertdialog"]).bg-card.shadow-floating:not(.inset-0)) {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+        background: Canvas !important;
+        border: 1px solid CanvasText !important;
+    }
+}
+
+/* ---------- Refraction (Chromium only, option refraction, on by default) ----------
+ * images/lens.svg#refract bends the outer 14% of each glass surface (feDisplacementMap, max 28px shift). It runs after the blur,
+ * so the blur is halved here: a 16px blur would wash the bend away. Gate: Firefox fails selector(::-webkit-scrollbar),
+ * WebKit passes (font: -apple-system-body); both parse url() in backdrop-filter without refracting. Verified in Chromium 156,
+ * Firefox 157, WebKit 27 (Playwright). Phones and accessibility modes keep blur only (backdrop-filter none / no refraction there).
+ */
+@supports (backdrop-filter: url(#a)) and selector(::-webkit-scrollbar) and (not (font: -apple-system-body)) {
+    @media (width >= 48rem) and (prefers-reduced-transparency: no-preference) and (prefers-contrast: no-preference) {
+        :root[data-opt-refraction="on"]:not([data-opt-reduce-transparency="on"]) {
+            --lg-refract: url("images/lens.svg#refract");
+            --lg-blur-a: calc(var(--lg-blur) * 0.5);
+        }
+    }
+}
+
+/* Short popups over form controls (select): a denser fill, so the control under the popup edge does not show through. */
+[data-slot="select-content"] { --lg-tint: max(var(--opt-tint, 0.55), 0.82); }

@@ -8,7 +8,8 @@ Addons for [claude-ui](https://github.com/cuonghuunguyen/claude-code-ui). An add
 | --- | --- | --- | --- |
 | [`chainsaw-man-reze`](chainsaw-man-reze) | Theme | none | Chainsaw Man Reze: art background, palettes, dancing loader, bomb animations. Images in `images/`. |
 | [`neon-city`](neon-city) | Theme | none | Neon City: cyberpunk HUD glass panels, city pictures as background (slideshow dark, one picture light), rain, glitch, HUD loaders. Images in `images/`. |
-| [`gojo`](gojo) | Theme | none | Gojo: manga style, art background (dark and light), Six Eyes eye loader, Unlimited Void intro on opening Focus, Black Flash charge and release, cursed energy smoke, animated usage gauge. Images in `images/`. |
+| [`gojo`](gojo) | Theme | none | Gojo: manga style, art background (dark and light), Six Eyes eye loader, Unlimited Void intro on opening Focus, Black Flash charge and release, cursed energy smoke, cyan cursed energy aura on prompt focus, animated usage gauge. Images in `images/`. |
+| [`liquid-glass`](liquid-glass) | Theme | none | Liquid Glass (Apple iOS 26 style): blurred, saturated glass with specular rims on the prompt box, active tab, menus, dialogs, palette, toasts; transparent title bar (macOS 26); translucent panels; solid content. Own mesh-gradient wallpapers. Refraction (SVG lens) in Chrome and Edge. Options: variant, blur, tint, panel opacity, frosted panels, refraction, reduce transparency. |
 
 ## Install
 
@@ -35,4 +36,3 @@ Update: `git pull`. claude-ui reads a local folder again each time the dialog op
 ## License
 
 Fan-made addons reference third-party works. Characters, artwork and pictures belong to their owners. `neon-city` bundles city pictures: personal use, removed on request. `chainsaw-man-reze` bundles fan art (backgrounds, dancing loader) in `images/`: personal use, all rights stay with the owners; it is removed on request. `gojo` bundles fan pictures and a short clip (backgrounds, Unlimited Void, eye) in `images/`: personal use, all rights stay with the owners; removed on request.
-| [`liquid-glass`](liquid-glass) | Theme | none | Liquid Glass (Apple iOS 26 style): blurred, saturated glass with specular rims on the prompt box, active tab, menus, dialogs, palette, toasts; transparent title bar (macOS 26); translucent panels; solid content. Own mesh-gradient wallpapers. Refraction (SVG lens) in Chrome and Edge. Options: variant, blur, tint, panel opacity, frosted panels, refraction, reduce transparency. |

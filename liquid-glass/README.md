@@ -27,3 +27,17 @@ Theme for claude-ui in the style of Apple Liquid Glass (iOS 26 / macOS 26). Need
 
 - Menus, popovers and dialogs are selected by role and the `bg-popover` class, not by a stable part. A claude-ui release can break them.
 - Phones (below 768 px): glass only on the prompt box and popups, no refraction.
+
+## Motion and type
+
+| Effect | Where | Notes |
+| --- | --- | --- |
+| Scroll edge fade | timeline, session list, file tree, changed files | mask-image, 20px. Chromium: grows with scroll offset (scroll-driven), none at the very top. Others: static |
+| Working glow | prompt box while the session runs a turn | rotating multicolour edge; still with reduced motion; no halo blur with reduce transparency |
+| Hover | tabs, pane tabs, icon buttons, menu rows, send, scroll-to-bottom | mouse and trackpad only |
+| Slider | range inputs (theme options) | thin track with fill, white capsule knob, clear glass knob while dragging |
+| Scrim fade | dialog dim layers | opacity |
+| Phone sheets | dialogs that fill a phone screen | solid, square |
+| Font | app, timeline, code | SF Pro / SF Mono on Apple devices, Inter and system mono elsewhere. Terminal font unchanged |
+
+Title bar shrink on scroll is not done: the timeline rests at its bottom, so a scroll-linked header would stay compact.

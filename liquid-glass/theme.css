@@ -278,7 +278,7 @@
     }
     /* Press. */
     :root:not([data-motion="off"]) :is([data-part="prompt-box"] button.shadow-button-contrast, [data-part="scroll-to-bottom"], [data-part="tab"], [data-part="focus-tab"], button[role="tab"]) {
-        transition: transform 0.22s cubic-bezier(0.3, 1.6, 0.5, 1), background-color 0.15s ease, box-shadow 0.2s ease;
+        transition: transform 0.22s cubic-bezier(0.3, 1.6, 0.5, 1), scale 0.22s cubic-bezier(0.3, 1.6, 0.5, 1), background-color 0.15s ease, box-shadow 0.2s ease;
     }
     :root:not([data-motion="off"]) :is([data-part="prompt-box"] button.shadow-button-contrast, [data-part="scroll-to-bottom"], [data-part="tab"], [data-part="focus-tab"], button[role="tab"]):active:not(:disabled) {
         transform: scale(0.92);
@@ -305,13 +305,17 @@
         background-color: color-mix(in srgb, var(--lg-base) 88%, transparent) !important;
     }
 }
-/* Form dialogs fill the phone screen there: a sheet of content, so solid. */
+/* Form dialogs and the file viewer fill the phone screen there (core max-sm: full height, square): a sheet of content,
+   so solid (HIG: a sheet at full height is opaque). The viewer is 88% on larger screens (see above).
+   :root:root: tier A's :is() carries the specificity of its 5-class item, which beat the plain selector here (the sheet stayed glass). */
 @media (width < 40rem) {
-    :is([role="dialog"], [role="alertdialog"]).bg-card.shadow-floating:not(.inset-0) {
+    :root:root :is([role="dialog"], [role="alertdialog"]).bg-card.shadow-floating:not(.inset-0),
+    .fixed.inset-0.z-50.rounded-2xl.border.bg-card {
         -webkit-backdrop-filter: none;
         backdrop-filter: none;
         background-color: var(--lg-solid) !important;
         background-image: none;
+        border-radius: 0; /* core max-sm:rounded-none; the .fixed.z-50.rounded-2xl.border.bg-card radius above would round it */
     }
 }
 
@@ -476,4 +480,259 @@ button[role="switch"][aria-checked="true"] > span:first-child > span { translate
     button[role="switch"] > span:first-child { border: 1px solid CanvasText; }
     button[role="switch"] > span:first-child > span { background: CanvasText; }
     button[role="switch"][aria-checked="true"] > span:first-child { background: Highlight; }
+}
+
+/* ---------- Icon buttons (tabs-bar.tsx ICON_BUTTON; Button size icon*) ----------
+ * Core active state: grey square with a 2px foreground underline (aria-expanded / aria-pressed). Liquid Glass: a round glass fill
+ * with a specular top and a hairline rim, no underline. Quiet toggles (QUIET_PRESSED: aria-pressed stays transparent) keep no fill. */
+.grid.place-items-center.rounded-md:is(button, [role="button"]),
+[data-slot="button"]:is(.size-6, .size-7, .size-8, .size-9) { border-radius: 999px; }
+:is(.grid.place-items-center.rounded-md:is(button, [role="button"]), [data-slot="button"]:is(.size-6, .size-7, .size-8, .size-9)):is([aria-expanded="true"], [data-popup-open], [aria-pressed="true"]:not([class*="aria-pressed:bg-transparent"])) {
+    background-color: var(--lg-fill-hi) !important;
+    background-image: var(--lg-sheen);
+    color: var(--foreground);
+    box-shadow: inset 0 1px 0 var(--lg-spec), inset 0 0 0 0.5px var(--lg-rim), 0 1px 4px -1px #00000033 !important;
+}
+
+/* ---------- Typography (Apple: SF Pro on Apple devices, the bundled Inter elsewhere) ----------
+ * index.css defines --font-sans in `@theme inline`: Tailwind writes the literal family into html (@apply font-sans) and .font-sans,
+ * so overriding the variable alone changes nothing. The theme sets the family on the root and the utilities, and the variables for the
+ * code that reads them (.timeline: var(--font-timeline); the file editor: var(--font-mono)). -apple-system resolves to SF Pro Text or
+ * SF Pro Display by optical size. No font files. The terminal sets its font in JS (TERMINAL_FONT): untouched, so its grid stays. */
+:root {
+    --lg-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+    --lg-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    --font-sans: var(--lg-font);
+    --font-heading: var(--lg-font);
+    --font-timeline: var(--lg-font);
+    --font-mono: var(--lg-mono);
+    font-family: var(--lg-font);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+:is(.font-sans, .font-heading, .timeline) { font-family: var(--lg-font); }
+:is(.font-mono, code, kbd, samp, pre):not(.xterm, .xterm *) { font-family: var(--lg-mono); }
+/* SF tracking: large text is set tighter (SF Pro Display tracks negative from 20pt up). */
+:is(h1, h2, .text-lg, .text-xl) { letter-spacing: -0.012em; }
+:is(.text-2xl, .text-3xl, .text-4xl, .timeline h1) { letter-spacing: -0.02em; }
+
+/* ---------- Scroll edge effect (iOS 26: content fades out at the edge of a scroll view, under the bars) ----------
+ * Scrollers: the timeline (virtual-timeline.tsx: role=log, between the session header and the prompt box), the session list
+ * (sidebar.tsx nav), the file tree (part file-tree; its sticky filter box sits at the top, so no top fade there) and the changed-file list.
+ * mask-image only, no blur: these lists are large and scroll often. Chromium (scroll-driven animation, scroll(self)): each fade grows with
+ * the distance to its edge, so a list at its very top has no top fade and a list that does not scroll has none. Other browsers and reduced
+ * motion: a static fade at both edges. The fade sizes are registered properties so the mask can interpolate (@property is global: addon prefix). */
+@property --liquid-glass-fade-top { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --liquid-glass-fade-bottom { syntax: "<length>"; inherits: false; initial-value: 0px; }
+:is([data-part="session-area"] [role="log"], [data-part="sidebar"] nav.overflow-y-auto, [data-part="file-tree"], [data-part="side-panel"] ul.overflow-auto) {
+    --lg-fade-t: 20px;
+    --lg-fade-b: 20px;
+    --liquid-glass-fade-top: var(--lg-fade-t);
+    --liquid-glass-fade-bottom: var(--lg-fade-b);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--liquid-glass-fade-top), #000 calc(100% - var(--liquid-glass-fade-bottom)), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 var(--liquid-glass-fade-top), #000 calc(100% - var(--liquid-glass-fade-bottom)), transparent 100%);
+}
+[data-part="file-tree"] { --lg-fade-t: 0px; }
+@keyframes fade-top {
+    from { --liquid-glass-fade-top: 0px; }
+    to { --liquid-glass-fade-top: var(--lg-fade-t); }
+}
+@keyframes fade-bottom {
+    from { --liquid-glass-fade-bottom: var(--lg-fade-b); }
+    to { --liquid-glass-fade-bottom: 0px; }
+}
+@supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+        :root:not([data-motion="off"]) :is([data-part="session-area"] [role="log"], [data-part="sidebar"] nav.overflow-y-auto, [data-part="file-tree"], [data-part="side-panel"] ul.overflow-auto) {
+            --liquid-glass-fade-top: 0px;
+            --liquid-glass-fade-bottom: 0px;
+            animation: fade-top linear both, fade-bottom linear both;
+            animation-timeline: scroll(self), scroll(self);
+            animation-range: 0px 32px, calc(100% - 32px) 100%;
+        }
+    }
+}
+@media (forced-colors: active) {
+    :is([data-part="session-area"] [role="log"], [data-part="sidebar"] nav.overflow-y-auto, [data-part="file-tree"], [data-part="side-panel"] ul.overflow-auto) { -webkit-mask-image: none; mask-image: none; }
+}
+
+/* ---------- Working glow (Apple Intelligence edge light) ----------
+ * While the open session runs a turn (session-area data-phase=thinking), the prompt box edge carries a slow multicolour light:
+ * ::before is a 1.5px conic ring on the border, ::after a soft halo masked to the outside of the box, so the text keeps its contrast.
+ * The gradient angle is a registered property (@property is global: addon prefix), one turn in 6s: two small infinite animations per
+ * session area. Reduced motion: the same gradient, still. Reduce transparency: ring only, no blurred halo. More contrast, forced colours: off. */
+@property --liquid-glass-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+:root {
+    --lg-glow: conic-gradient(from var(--liquid-glass-angle), #0894ff, #c959dd 25%, #ff2e54 45%, #ff9004 65%, #34c3ff 85%, #0894ff);
+}
+[data-part="session-area"][data-phase="thinking"] [data-part="prompt-box"]::before,
+[data-part="session-area"][data-phase="thinking"] [data-part="prompt-box"]::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    background: var(--lg-glow);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+[data-part="session-area"][data-phase="thinking"] [data-part="prompt-box"]::before {
+    inset: -1px;
+    padding: 1.5px;
+    border-radius: calc(var(--lg-r-panel) + 1px);
+    opacity: 0.9;
+}
+[data-part="session-area"][data-phase="thinking"] [data-part="prompt-box"]::after {
+    inset: -12px;
+    padding: 11px;
+    border-radius: calc(var(--lg-r-panel) + 12px);
+    filter: blur(8px);
+    opacity: 0.4;
+}
+@keyframes spin { to { --liquid-glass-angle: 360deg; } }
+@keyframes glow-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="off"]) [data-part="session-area"][data-phase="thinking"] [data-part="prompt-box"]::before,
+    :root:not([data-motion="off"]) [data-part="session-area"][data-phase="thinking"] [data-part="prompt-box"]::after {
+        animation: spin 6s linear infinite, glow-in 0.6s ease-out backwards;
+    }
+}
+:root[data-opt-reduce-transparency="on"] [data-part="session-area"][data-phase="thinking"] [data-part="prompt-box"]::after { content: none; }
+@media (prefers-reduced-transparency: reduce) {
+    [data-part="session-area"][data-phase="thinking"] [data-part="prompt-box"]::after { content: none; }
+}
+@media (prefers-contrast: more), (forced-colors: active) {
+    [data-part="session-area"][data-phase="thinking"] [data-part="prompt-box"]::before,
+    [data-part="session-area"][data-phase="thinking"] [data-part="prompt-box"]::after { content: none; }
+}
+
+/* ---------- Hover (mouse and trackpad only): glass brightens from inside ----------
+ * Fills and an inner light, no blur change. The round send and scroll-to-bottom buttons also grow a little (scale, motion setting on). */
+@media (hover: hover) and (pointer: fine) {
+    [data-part="titlebar"] :is([data-part="tab"][data-active], [data-part="focus-tab"][data-active]):hover {
+        box-shadow: inset 0 0 12px color-mix(in srgb, var(--lg-spec) 45%, transparent), inset 0 1px 0 var(--lg-spec), inset 0 0 0 0.5px var(--lg-rim), 0 3px 10px -3px #00000047;
+    }
+    button[role="tab"]:not([aria-selected="true"]):hover { background-color: var(--lg-fill); }
+    button[role="tab"][aria-selected="true"].bg-secondary:hover {
+        box-shadow: inset 0 0 10px color-mix(in srgb, var(--lg-spec) 45%, transparent), inset 0 1px 0 var(--lg-spec), inset 0 0 0 0.5px var(--lg-rim), 0 1px 4px -1px #00000033;
+    }
+    :is(.grid.place-items-center.rounded-md:is(button, [role="button"]), [data-slot="button"]:is(.size-6, .size-7, .size-8, .size-9)):not(:disabled, [aria-disabled="true"]):hover {
+        background-color: var(--lg-fill);
+        box-shadow: inset 0 1px 0 color-mix(in srgb, var(--lg-spec) 60%, transparent), inset 0 0 0 0.5px var(--lg-rim);
+    }
+    :is([role="menu"], [role="listbox"]) :is([role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"]):is([data-highlighted], :hover) {
+        box-shadow: inset 0 1px 0 color-mix(in srgb, var(--lg-spec) 50%, transparent);
+    }
+    [data-part="prompt-box"] button.shadow-button-contrast:not(:disabled):hover {
+        background-image: linear-gradient(#ffffff26, #ffffff26), linear-gradient(180deg, #ffffff47 0%, #ffffff00 55%);
+    }
+    [data-part="scroll-to-bottom"]:hover {
+        background-image: linear-gradient(#ffffff26, #ffffff26), linear-gradient(var(--lg-dim), var(--lg-dim)), var(--lg-sheen) !important; /* beats tier A (5-class :is); reduce transparency's !important none still wins */
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        :root:not([data-motion="off"]) :is([data-part="prompt-box"] button.shadow-button-contrast:not(:disabled), [data-part="scroll-to-bottom"]):hover { scale: 1.06; }
+    }
+}
+
+/* ---------- Scrims fade in and out (most Base UI dialog backdrops have no transition in core; paste-clash has its own) ----------
+ * Opacity only; the 6px frost stays constant. Exit runs with the popup's 0.14s unpop. */
+@keyframes fade-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="off"]) .inset-0.bg-overlay {
+        animation: fade-in 0.22s ease-out backwards;
+        transition: opacity 0.14s ease-in;
+    }
+    :root:not([data-motion="off"]) .inset-0.bg-overlay:is([data-ending-style], [data-closed]) { opacity: 0; }
+}
+
+/* ---------- Range slider (theme options in Settings > Appearance; settings-dialog.tsx) ----------
+ * iOS 26: a thin grey track with a primary fill up to the knob, a white capsule knob. Drag: the knob stretches and turns to clear glass
+ * so the track shows through it, then springs back. Chromium and WebKit draw track and fill from the knob's border-image (outset to both
+ * sides, clipped by the input); Firefox uses its own progress pseudo. accent-color (root) stays the fallback where neither applies. */
+input[type="range"] {
+    --rg-t: 4px; --rg-kw: 26px; --rg-kh: 16px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    clip-path: inset(-12px 0);
+    touch-action: pan-y;
+}
+@media (pointer: coarse) {
+    input[type="range"] { --rg-t: 6px; --rg-kw: 36px; --rg-kh: 24px; }
+}
+input[type="range"]::-webkit-slider-runnable-track { height: var(--rg-kh); background: transparent; }
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: var(--rg-kw);
+    height: var(--rg-kh);
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 2px 6px #00000033, 0 0 0 0.5px #0000001a;
+    border-image: linear-gradient(90deg, var(--primary) 50%, var(--lg-switch-off) 0) 0 1 / calc(50% - var(--rg-t) / 2) 100vw / 0 100vw;
+}
+input[type="range"]::-moz-range-track { height: var(--rg-t); border-radius: 999px; background: var(--lg-switch-off); }
+input[type="range"]::-moz-range-progress { height: var(--rg-t); border-radius: 999px; background: var(--primary); }
+input[type="range"]::-moz-range-thumb {
+    width: var(--rg-kw);
+    height: var(--rg-kh);
+    border: 0;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 2px 6px #00000033, 0 0 0 0.5px #0000001a;
+}
+input[type="range"]:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; border-radius: 999px; }
+@media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="off"]) input[type="range"]::-webkit-slider-thumb { transition: transform 0.22s cubic-bezier(0.3, 1.6, 0.5, 1), background-color 0.15s ease, box-shadow 0.15s ease; }
+    :root:not([data-motion="off"]) input[type="range"]::-moz-range-thumb { transition: transform 0.22s cubic-bezier(0.3, 1.6, 0.5, 1), background-color 0.15s ease, box-shadow 0.15s ease; }
+    :root:not([data-motion="off"]) input[type="range"]:active:not(:disabled)::-webkit-slider-thumb {
+        transform: scale(1.4, 1.2);
+        background-color: #ffffff30;
+        border-image: linear-gradient(90deg, var(--primary) 50%, var(--lg-switch-off) 0) 0 1 fill / calc(50% - var(--rg-t) / 2) 100vw / 0 100vw; /* track through the lens */
+        box-shadow: inset 0 1px 0 #ffffffcc, inset 0 0 0 1px #ffffff80, 0 4px 10px #00000033;
+    }
+    :root:not([data-motion="off"]) input[type="range"]:active:not(:disabled)::-moz-range-thumb {
+        transform: scale(1.4, 1.2);
+        background-color: #ffffff30;
+        box-shadow: inset 0 1px 0 #ffffffcc, inset 0 0 0 1px #ffffff80, 0 4px 10px #00000033;
+    }
+}
+@media (prefers-contrast: more) {
+    input[type="range"]::-webkit-slider-thumb { box-shadow: 0 0 0 1.5px var(--foreground); }
+    input[type="range"]::-moz-range-thumb { box-shadow: 0 0 0 1.5px var(--foreground); }
+}
+@media (forced-colors: active) {
+    input[type="range"] { -webkit-appearance: auto; appearance: auto; clip-path: none; }
+}
+
+/* ---------- Sticky "previous message" bar (virtual-timeline.tsx sticky-message; no stable part) ----------
+ * Core: a bg-background slab glued to the top with a gradient fade under it. Liquid Glass: a floating glass capsule over the scrolling
+ * messages (small, so the blur is cheap), no fade. */
+[data-part="session-area"] .absolute.inset-x-0.top-0.z-10 button.rounded-b-lg.bg-background {
+    margin-top: 8px;
+    border-radius: 18px;
+    background-color: color-mix(in srgb, var(--lg-base) calc(max(var(--lg-tint), 0.6) * 100%), transparent);
+    background-image: var(--lg-sheen);
+    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat)) brightness(var(--lg-bright));
+    backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat)) brightness(var(--lg-bright));
+    box-shadow: inset 0 1px 0 var(--lg-spec), inset 0 0 0 0.5px var(--lg-rim), var(--lg-shadow);
+    color: var(--foreground);
+}
+[data-part="session-area"] .absolute.inset-x-0.top-0.z-10 .bg-gradient-to-b.from-background { display: none; }
+:root[data-opt-reduce-transparency="on"] [data-part="session-area"] .absolute.inset-x-0.top-0.z-10 button.rounded-b-lg.bg-background { background-color: var(--lg-solid); background-image: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+    :root:root [data-part="session-area"] .absolute.inset-x-0.top-0.z-10 button.rounded-b-lg.bg-background { background-color: var(--lg-solid); background-image: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+
+/* ---------- User message bubble (ai-elements/message.tsx MessageContent inside part user-message) ----------
+ * Core: 1px border, 8px corners, --secondary fill (translucent inside the panels here). iOS 26 Messages: content is not glass; a sent
+ * message is a solid tinted bubble, no border, round corners with a tighter corner at the sender side. Tint: primary over card (opaque). */
+[data-part="user-message"] [class*="group-[.is-user]:border"] {
+    border-color: transparent;
+    border-radius: 20px 20px 6px 20px;
+    background-color: color-mix(in srgb, var(--primary) 16%, var(--card));
+    box-shadow: 0 1px 2px #0000001a;
+}
+@media (prefers-contrast: more) {
+    [data-part="user-message"] [class*="group-[.is-user]:border"] { border-color: var(--foreground); }
 }

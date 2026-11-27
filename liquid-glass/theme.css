@@ -768,3 +768,36 @@ input[type="range"]:focus-visible { outline: 2px solid var(--ring); outline-offs
 :root .xterm .xterm-scrollable-element > .scrollbar.vertical > .slider { width: 6px !important; left: 2px !important; }
 /* Terminal tabs: capsules like the other tabs. */
 [data-part="terminal-tab"] { border-radius: 999px; }
+
+/* ---------- Buttons, text fields, focus (components/ui/button.tsx data-slot=button; inputs everywhere) ----------
+ * iOS 26: buttons and single-line fields are capsules. Bordered buttons (secondary, outline: commit box, git graph toolbar, dialogs)
+ * are a glass fill with a specular top and hairline rim instead of a grey box; primary buttons are prominent glass (tint + sheen).
+ * Focus: a soft accent halo that follows the shape, not a thick ring. The prompt box keeps its own focus light. */
+[data-slot="button"]:not(.grid, [data-slot="button-group"] *) { border-radius: 999px; }
+[data-slot="button-group"] { border-radius: 999px; overflow: hidden; }
+[data-slot="button"]:is(.bg-secondary, .bg-background, [class*="dark:bg-input"]):not(:disabled) {
+    background-color: var(--lg-fill) !important;
+    background-image: var(--lg-sheen);
+    border-color: transparent !important;
+    box-shadow: inset 0 1px 0 var(--lg-spec), inset 0 0 0 0.5px var(--lg-rim), 0 1px 3px -1px #00000026;
+}
+[data-slot="button"]:is(.bg-secondary, .bg-background, [class*="dark:bg-input"]):not(:disabled):hover { background-color: var(--lg-fill-hi) !important; }
+[data-slot="button"].bg-primary:not(:disabled) {
+    background-image: linear-gradient(180deg, #ffffff3d 0%, #ffffff00 55%);
+    box-shadow: inset 0 1px 0 #ffffff73, inset 0 0 0 0.5px #ffffff33, 0 3px 10px -4px color-mix(in srgb, var(--primary) 60%, transparent);
+}
+/* Single-line fields and their wrappers (icon + input in a bordered box) are capsules; multi-line fields get the inner radius. */
+input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]):is(.rounded, .rounded-sm, .rounded-md, .rounded-lg),
+.rounded-md.border:has(> input:not([type="checkbox"], [type="radio"], [type="range"])),
+.rounded-lg.border:has(> input:not([type="checkbox"], [type="radio"], [type="range"])),
+[data-slot="select-trigger"] { border-radius: 999px; }
+textarea:not([data-part="prompt-box"] textarea):is(.rounded, .rounded-md, .rounded-lg) { border-radius: var(--lg-r-inner); }
+:is(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"]), textarea, [data-slot="select-trigger"]):not([data-part="prompt-box"] *):focus-visible,
+:is(.rounded-md, .rounded-lg).border:has(> input:focus-visible) {
+    outline: none !important;
+    border-color: color-mix(in srgb, var(--primary) 65%, transparent) !important;
+    box-shadow: 0 0 0 3.5px color-mix(in srgb, var(--primary) 28%, transparent) !important;
+}
+@media (prefers-contrast: more) {
+    :is(input, textarea, [data-slot="select-trigger"]):not([data-part="prompt-box"] *):focus-visible { box-shadow: 0 0 0 3px var(--primary) !important; }
+}

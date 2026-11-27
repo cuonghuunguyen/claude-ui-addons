@@ -361,3 +361,26 @@
         box-shadow: inset -1px 0 0 var(--lg-rim), inset 0 1px 0 var(--lg-spec), var(--lg-shadow);
     }
 }
+
+/* Send, stop, queue and needs-input buttons (toolbar.tsx SEND_BASE, shadow-button-contrast; part send only for send): iOS 26 prominent glass,
+   a tinted circle with a specular top and a soft lift, concentric with the 22px prompt box. Stop while steering (bg-secondary) is a neutral glass circle. */
+[data-part="prompt-box"] button.shadow-button-contrast {
+    border-radius: 999px;
+    background-image: linear-gradient(180deg, #ffffff47 0%, #ffffff00 55%);
+    box-shadow: inset 0 1px 0 #ffffff80, inset 0 -1px 0 #00000026, inset 0 0 0 0.5px #ffffff40, 0 4px 12px -4px color-mix(in srgb, var(--primary) 55%, transparent);
+}
+[data-part="prompt-box"] button.shadow-button-contrast.bg-secondary {
+    background-color: var(--lg-fill-hi);
+    box-shadow: inset 0 1px 0 var(--lg-spec), inset 0 0 0 0.5px var(--lg-rim), 0 2px 8px -3px #00000040;
+}
+[data-part="prompt-box"] button.shadow-button-contrast.bg-warning { box-shadow: inset 0 1px 0 #ffffff80, inset 0 0 0 0.5px #ffffff40, 0 4px 12px -4px color-mix(in srgb, var(--warning) 60%, transparent); }
+[data-part="prompt-box"] button.shadow-button-contrast:disabled { box-shadow: inset 0 0 0 0.5px var(--lg-rim); }
+
+/* Segmented pane switcher (phone: session / changes / files / graph / terminal; side panel tabs): the selected segment is a glass capsule,
+   wherever it sits (on phones it is outside the translucent panels, where --secondary is still the opaque palette colour). */
+button[role="tab"]:is(.bg-secondary, [aria-selected="true"]) { border-radius: 999px; }
+button[role="tab"][aria-selected="true"].bg-secondary {
+    background-color: var(--lg-fill-hi);
+    background-image: var(--lg-sheen);
+    box-shadow: inset 0 1px 0 var(--lg-spec), inset 0 0 0 0.5px var(--lg-rim), 0 1px 4px -1px #00000033;
+}

@@ -801,3 +801,20 @@ textarea:not([data-part="prompt-box"] textarea):is(.rounded, .rounded-md, .round
 @media (prefers-contrast: more) {
     :is(input, textarea, [data-slot="select-trigger"]):not([data-part="prompt-box"] *):focus-visible { box-shadow: 0 0 0 3px var(--primary) !important; }
 }
+
+/* ---------- Text-heavy popups: denser glass (HIG: regular variant for text) ----------
+ * Lists (menus, listboxes, pickers, select) at least 82% tint, dialogs at least 72%, so text behind never competes with the rows.
+ * The tint option can raise it further; the clear variant keeps these minimums too. */
+:is([role="menu"], [role="listbox"]).bg-popover, .bg-popover:is(.shadow-floating, .shadow-md):not([role="dialog"], [role="alertdialog"]) { --lg-tint: max(var(--opt-tint, 0.55), 0.82); }
+:is([role="dialog"], [role="alertdialog"]):is(.bg-popover, .bg-card), [data-part="palette"] { --lg-tint: max(var(--opt-tint, 0.55), 0.72); }
+
+/* Search row at the top of a picker (toolbar.tsx model combobox, branch picker): a capsule field inset in the popup, no band, no rule. */
+.bg-popover > .flex.border-b:has(> input) {
+    margin: 4px 4px 2px;
+    border: 0;
+    border-radius: 999px;
+    background-color: var(--lg-fill);
+    box-shadow: inset 0 1px 2px #0000001a;
+}
+.bg-popover > .flex.border-b:has(> input) > input { background: transparent !important; border: 0 !important; box-shadow: none !important; }
+.bg-popover > .flex.border-b:has(> input:focus-visible) { box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 26%, transparent); }
